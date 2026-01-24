@@ -7,7 +7,7 @@
                     <h5>All Sub Categories</h5>
                 </div>
                 <div class="card-footer">
-                    <table class="table table-hover display" id="subCategoryTable">
+                    <table class="table table-bordered table-hover table-striped" id="subCategoryTable">
                         <thead>
                             <tr>
                                 <th style="text-align: left;">Sl</th>

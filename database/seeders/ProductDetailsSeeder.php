@@ -14,57 +14,61 @@ class ProductDetailsSeeder extends Seeder
      */
     public function run(): void
     {
-        ProductDetails::query()->delete();
         $data = [
             [
-                'id' => 1,
-                'product_id' => 1,
                 'product_id' => 1,
                 'category_id' => 1,
                 'sub_category_id' => 1,
                 'short_description' => 'The iPhone 13 is a sleek and powerful smartphone from Apple.',
                 'long_description' => 'The iPhone 13 features a sleek design, advanced dual-camera system, and A15 Bionic chip for exceptional performance.',
                 'additional_info' => '',
-                'created_at' => now(),
-                'updated_at' => now()
             ],
             [
-                'id' => 2,
-                'product_id' => 2,
                 'product_id' => 2,
                 'category_id' => 2,
                 'sub_category_id' => 2,
                 'short_description' => 'The iPhone 13 is a sleek and powerful smartphone from Apple.',
                 'long_description' => 'The iPhone 13 features a sleek design, advanced dual-camera system, and A15 Bionic chip for exceptional performance.',
                 'additional_info' => '',
-                'created_at' => now(),
-                'updated_at' => now()
             ],
             [
-                'id' => 3,
-                'product_id' => 3,
                 'product_id' => 3,
                 'category_id' => 3,
                 'sub_category_id' => 3,
                 'short_description' => 'The iPhone 13 is a sleek and powerful smartphone from Apple.',
                 'long_description' => 'The iPhone 13 features a sleek design, advanced dual-camera system, and A15 Bionic chip for exceptional performance.',
                 'additional_info' => '',
-                'created_at' => now(),
-                'updated_at' => now()
             ],
             [
-                'id' => 4,
-                'product_id' => 4,
                 'product_id' => 4,
                 'category_id' => 4,
                 'sub_category_id' => 4,
                 'short_description' => 'The iPhone 13 is a sleek and powerful smartphone from Apple.',
                 'long_description' => 'The iPhone 13 features a sleek design, advanced dual-camera system, and A15 Bionic chip for exceptional performance.',
                 'additional_info' => '',
-                'created_at' => now(),
-                'updated_at' => now()
+            ],
+            [
+                'product_id' => 5,
+                'category_id' => 5,
+                'sub_category_id' => 5,
+                'short_description' => 'The iPhone 13 is a sleek and powerful smartphone from Apple.',
+                'long_description' => 'The iPhone 13 features a sleek design, advanced dual-camera system, and A15 Bionic chip for exceptional performance.',
+                'additional_info' => '',
+            ],
+            [
+                'product_id' => 6,
+                'category_id' => 6,
+                'sub_category_id' => 6,
+                'short_description' => 'The iPhone 13 is a sleek and powerful smartphone from Apple.',
+                'long_description' => 'The iPhone 13 features a sleek design, advanced dual-camera system, and A15 Bionic chip for exceptional performance.',
+                'additional_info' => '',
             ],
         ];
-        ProductDetails::insert($data);
+        foreach ($data as $productDetails) {
+            ProductDetails::updateOrCreate(
+                ['product_id' => $productDetails['product_id']],
+                $productDetails
+            );
+        }
     }
 }

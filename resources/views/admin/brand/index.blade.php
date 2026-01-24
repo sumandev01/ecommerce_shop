@@ -7,7 +7,7 @@
                     <h5>All Brands</h5>
                 </div>
                 <div class="card-footer">
-                    <table class="table table-hover display stripe" id="brandTable">
+                    <table class="table table-bordered table-hover table-striped" id="brandTable">
                         <thead>
                             <tr>
                                 <th style="text-align: left;">Sl</th>

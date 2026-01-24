@@ -7,7 +7,7 @@
                     <h5>All Tags</h5>
                 </div>
                 <div class="card-footer">
-                    <table class="table table-hover display stripe" id="tagTable">
+                    <table class="table table-bordered table-hover table-striped" id="tagTable">
                         <thead>
                             <tr>
                                 <th style="text-align: left;">Sl</th>

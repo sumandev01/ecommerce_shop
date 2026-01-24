@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
 use App\Models\SubCategory;
 
 class SubCategorySeeder extends Seeder
@@ -14,22 +13,77 @@ class SubCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        SubCategory::query()->delete();
         $data = [
-            ['id' => 1, 'category_id' => 1, 'name' => 'Electronics', 'slug' => 'electronics', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 2, 'category_id' => 1, 'name' => 'Smartphones', 'slug' => 'smartphones', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 3, 'category_id' => 1, 'name' => 'Laptops', 'slug' => 'laptops', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 4, 'category_id' => 1, 'name' => 'Tablets', 'slug' => 'tablets', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 5, 'category_id' => 2, 'name' => 'Clothing', 'slug' => 'clothing', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 6, 'category_id' => 2, 'name' => 'Shoes', 'slug' => 'shoes', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 7, 'category_id' => 2, 'name' => 'Accessories', 'slug' => 'accessories', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 8, 'category_id' => 3, 'name' => 'Home Appliances', 'slug' => 'home-appliances', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 9, 'category_id' => 3, 'name' => 'Kitchenware', 'slug' => 'kitchenware', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 10, 'category_id' => 3, 'name' => 'Cleaning Supplies', 'slug' => 'cleaning-supplies', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 11, 'category_id' => 4, 'name' => 'Books', 'slug' => 'books', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 12, 'category_id' => 4, 'name' => 'Novels', 'slug' => 'novels', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 13, 'category_id' => 4, 'name' => 'Magazines', 'slug' => 'magazines', 'created_at' => now(), 'updated_at' => now()],
+            [
+                'name' => 'Smartphones',
+                'category_id' => 1,
+                'slug' => 'smartphones',
+            ],
+            [
+                'name' => 'Laptops',
+                'category_id' => 1,
+                'slug' => 'laptops',
+            ],
+            [
+                'name' => 'Fiction',
+                'category_id' => 2,
+                'slug' => 'fiction',
+            ],
+            [
+                'name' => 'Non-Fiction',
+                'category_id' => 2,
+                'slug' => 'non-fiction',
+            ],
+            [
+                'name' => 'Men Clothing',
+                'category_id' => 3,
+                'slug' => 'men-clothing',
+            ],
+            [
+                'name' => 'Women Clothing',
+                'category_id' => 3,
+                'slug' => 'women-clothing',
+            ],
+            [
+                'name' => 'Home & Kitchen',
+                'category_id' => 4,
+                'slug' => 'home-kitchen',
+            ],
+            [
+                'name' => 'Sports & Outdoors',
+                'category_id' => 5,
+                'slug' => 'sports-outdoors',
+            ],
+            [
+                'name' => 'Toys & Games',
+                'category_id' => 6,
+                'slug' => 'toys-games',
+            ],
+            [
+                'name' => 'Books',
+                'category_id' => 7,
+                'slug' => 'books',
+            ],
         ];
-        SubCategory::insert($data);
+
+        foreach ($data as $subCategory) {
+            // Check if a record with the same name already exists
+            $existing = SubCategory::where('name', $subCategory['name'])->first();
+
+            if ($existing) {
+                // If exists, update the existing record
+                $existing->update($subCategory);
+            } else {
+                // If doesn't exist, find the first missing ID starting from 1
+                $newId = 1;
+                while (SubCategory::where('id', $newId)->exists()) {
+                    $newId++;
+                }
+
+                // Create a new record with the missing ID
+                $newData = array_merge($subCategory, ['id' => $newId]);
+                SubCategory::create($newData);
+            }
+        }
     }
 }

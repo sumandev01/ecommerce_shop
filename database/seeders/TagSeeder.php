@@ -14,14 +14,21 @@ class TagSeeder extends Seeder
      */
     public function run(): void
     {
-        Tag::query()->delete();
         $data = [
-            ['id' => 1, 'name' => 'Electronics', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 2, 'name' => 'Fashion', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 3, 'name' => 'Home Appliances', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 4, 'name' => 'Books', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 5, 'name' => 'Sports', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Electronics'],
+            ['name' => 'Fashion'],
+            ['name' => 'Home Appliances'],
+            ['name' => 'Books'],
+            ['name' => 'Sports'],
+            ['name' => 'Home Appliances'],
+            ['name' => 'Books'],
+            ['name' => 'Sports'],
         ];
-        Tag::insert($data);
+        foreach ($data as $tag) {
+            Tag::updateOrCreate(
+                ['name' => $tag['name']],
+                $tag
+            );
+        }
     }
 }

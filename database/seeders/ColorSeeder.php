@@ -14,37 +14,49 @@ class ColorSeeder extends Seeder
      */
     public function run(): void
     {
-        Color::query()->delete();
         $data = [
             [
-                'id' => 1,
                 'name' => 'Red',
                 'hex_code' => '#FF0000',
-                'created_at' => now(),
-                'updated_at' => now()
             ],
             [
-                'id' => 2,
                 'name' => 'Green',
                 'hex_code' => '#00FF00',
-                'created_at' => now(),
-                'updated_at' => now()
             ],
             [
-                'id' => 3,
                 'name' => 'Blue',
                 'hex_code' => '#0000FF',
-                'created_at' => now(),
-                'updated_at' => now()
             ],
             [
-                'id' => 4,
                 'name' => 'Black',
                 'hex_code' => '#000000',
-                'created_at' => now(),
-                'updated_at' => now()
+            ],
+            [
+                'name' => 'White',
+                'hex_code' => '#FFFFFF',
+            ],
+            [
+                'name' => 'Yellow',
+                'hex_code' => '#FFFF00',
+            ],
+            [
+                'name' => 'Purple',
+                'hex_code' => '#800080',
+            ],
+            [
+                'name' => 'Orange',
+                'hex_code' => '#FFA500',
+            ],
+            [
+                'name' => 'Pink',
+                'hex_code' => '#FFC0CB',
             ],
         ];
-        Color::insert($data);
+        foreach ($data as $color) {
+            Color::updateOrCreate(
+                ['name' => $color['name']],
+                $color
+            );
+        }
     }
 }

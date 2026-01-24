@@ -13,37 +13,49 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        Category::query()->delete();
         $data = [
             [
-                'id' => 1,
                 'name' => 'Electronics',
                 'slug' => 'electronics',
-                'created_at' => now(),
-                'updated_at' => now()
             ],
             [
-                'id' => 2,
                 'name' => 'Books',
                 'slug' => 'books',
-                'created_at' => now(),
-                'updated_at' => now()
             ],
             [
-                'id' => 3,
                 'name' => 'Clothing',
                 'slug' => 'clothing',
-                'created_at' => now(),
-                'updated_at' => now()
             ],
             [
-                'id' => 4,
                 'name' => 'Home & Kitchen',
                 'slug' => 'home-kitchen',
-                'created_at' => now(),
-                'updated_at' => now()
+            ],
+            [
+                'name' => 'Sports & Outdoors',
+                'slug' => 'sports-outdoors',
+            ],
+            [
+                'name' => 'Toys & Games',
+                'slug' => 'toys-games',
+            ],
+            [
+                'name' => 'Health & Personal Care',
+                'slug' => 'health-personal-care',
+            ],
+            [
+                'name' => 'Automotive',
+                'slug' => 'automotive',
+            ],
+            [
+                'name' => 'Beauty',
+                'slug' => 'beauty',
             ],
         ];
-        Category::insert($data);
+        foreach ($data as $category) {
+            Category::updateOrCreate(
+                ['name' => $category['name']],
+                $category
+            );
+        }
     }
 }

@@ -134,6 +134,7 @@
 
     @stack('script')
     <script>
+        $.fn.dataTable.ext.errMode = 'throw';
         document.addEventListener('DOMContentLoaded', function() {
             $('.deleteConfirm').on('click', function(e) {
                 e.preventDefault();

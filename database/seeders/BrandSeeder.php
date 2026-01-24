@@ -14,37 +14,53 @@ class BrandSeeder extends Seeder
      */
     public function run(): void
     {
-        Brand::query()->delete();
         $data = [
             [
-                'id' => 1,
                 'name' => 'Apple',
                 'slug' => 'apple',
-                'created_at' => now(),
-                'updated_at' => now()
             ],
             [
-                'id' => 2,
                 'name' => 'Samsung',
                 'slug' => 'samsung',
-                'created_at' => now(),
-                'updated_at' => now()
             ],
             [
-                'id' => 3,
                 'name' => 'Nike',
                 'slug' => 'nike',
-                'created_at' => now(),
-                'updated_at' => now()
             ],
             [
-                'id' => 4,
                 'name' => 'Sony',
                 'slug' => 'sony',
-                'created_at' => now(),
-                'updated_at' => now()
+            ],
+            [
+                'name' => 'Adidas',
+                'slug' => 'adidas',
+            ],
+            [
+                'name' => 'Puma',
+                'slug' => 'puma',
+            ],
+            [
+                'name' => 'Under Armour',
+                'slug' => 'under-armour',
+            ],
+            [
+                'name' => 'Asics',
+                'slug' => 'asics',
+            ],
+            [
+                'name' => 'Reebok',
+                'slug' => 'reebok',
+            ],
+            [
+                'name' => 'New Balance',
+                'slug' => 'new-balance',
             ],
         ];
-        Brand::insert($data);
+        foreach ($data as $brand) {
+            Brand::updateOrCreate(
+                ['name' => $brand['name']],
+                $brand
+            );
+        }
     }
 }

@@ -7,24 +7,26 @@
                     <h5>All Colors</h5>
                 </div>
                 <div class="card-footer">
-                    <table class="table table-hover display stripe" id="colorTable">
+                    <table class="table table-bordered table-hover table-striped" id="colorTable">
                         <thead>
                             <tr>
-                                <th style="text-align: left;">Sl</th>
+                                <th class="text-start">Sl</th>
                                 <th>Color Name</th>
                                 <th>Color Code</th>
-                                <th>Color</th>
-                                <th style="text-align: right;">Action</th>
+                                <th class="text-center">Color</th>
+                                <th class="text-end">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse ( $colors ?? [] as $key => $color )
                                 <tr>
-                                    <td style="text-align: left;">{{ $key + 1 }}</td>
+                                    <td class="text-start">{{ $key + 1 }}</td>
                                     <td> {{ $color?->name }} </td>
                                     <td> {{ $color?->hex_code }} </td>
-                                    <td><div style="width: 30px; height: 30px; background-color: {{ $color->hex_code }}; border-radius: 50%;"></div></td>
-                                    <td style="text-align: right;">
+                                    <td class="text-center">
+                                        <div style="width: 30px; height: 30px; background-color: {{ $color->hex_code }}; border-radius: 50%; margin: 0 auto; border: 1px solid #000"></div>
+                                    </td>
+                                    <td class="text-end">
                                         <a href="{{ route('color.edit', $color?->id) }}" class="btn btn-info btn-icon btn-md"><i data-lucide="edit"></i></a>
                                         <a href="{{ route('color.destroy', $color?->id) }}" class="btn btn-danger btn-icon btn-md deleteConfirm"><i data-lucide="trash"></i></a>
                                     </td>
@@ -48,19 +50,11 @@
                     <form action="{{ route('color.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-4">
-                            <label for="colorName" class="form-label">Color Name</label>
-                            <input type="text" id="colorName" name="name" class="form-control mb-3" placeholder="Color Name">
-                            @error('name')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                            <x-input type="text" label="Color Name" name="name" id="colorName" placeholder="Color Name" :required="true"/>
                         </div>
                         <div class="mb">
-                            <label for="colorCodeInput" class="form-label">Select Color</label>
-                            <input type="text" id="colorCodeInput" name="hex_code" class="form-control mb-3" placeholder="Color Code" value="#000000">
+                            <x-input type="text" label="Color Code" name="hex_code" id="colorCodeInput" placeholder="Color Code" :required="true" value="#000000"/>
                             <input type="color" id="colorPicker" class="form-control mb-3" style="width: 50px; height: 50px; padding: 2px;" placeholder="Color Picker" value="#000000">
-                            @error('hex_code')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
                         </div>
                         <button type="submit" class="btn btn-primary" id="submit">Add Color</button>
                     </form>

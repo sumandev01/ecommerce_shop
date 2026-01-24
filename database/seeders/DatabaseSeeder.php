@@ -13,6 +13,9 @@ use Database\Seeders\SizeSeeder;
 use Database\Seeders\ColorSeeder;
 use Database\Seeders\SubCategorySeeder;
 use Database\Seeders\ProductDetailsSeeder;
+use Database\Seeders\ProductInventorySeeder;
+use Database\Seeders\UserSeeder;
+use Termwind\Components\Raw;
 
 class DatabaseSeeder extends Seeder
 {
@@ -32,12 +35,9 @@ class DatabaseSeeder extends Seeder
             ColorSeeder::class,
             SubCategorySeeder::class,
             ProductDetailsSeeder::class,
-        ]);
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            ProductInventorySeeder::class,
+            UserSeeder::class,
+            RolesSeeder::class,
         ]);
     }
 }

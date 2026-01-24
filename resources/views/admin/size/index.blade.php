@@ -7,7 +7,7 @@
                     <h5>All Sizes</h5>
                 </div>
                 <div class="card-footer">
-                    <table class="table table-hover display stripe" id="sizeTable">
+                    <table class="table table-bordered table-hover table-striped" id="sizeTable">
                         <thead>
                             <tr>
                                 <th style="text-align: left;">Sl</th>

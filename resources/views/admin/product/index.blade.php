@@ -17,13 +17,12 @@
                         <tr>
                             <th class="text-left" scope="col">SL</th>
                             <th style="max-width: 150px;" scope="col">Name</th>
-                            <th scope="col">Product SKU</th>
                             <th scope="col">Category</th>
                             <th scope="col">Sub Category</th>
                             <th scope="col">Brand</th>
-                            <th scope="col">Price</th>
+                            <th style="min-width: 120px" scope="col">Price</th>
                             <th class="text-center" scope="col">Status</th>
-                            <th style="min-width: 100px;" class="text-right" scope="col">Action</th>
+                            <th style="min-width: 150px;" class="text-right" scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,7 +30,6 @@
                             <tr>
                                 <td class="text-left">{{ $key + 1 }}</td>
                                 <td>{{ $product?->name }}</td>
-                                <td>{{ $product?->sku_code }}</td>
                                 <td>{{ $product->details?->category?->name ?? 'N/A' }}</td>
                                 <td>{{ $product->details?->subCategory?->name ?? 'N/A' }}</td>
                                 <td>{{ $product->details?->brand?->name ?? 'N/A' }}</td>
@@ -44,6 +42,7 @@
                                     @endif
                                 </td>
                                 <td class="text-right">
+                                    <a href="{{ route('product.inventory', $product->id) }}" class="btn btn-md btn-success btn-icon"><i data-lucide="package"></i></a>
                                     <a href="{{ route('product.edit', $product->id) }}" class="btn btn-md btn-warning btn-icon"><i data-lucide="edit"></i></a>
                                     <a href="{{ route('product.view', $product->id) }}" class="btn btn-md btn-info btn-icon"><i data-lucide="eye"></i></a>
                                 </td>

@@ -14,14 +14,18 @@ class SizeSeeder extends Seeder
      */
     public function run(): void
     {
-        Size::query()->delete();
         $data = [
-            ['id' => 1, 'name' => 'Small', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 2, 'name' => 'Medium', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 3, 'name' => 'Large', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 4, 'name' => 'X-Large', 'created_at' => now(), 'updated_at' => now()],
-            ['id' => 5, 'name' => 'XX-Large', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Small',],
+            ['name' => 'Medium',],
+            ['name' => 'Large',],
+            ['name' => 'X-Large',],
+            ['name' => 'XX-Large',],
         ];
-        Size::insert($data);
+        foreach ($data as $size) {
+            Size::updateOrCreate(
+                ['name' => $size['name']],
+                $size
+            );
+        }
     }
 }

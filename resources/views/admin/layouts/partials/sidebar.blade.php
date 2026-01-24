@@ -1,6 +1,6 @@
 <nav class="sidebar">
       <div class="sidebar-header">
-        <a href="{{ route('admin.root') }}" class="sidebar-brand">
+        <a href="{{ route('admin.dashboard') }}" class="sidebar-brand">
           Noble<span>UI</span>
         </a>
         <div class="sidebar-toggler not-active">
