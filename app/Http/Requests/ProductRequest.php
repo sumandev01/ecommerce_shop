@@ -16,22 +16,90 @@ class ProductRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
-        $thambnail = $this->method() === 'PUT' ? 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048' : 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
+        $isUpdate = $this->isMethod('PUT') || $this->isMethod('PATCH');
+
         return [
-            'name' => 'required|string|max:255',
-            'shortDescription' => 'required|string|max:255',
-            'category' => 'required|exists:categories,id',
-            'subCategory' => 'required|exists:sub_categories,id',
-            'product_sku' => 'required|string|max:255',
-            'buy_Price' => 'required|numeric',
-            'sell_Price' => 'required|numeric',
-            'discount_Price' => 'nullable|numeric',
-            'thambnail' => $thambnail,
+            'name'             => 'required|string|max:255',
+            'slug'             => [
+                'nullable',
+                'string',
+                'max:255',
+                $isUpdate ? 'unique:products,slug,' . $this->product->id : 'unique:products,slug'
+            ],
+            'shortDescription' => 'required|string|max:500',
+            'description'      => 'nullable|string|max:1000',
+            'additional_info'  => 'nullable|string|max:1000',
+            'buy_price'        => 'required|numeric|min:0',
+            'price'            => 'required|numeric|min:0',
+            'discounted_price' => 'nullable|numeric|min:0',
+            'sku'              => 'required|string|max:255',
+            'stock_quantity'   => 'required|integer|min:0',
+            'category'         => 'required|exists:categories,id',
+            'subCategory'      => 'required|exists:sub_categories,id',
+            'brand'            => 'nullable|string|max:255',
+
+            // Thumbnail: Create করার সময় required, Update এর সময় nullable
+            'thumbnail'        => [
+                $isUpdate ? 'nullable' : 'required',
+                'image',
+                'mimes:jpeg,png,jpg,gif,svg',
+                'max:2048'
+            ],
+
+            // Gallery Images: এটা সবসময় অ্যারে হবে এবং এর ভেতরের প্রতিটি ফাইল ইমেজ হতে হবে
+            'product_images'   => 'nullable|array',
+            'product_images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+
+            // Removed Images Tracking (Optional validation)
+            'removed_product_images' => 'nullable|string',
+            'removed_thumbnail'      => 'nullable|string',
+        ];
+    }
+
+    /**
+     * Custom messages for validation errors.
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required'             => 'The product name is required.',
+            'name.unique'               => 'The product is already created.',
+            'name.string'               => 'The product name must be a string.',
+            'name.max'                  => 'The product name must not exceed 255 characters.',
+            'slug.string'               => 'The product slug must be a string.',
+            'slug.max'                  => 'The product slug must not exceed 255 characters.',
+            'shortDescription.required' => 'The product short description is required.',
+            'shortDescription.string'   => 'The product short description must be a string.',
+            'shortDescription.max'      => 'The product short description must not exceed 500 characters.',
+            'description.string'        => 'The product description must be a string.',
+            'description.max'           => 'The product description must not exceed 1000 characters.',
+            'additional_info.string'    => 'The product additional information must be a string.',
+            'additional_info.max'       => 'The product additional information must not exceed 1000 characters.',
+            'buy_price.required'        => 'The product buy price is required.',
+            'buy_price.numeric'         => 'The product buy price must be a number.',
+            'buy_price.min'             => 'The product buy price must be at least 0.',
+            'price.required'            => 'The product price is required.',
+            'price.numeric'             => 'The product price must be a number.',
+            'price.min'                 => 'The product price must be at least 0.',
+            'discounted_price.numeric'  => 'The product discounted price must be a number.',
+            'discounted_price.min'      => 'The product discounted price must be at least 0.',
+            'sku.required'              => 'The product SKU is required.',
+            'sku.string'                => 'The product SKU must be a string.',
+            'sku.max'                   => 'The product SKU must not exceed 255 characters.',
+            'stock_quantity.required'   => 'The product stock quantity is required.',
+            'stock_quantity.integer'    => 'The product stock quantity must be an integer.',
+            'stock_quantity.min'        => 'The product stock quantity must be at least 0.',
+            'category.required'         => 'The product category is required.',
+            'category.exists'           => 'The product category does not exist.',
+            'subCategory.required'      => 'The product sub-category is required.',
+            'subCategory.exists'        => 'The product sub-category does not exist.',
+            'brand.string'              => 'The product brand must be a string.',
+            'brand.max'                 => 'The product brand must not exceed 255 characters.',
+            'product_images.*.mimes' => 'Only JPEG, PNG, JPG, GIF, SVG images are allowed.',
+            'thumbnail.mimes'        => 'Only JPEG, PNG, JPG, GIF, SVG images are allowed.',
         ];
     }
 }

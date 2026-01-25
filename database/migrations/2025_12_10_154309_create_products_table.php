@@ -20,6 +20,7 @@ return new class extends Migration
             $table->float('price');
             $table->float('buy_price')->default(0);
             $table->float('discount_price')->default(0);
+            $table->float('discount_persentage')->default(0);
             $table->integer('reviews')->default(0);
             $table->float('rating')->default(0);
             $table->integer('stock')->default(0);

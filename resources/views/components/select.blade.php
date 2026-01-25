@@ -1,6 +1,6 @@
 <div class="form-group mb-3">
     @if (isset($label))
-        <label for="{{ $name }}" class="form-label">{{ $label }} @if (!empty($required)) <span class="text-danger">*</span> @endif </label>
+        <label for="{{ $name }}" class="form-label fw-bold text-muted small">{{ $label }} @if (!empty($required)) <span class="text-danger">*</span> @endif </label>
     @endif
 
     <select name="{{ $name }}"

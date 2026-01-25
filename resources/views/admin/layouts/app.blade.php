@@ -11,10 +11,6 @@
     <!-- core:css -->
     <link rel="stylesheet" href="{{ asset('admin/assets/vendors/core/core.css') }}">
     <!-- endinject -->
-    <!-- plugin css for this page -->
-    {{-- <link rel="stylesheet" href="{{ asset('admin/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css') }}"> --}}
-    <!-- end plugin css for this page -->
-    <!-- endinject -->
     <!-- sweetalert2 -->
     <link rel="stylesheet" href="{{ asset('admin/assets/vendors/sweetalert2/sweetalert2.min.css') }}">
     <!-- DataTables CSS -->
@@ -30,8 +26,6 @@
     <link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('admin/assets/css/custom.css') }}">
-    <!-- summer note css -->
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
 
     @stack('style')
 </head>
@@ -99,20 +93,10 @@
     </form>
 
     {{-- Bootstrap --}}
-    {{-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script> --}}
     <script src="{{ asset('admin/assets/js/bootstrap.min.js') }}"></script>
 
     <!-- core:js -->
     <script src="{{ asset('admin/assets/vendors/core/core.js') }}"></script>
-    <!-- endinject -->
-    <!-- plugin js for this page -->
-    {{-- <script src="{{ asset('admin/assets/vendors/chartjs/Chart.min.js') }}"></script> --}}
-    {{-- <script src="{{ asset('admin/assets/vendors/jquery.flot/jquery.flot.js') }}"></script>
-    <script src="{{ asset('admin/assets/vendors/jquery.flot/jquery.flot.resize.js') }}"></script>
-    <script src="{{ asset('admin/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/vendors/apexcharts/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/vendors/progressbar.js/progressbar.min.js') }}"></script> --}}
-    <!-- end plugin js for this page -->
     <!-- inject:js -->
     <script src="{{ asset('admin/assets/vendors/feather-icons/feather.min.js') }}"></script>
     <script src="{{ asset('admin/assets/js/template.js') }}"></script>
@@ -128,8 +112,6 @@
     <script src="{{ asset('admin/assets/js/select2.min.js') }}"></script>
     <!-- lucide icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <!-- summer note editor -->
-    <script src="{{ asset('admin/assets/js/summernote.min.js') }}"></script>
     <!-- end custom js for this page -->
 
     @stack('script')

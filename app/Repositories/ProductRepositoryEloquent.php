@@ -28,7 +28,7 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
         return Product::class;
     }
 
-    
+
 
     /**
      * Boot up the repository, pushing criteria
@@ -38,22 +38,31 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
-    public function storeByRequest($request) {
-        $thambnail = null;
-        if ($request->hasFile('thambnail')) {
-            $thambnail = app(MediaRepositoryEloquent::class)->storeByRequest($request->file('thambnail'), 'products', 'thambnail');
+    public function storeByRequest($request)
+    {
+        // dd($request->all());
+        $thumbnailMedia = null;
+        if ($request->hasFile('thumbnail')) {
+            $thumbnailMedia = app(MediaRepositoryEloquent::class)->storeByRequest($request->file('thumbnail'), 'products', 'thumbnail');
+        }
+
+        $discount_Percentage = 0;
+        if ($request->discounted_price > 0) {
+            $discount_Percentage = round((($request->price - $request->discounted_price) / $request->price) * 100);
         }
 
         $product = self::create([
             'name' => $request->name,
-            'sku_code' => $request->product_sku,
-            'price' => $request->sell_Price,
-            'buy_price' => $request->buy_Price,
-            'discount_price' => 0,
-            'media_id' => $thambnail->id,
+            'sku_code' => $request->sku,
+            'price' => $request->price,
+            'buy_price' => $request->buy_price,
+            'discount_price' => $request->discounted_price,
+            'discount_persentage' => $discount_Percentage,
+            'stock' => $request->stock_quantity,
+            'media_id' => $thumbnailMedia ? $thumbnailMedia->id : null,
         ]);
 
-        $productDetails = ProductDetails::create([
+        ProductDetails::create([
             'product_id' => $product->id,
             'category_id' => $request->category,
             'sub_category_id' => $request->subCategory,
@@ -80,7 +89,7 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
             }
         }
 
-        $images = $request->file('images');
+        $images = $request->file('product_images');
         $mediaIds = [];
         if ($images) {
             foreach ($images as $image) {
@@ -96,23 +105,34 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
         return $product;
     }
 
-    public function updateByRequest($request, Product $product) {
+    public function updateByRequest($request, Product $product)
+    {
+        $media = $product->media_id;
+        if ($request->hasFile('thumbnail')) {
+            if($product->media){
+                $thumbnailMedia = app(MediaRepositoryEloquent::class)->updateByRequest($request->file('thumbnail'), 'products', 'thumbnail', $product->media);
+            }
+            $thumbnailMedia = app(MediaRepositoryEloquent::class)->storeByRequest($request->file('thumbnail'), 'products', 'thumbnail');
+        }
 
-        $media = $product->media->id;
-        if ($request->hasFile('thambnail')) {
-            $thambnail = app(MediaRepositoryEloquent::class)->updateByRequest($request->file('thambnail'), 'products', 'thambnail', $product->media);
+        $discount_Percentage = 0;
+        if ($request->discounted_price > 0) {
+            $discount_Percentage = round((($request->price - $request->discounted_price) / $request->price) * 100);
         }
 
         $product->update([
             'name' => $request->name,
-            'sku_code' => $request->product_sku,
-            'price' => $request->sell_Price,
-            'buy_price' => $request->buy_Price,
-            'discount_price' => $request->discount_Price,
-            'media_id' => $thambnail->id ?? $media,
+            'sku_code' => $request->sku,
+            'price' => $request->price,
+            'buy_price' => $request->buy_price,
+            'discount_price' => $request->discounted_price,
+            'discount_persentage' => $discount_Percentage,
+            'stock' => $request->stock_quantity,
+            'media_id' => $thumbnailMedia->id ?? $media,
         ]);
 
-        $productDetails = ProductDetails::where('product_id', $product->id)->update([
+        ProductDetails::where('product_id', $product->id)->update([
+            'product_id' => $product->id,
             'category_id' => $request->category,
             'sub_category_id' => $request->subCategory,
             'brand_id' => $request->brand,
@@ -121,13 +141,37 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
             'additional_info' => $request->additional_info,
         ]);
 
-        if ($request->has('deleted_images') && is_array($request->deleted_images)) {
-            foreach ($request->deleted_images as $mediaIds) {
-                app(MediaRepositoryEloquent::class)->deleteMediaId($mediaIds);
+        if($request->has('tag')) {
+            $tagIds = [];
+            foreach ($request->tag as $tagValue) {
+                if (is_numeric($tagValue)) {
+                    $tagIds[] = $tagValue;
+                } else {
+                    $newTag = Tag::firstOrCreate([
+                        'name' => $tagValue
+                    ]);
+                    $tagIds[] = $newTag->id;
+                }
+            }
+            $product->tags()->sync($tagIds);
+        } else {
+            $product->tags()->detach();
+        }
+
+        if ($request->filled('removed_product_images')) {
+            // Convert the JSON string into a PHP array
+            $removedIds = json_decode($request->removed_product_images, true);
+
+            // Check if it is a valid array and not empty
+            if (is_array($removedIds) && count($removedIds) > 0) {
+                foreach ($removedIds as $mediaId) {
+                    // Delete media using the ID
+                    app(MediaRepositoryEloquent::class)->deleteMediaId($mediaId);
+                }
             }
         }
 
-        $images = $request->file('images');
+        $images = $request->file('product_images');
         $mediaIds = [];
         if ($images) {
             foreach ($images as $image) {
@@ -135,11 +179,11 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
                 $mediaIds[] = $media->id;
             }
         };
+
         if ($mediaIds > 0) {
             $product->galleries()->attach($mediaIds);
         }
 
         return $product;
     }
-    
 }

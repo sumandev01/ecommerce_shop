@@ -34,7 +34,7 @@ class Product extends Model
         return $this->belongsTo(Media::class);
     }
 
-    public function thambnail(): Attribute{
+    public function thumbnail(): Attribute{
         $url = asset('default.webp');
         if($this->media && Storage::exists($this->media->src)){
             $url =  Storage::url($this->media->src);

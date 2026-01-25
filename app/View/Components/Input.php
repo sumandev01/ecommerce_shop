@@ -13,17 +13,22 @@ class Input extends Component
      */
     public function __construct(
         public string $name,
-        public string $label = '',
-        public string $type = 'text',
+        public ?string $label = '',
+        public ?string $type = 'text',
         public ?string $value = '',
-        public string $placeholder = '',
-        public bool $required = false,
-        public bool $disabled = false,
-        public bool $readonly = false,
+        public ?string $placeholder = '',
+        public ?bool $required = false,
+        public ?bool $disabled = false,
+        public ?bool $readonly = false,
         public ?string $class = null,
         public ?string $id = null,
+        public ?int $max = 255,
+        public ?string $append = null,
+        public bool $counter = true,
     )
-    {}
+    {
+        $this->id = $id ?? $name;
+    }
 
     /**
      * Get the view / contents that represent the component.

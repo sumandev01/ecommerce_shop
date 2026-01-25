@@ -39,7 +39,11 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request) {
         $product = $this->productRepo->storeByRequest($request);
-        return to_route('product.index')->with('success', 'Product created successfully.');
+        if ($product) {
+            return to_route('product.index')->with('success', 'Product created successfully.');
+        } else {
+            return to_route('product.create')->with('error', 'Failed to create product. Please try again.');
+        }
     }
 
     public function view(Product $product) {
@@ -55,7 +59,7 @@ class ProductController extends Controller
     }
 
     public function edit(Product $product) {
-        $products = Product::latest('id')->get();
+        // $products = Product::latest('id')->get();
         $categories = Category::latest('id')-> get();
         $subCategories = SubCategory::latest('id')-> get();
         $brands = Brand::latest('id')-> get();
