@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('root');
+    Route::get('/shop', 'shop')->name('shop');
+    Route::get('/about', 'about')->name('about');
+    Route::get('/faq', 'faq')->name('faq');
+    Route::get('/contact', 'contact')->name('contact');
+    Route::get('/compare', 'compare')->name('compare');
+    Route::get('/product/single-product', 'singleProduct')->name('singleProduct');
+    Route::get('/recently-view', 'recentViews')->name('recentViews');
 });
 
 Route::controller(AuthController::class)->group(function () {
