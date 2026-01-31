@@ -44,11 +44,7 @@
                     <form action="{{ route('size.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-4">
-                            <label for="sizeName" class="form-label">Size</label>
-                            <input type="text" id="sizeName" name="size" class="form-control mb-3" placeholder="Size">
-                            @error('size')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                            <x-input type="text" label="Size" name="size" id="sizeName" :value="old('size')" :max="2" placeholder="Size" :required="true"/>
                         </div>
                         <button type="submit" class="btn btn-primary" id="submit">Add Size</button>
                     </form>

@@ -34,6 +34,21 @@ class Product extends Model
         return $this->belongsTo(Media::class);
     }
 
+    // public function colors()
+    // {
+    //     return $this->hasManyThrough(Color::class, ProductInventory::class, 'product_id', 'id', 'id', 'color_id');
+    // }
+
+    public function colors()
+    {
+        return $this->belongsToMany(Color::class, 'product_inventories', 'product_id', 'color_id')->distinct();
+    }
+
+    public function sizes()
+    {
+        return $this->belongsToMany(Size::class, 'product_inventories', 'product_id', 'size_id')->distinct();
+    }
+
     public function thumbnail(): Attribute{
         $url = asset('default.webp');
         if($this->media && Storage::exists($this->media->src)){

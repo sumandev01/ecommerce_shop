@@ -1,5 +1,6 @@
 @php
     $categories = App\Models\Category::with('subCategories')->latest('id')->get();
+    $user = auth('web')->user();
 @endphp
 <header id="header">
     <div class="topbar">
@@ -77,10 +78,17 @@
                 <div class="col-lg-4 col-12">
                     <div class="middle-right">
                         <ul>
-                            <li><a href="compare.html"><i
-                                        class="fi flaticon-right-and-left"></i><span>Compare</span></a>
-                            </li>
-                            <li><a href="login.html"><i class="fi flaticon-user-profile"></i><span>Login</span></a></li>
+                            <li><a href="compare.html"><i class="fi flaticon-right-and-left"></i><span>Compare</span></a></li>
+                            @if ($user)
+                                <li class="d-flex justify-content-center align-items-center">
+                                    <a href="#">
+                                        <img src="{{ $user->thumbnail }}" style="width: 40px; height: 40px" class="rounded-circle border p-1 me-2" alt="">
+                                        <span>{{ Str::limit($user->name, 10, '..') }}</span>
+                                    </a>
+                                </li>
+                            @else
+                                <li><a href="{{ route('login') }}"><i class="fi flaticon-user-profile"></i><span>Login</span></a></li>
+                            @endif
                             <li>
                                 <div class="header-wishlist-form-wrapper">
                                     <button class="wishlist-toggle-btn"> <i class="fi flaticon-heart"></i>

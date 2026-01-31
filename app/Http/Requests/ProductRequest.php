@@ -34,24 +34,25 @@ class ProductRequest extends FormRequest
             'additional_info'  => 'nullable|string|max:1000',
             'buy_price'        => 'required|numeric|min:0',
             'price'            => 'required|numeric|min:0',
-            'discounted_price' => 'nullable|numeric|min:0',
+            'discounted_price' => 'nullable|numeric|min:0|lt:price',
             'sku'              => 'required|string|max:255',
             'stock_quantity'   => 'required|integer|min:0',
             'category'         => 'required|exists:categories,id',
             'subCategory'      => 'required|exists:sub_categories,id',
             'brand'            => 'nullable|string|max:255',
+            'status'           => 'required|in:0,1',
 
-            // Thumbnail: Create করার সময় required, Update এর সময় nullable
+            // Thumbnail: The thumbnail is required during creation but should be nullable during updates.
             'thumbnail'        => [
                 $isUpdate ? 'nullable' : 'required',
                 'image',
-                'mimes:jpeg,png,jpg,gif,svg',
+                'mimes:jpeg,png,jpg,gif,svg,webp',
                 'max:2048'
             ],
 
-            // Gallery Images: এটা সবসময় অ্যারে হবে এবং এর ভেতরের প্রতিটি ফাইল ইমেজ হতে হবে
+            // Gallery Images: The gallery images must always be an array, and each file within the array must be an image.
             'product_images'   => 'nullable|array',
-            'product_images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'product_images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
 
             // Removed Images Tracking (Optional validation)
             'removed_product_images' => 'nullable|string',
@@ -86,6 +87,7 @@ class ProductRequest extends FormRequest
             'price.min'                 => 'The product price must be at least 0.',
             'discounted_price.numeric'  => 'The product discounted price must be a number.',
             'discounted_price.min'      => 'The product discounted price must be at least 0.',
+            'discounted_price.lt'       => 'The product discounted price must be less than the product price.',
             'sku.required'              => 'The product SKU is required.',
             'sku.string'                => 'The product SKU must be a string.',
             'sku.max'                   => 'The product SKU must not exceed 255 characters.',
@@ -98,7 +100,7 @@ class ProductRequest extends FormRequest
             'subCategory.exists'        => 'The product sub-category does not exist.',
             'brand.string'              => 'The product brand must be a string.',
             'brand.max'                 => 'The product brand must not exceed 255 characters.',
-            'product_images.*.mimes' => 'Only JPEG, PNG, JPG, GIF, SVG images are allowed.',
+            'product_images.*.mimes' => 'Only JPEG, PNG, JPG, GIF, SVG, WEBP images are allowed.',
             'thumbnail.mimes'        => 'Only JPEG, PNG, JPG, GIF, SVG images are allowed.',
         ];
     }

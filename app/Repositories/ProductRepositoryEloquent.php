@@ -55,8 +55,8 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
             'name' => $request->name,
             'sku_code' => $request->sku,
             'price' => $request->price,
-            'buy_price' => $request->buy_price,
-            'discount_price' => $request->discounted_price,
+            'buy_price' => $request->buy_price ?? 0,
+            'discount_price' => $request->discounted_price ?? 0,
             'discount_persentage' => $discount_Percentage,
             'stock' => $request->stock_quantity,
             'media_id' => $thumbnailMedia ? $thumbnailMedia->id : null,
@@ -124,11 +124,12 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
             'name' => $request->name,
             'sku_code' => $request->sku,
             'price' => $request->price,
-            'buy_price' => $request->buy_price,
-            'discount_price' => $request->discounted_price,
+            'buy_price' => $request->buy_price ?? 0,
+            'discount_price' => $request->discounted_price ?? 0,
             'discount_persentage' => $discount_Percentage,
             'stock' => $request->stock_quantity,
             'media_id' => $thumbnailMedia->id ?? $media,
+            'status' => $request->status,
         ]);
 
         ProductDetails::where('product_id', $product->id)->update([

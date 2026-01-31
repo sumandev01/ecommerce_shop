@@ -20,6 +20,11 @@ class Category extends Model
         return $this->belongsTo(Media::class);
     }
 
+    public function products()
+    {
+        return $this->hasManyThrough(Product::class, ProductDetails::class, 'category_id', 'id', 'id', 'product_id');
+    }
+
     /**
      * Returns the thumbnail URL for the category.
      * If the category has a media file associated with it,

@@ -16,11 +16,7 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="mb-4">
-                                    <label for="sizeName" class="form-label">Size Name</label>
-                                    <input type="text" id="sizeName" name="size" class="form-control mb-3" value="{{ old('size', $size?->name) }}" placeholder="Size Name">
-                                    @error('size')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror                                    
+                                    <x-input type="text" label="Size" name="size" id="sizeName" :value="old('size', $size?->name)" :max="2" placeholder="Size" :required="true"/>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Update Size</button>
                             </form>

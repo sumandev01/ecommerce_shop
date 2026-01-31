@@ -36,7 +36,7 @@
 
                             <x-textarea label="Short Description" name="shortDescription"
                                 placeholder="Enter product short description......" :required="false" :max="500"
-                                :rows="10" :editor="false" />
+                                :rows="10" :editor="false" :value="old('shortDescription')" />
 
                             <x-select class="selectTag w-100" multiple="multiple" label="Tags" name="tag[]">
                                 @foreach ($tags ?? [] as $tag)
@@ -51,9 +51,9 @@
                         </div>
                         <div class="card-body">
                             <x-textarea name="description" label="Full Description" :editor="true" :rows="10"
-                                :max="1500" />
+                                :max="1500" :value="old('description')" />
                             <x-textarea name="additional_info" label="Additional Information" :editor="true"
-                                :rows="10" :max="1500" />
+                                :rows="10" :max="1500" :value="old('additional_info')" />
                         </div>
                     </div>
                     <div class="card mb-4">
@@ -103,6 +103,10 @@
                                 @foreach ($brands ?? [] as $brand)
                                     <option value="{{ $brand?->id }}">{{ $brand?->name }}</option>
                                 @endforeach
+                            </x-select>
+                            <x-select label="Status" name="status">
+                                <option value="1">Active</option>
+                                <option value="0" selected>Inactive</option>
                             </x-select>
                         </div>
                     </div>

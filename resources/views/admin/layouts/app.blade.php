@@ -142,39 +142,37 @@
     </script>
 
     <script>
-    // GLOBAL TOAST FUNCTION
-    function showToast(type, message) {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
+        // GLOBAL TOAST FUNCTION
+        function showToast(type, message) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
 
-        Toast.fire({
-            icon: type,
-            title: message
-        });
-    }
-
-
-</script>
-@if (session('success'))
-    <script>
-        showToast('success', "{{ session('success') }}");
+            Toast.fire({
+                icon: type,
+                title: message
+            });
+        }
     </script>
-@endif
+    @if (session('success'))
+        <script>
+            showToast('success', "{{ session('success') }}");
+        </script>
+    @endif
 
-@if (session('error'))
-    <script>
-        showToast('error', "{{ session('error') }}");
-    </script>
-@endif
+    @if (session('error'))
+        <script>
+            showToast('error', "{{ session('error') }}");
+        </script>
+    @endif
 
 </body>
 

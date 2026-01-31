@@ -11,6 +11,7 @@ use App\Models\Brand;
 use App\Models\Media;
 use App\Models\ProductDetails;
 use App\Http\Requests\ProductRequest;
+use App\Models\ProductInventory;
 use App\Repositories\ProductRepositoryEloquent;
 use Illuminate\Http\Request;
 
@@ -55,7 +56,8 @@ class ProductController extends Controller
         $medias = Media::latest('id')->get();
         $product = Product::with('galleries')->findOrFail($product->id);
         $tags = Tag::latest('id')->get();
-        return view('admin.product.view', compact('product', 'categories', 'subCategories', 'brands', 'productDetails', 'medias', 'tags'));
+        $inventories = ProductInventory::where('product_id', $product->id)->get();
+        return view('admin.product.view', compact('product', 'categories', 'subCategories', 'brands', 'productDetails', 'medias', 'tags', 'inventories'));
     }
 
     public function edit(Product $product) {

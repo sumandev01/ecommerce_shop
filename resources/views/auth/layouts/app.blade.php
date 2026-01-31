@@ -24,10 +24,16 @@
     <!-- sweetalert2 -->
     <link rel="stylesheet" href="{{ asset('admin/assets/vendors/sweetalert2/sweetalert2.min.css') }}">
     <link href="{{ asset('web/assets/sass/style.css') }}" rel="stylesheet">
+    <style>
+        .form-style input {
+            margin-bottom: 0 !important;
+        }
+    </style>
     @stack('style')
 </head>
 
 <body>
+
     <!-- start page-wrapper -->
     <div class="page-wrapper">
         <!-- start preloader -->
@@ -44,15 +50,7 @@
         </div>
         <!-- end preloader -->
 
-        <!-- start header -->
-        @include('web.layouts.partials.header')
-        <!-- end of header -->
-        <!-- start content -->
         @yield('content')
-        <!-- end content -->
-        <!-- start of wpo-site-footer-section -->
-        @include('web.layouts.partials.footer')
-        <!-- end of wpo-site-footer-section -->
 
     </div>
     <!-- end of page-wrapper -->

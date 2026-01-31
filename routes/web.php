@@ -15,14 +15,15 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/faq', 'faq')->name('faq');
     Route::get('/contact', 'contact')->name('contact');
     Route::get('/compare', 'compare')->name('compare');
-    Route::get('/product/single-product', 'singleProduct')->name('singleProduct');
+    Route::get('/product/{slug}', 'singleProduct')->name('singleProduct');
+    Route::get('/get-produt-variant-inventory', 'getProdutVariantInventory')->name('getProdutVariantInventory');
     Route::get('/recently-view', 'recentViews')->name('recentViews');
 });
 
 Route::controller(AuthController::class)->group(function () {
     Route::get('/login', 'login')->name('login');
     Route::post('/login', 'postLogin')->name('postLogin');
-    Route::post('/logout', 'logout')->name('logout');
+    Route::get('/logout', 'logout')->name('logout');
     Route::get('/register', 'register')->name('register');
     Route::post('/register', 'postRegister')->name('postRegister');
 });

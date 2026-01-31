@@ -50,6 +50,12 @@ class ProductInventoryController extends Controller
             'quantity' => $request->quantity,
         ]);
 
+        // Update the product stock
+        $totalStock = ProductInventory::where('product_id', $product->id)->sum('quantity');
+        $product->update([
+            'stock' => $totalStock,
+        ]);
+
         return to_route('product.inventory', $product->id)->with('success', 'Inventory added successfully.');
     }
 
@@ -66,12 +72,25 @@ class ProductInventoryController extends Controller
             // 'color_id' => $request->editColor,
             'quantity' => $request->editQuantity,
         ]);
+
+        // Update the product stock
+        $totalStock = ProductInventory::where('product_id', $inventory->product_id)->sum('quantity');
+        Product::where('id', $inventory->product_id)->update([
+            'stock' => $totalStock,
+        ]);
+        
         return to_route('product.inventory', $inventory->product_id)->with('success', 'Quantity updated successfully.');
     }
 
     public function destroy(ProductInventory $inventory)
     {
+        $productId = $inventory->product_id;
         $inventory->delete();
+
+        $totalStock = ProductInventory::where('product_id', $productId)->sum('quantity');
+        Product::where('id', $productId)->update([
+            'stock' => $totalStock,
+        ]);
         return to_route('product.inventory', $inventory->product_id)->with('success', 'Inventory deleted successfully.');
     }
 }

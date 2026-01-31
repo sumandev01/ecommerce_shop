@@ -111,6 +111,10 @@
                                     <option value="{{ $brand?->id }}" {{ ($product?->details?->brand_id ?? old('brand')) == $brand?->id ? 'selected' : '' }}>{{ $brand?->name }}</option>
                                 @endforeach
                             </x-select>
+                            <x-select label="Status" name="status">
+                                <option value="1" {{ ($product?->status ?? old('status')) == 1 ? 'selected' : '' }}>Active</option>
+                                <option value="0" {{ ($product?->status ?? old('status')) == 0 ? 'selected' : '' }}>Inactive</option>
+                            </x-select>
                         </div>
                     </div>
                     <div class="card mb-4">

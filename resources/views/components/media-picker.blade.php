@@ -7,6 +7,7 @@
 
 @php
     $uniqueId = $name . '_' . uniqid();
+    // existingData string or array of strings or null
     $existingCount = is_iterable($existingData) ? count($existingData) : ($existingData ? 1 : 0);
 @endphp
 
@@ -25,10 +26,11 @@
                         <p class="small mb-0 d-block">Gallery</p>
                     </div>
                 </div>
+                {{-- Hidden input for selecting files --}}
                 <input type="file" id="file-selector-{{ $uniqueId }}" class="d-none" multiple accept="image/*"
                     onchange="handleGalleryFiles(this, '{{ $uniqueId }}')">
 
-                {{-- Real hidden input for Gallery --}}
+                {{-- Real hidden input that will be submitted --}}
                 <input type="file" name="{{ $name }}[]" id="real-input-{{ $uniqueId }}" class="d-none"
                     multiple>
             </div>
@@ -68,15 +70,27 @@
                         </div>
                     @endif
                 </div>
-                {{-- Important: standard name attribute for single file --}}
                 <input type="file" id="input-{{ $uniqueId }}" name="{{ $name }}" class="d-none"
                     accept="image/*" onchange="handleThumbUpdate(this, '{{ $uniqueId }}')">
             </div>
         @endif
     </div>
 
+    {{-- Hidden field for deleted IDs --}}
     <input type="hidden" name="removed_{{ $name }}" id="removed-{{ $uniqueId }}" value="[]">
+    
+    {{-- Error message container --}}
     <p id="error-{{ $uniqueId }}" class="text-danger small mt-2" style="display: none;"></p>
+    
+    {{-- Laravel Validation Error --}}
+    @error($name)
+        <span class="text-danger small mt-2 d-block">{{ $message }}</span>
+    @enderror
+    
+    {{-- Gallery mode validation errors (for arrays) --}}
+    @error($name.'.*')
+        <span class="text-danger small mt-2 d-block">{{ $message }}</span>
+    @enderror
 </div>
 
 <script>
@@ -84,7 +98,6 @@
         window.allGalleryFiles = {};
     }
 
-    // --- Gallery Logic ---
     function handleGalleryFiles(input, uid) {
         const wrapper = document.getElementById('wrapper-' + uid);
         const limit = parseInt(wrapper.getAttribute('data-limit'));
@@ -96,27 +109,25 @@
             window.allGalleryFiles[uid] = new DataTransfer();
         }
 
+        // Reset display
         errorMsg.style.display = 'none';
+        errorMsg.innerText = '';
 
-        // Count images already in the database and new images in the preview
         let dbItems = previewRow.querySelectorAll('[id^="db-img-"]').length;
         let newItems = previewRow.querySelectorAll('.new-img-item').length;
         let currentTotal = dbItems + newItems;
 
         Array.from(input.files).forEach(file => {
-            // Check if the total number of images exceeds the limit
             if (currentTotal >= limit) {
                 showError(uid, `Limit reached! Max ${limit} images allowed.`);
-                return; // Stop processing this file
+                return;
             }
 
-            // Check if file size is more than 2MB
             if (file.size > 2 * 1024 * 1024) {
                 showError(uid, `File "${file.name}" is too large! (Max 2MB)`);
                 return;
             }
 
-            // Add file to the global DataTransfer object
             window.allGalleryFiles[uid].items.add(file);
             const fileIndex = window.allGalleryFiles[uid].items.length - 1;
 
@@ -131,20 +142,13 @@
                     </div>
                 </div>`;
                 previewRow.insertAdjacentHTML('beforeend', html);
-
-                // Update the actual file input with new files
                 realInput.files = window.allGalleryFiles[uid].files;
             };
             reader.readAsDataURL(file);
-
-            // Increase the total count for each added file
             currentTotal++;
         });
 
-        // Update the data-current-count attribute for future reference
         wrapper.setAttribute('data-current-count', currentTotal);
-
-        // Clear the input selection so the same file can be selected again
         input.value = '';
     }
 
@@ -166,23 +170,23 @@
         wrapper.setAttribute('data-current-count', currentCount - 1);
     }
 
-    // --- Thumbnail Logic ---
     function handleThumbUpdate(input, uid) {
         const file = input.files[0];
         const errorMsg = document.getElementById('error-' + uid);
         const thumbBox = document.getElementById('thumb-box-' + uid);
 
-        if (errorMsg) errorMsg.style.display = 'none';
+        if (errorMsg) {
+            errorMsg.style.display = 'none';
+            errorMsg.innerText = '';
+        }
 
         if (file) {
             if (file.size <= 2 * 1024 * 1024) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    thumbBox.innerHTML =
-                        `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: contain;">`;
+                    thumbBox.innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: contain;">`;
                 };
                 reader.readAsDataURL(file);
-                // নোট: থাম্বনেইলের ক্ষেত্রে ইনপুটে name="{{ $name }}" আছে, তাই ডাটা অটোমেটিক যাবে।
             } else {
                 showError(uid, "Thumbnail must be under 2MB");
                 input.value = '';
@@ -192,23 +196,33 @@
     }
 
     function removeStoredMedia(id, uid) {
-        Swal.fire({
-            title: 'Delete image?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const wrapper = document.getElementById('wrapper-' + uid);
-                let currentCount = parseInt(wrapper.getAttribute('data-current-count'));
-                let removedInput = document.getElementById('removed-' + uid);
-                let removedIds = JSON.parse(removedInput.value);
-                removedIds.push(id);
-                removedInput.value = JSON.stringify(removedIds);
-                document.getElementById('db-img-' + id).remove();
-                wrapper.setAttribute('data-current-count', currentCount - 1);
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                title: 'Delete image?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    processRemoval(id, uid);
+                }
+            });
+        } else {
+            if (confirm('Are you sure you want to delete this image?')) {
+                processRemoval(id, uid);
             }
-        });
+        }
+    }
+
+    function processRemoval(id, uid) {
+        const wrapper = document.getElementById('wrapper-' + uid);
+        let currentCount = parseInt(wrapper.getAttribute('data-current-count'));
+        let removedInput = document.getElementById('removed-' + uid);
+        let removedIds = JSON.parse(removedInput.value);
+        removedIds.push(id);
+        removedInput.value = JSON.stringify(removedIds);
+        document.getElementById('db-img-' + id).remove();
+        wrapper.setAttribute('data-current-count', currentCount - 1);
     }
 
     function showError(uid, msg) {

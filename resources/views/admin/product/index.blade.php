@@ -17,8 +17,7 @@
                         <tr>
                             <th class="text-left" scope="col">SL</th>
                             <th style="max-width: 150px;" scope="col">Name</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Sub Category</th>
+                            <th scope="col">Category / sub category</th>
                             <th scope="col">Brand</th>
                             <th style="min-width: 120px" scope="col">Price</th>
                             <th class="text-center" scope="col">Status</th>
@@ -26,19 +25,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($products ?? [] as $key => $product)
+                        @forelse ($products ?? [] as $key => $product)
                             <tr>
                                 <td class="text-left">{{ $key + 1 }}</td>
                                 <td>{{ $product?->name }}</td>
-                                <td>{{ $product->details?->category?->name ?? 'N/A' }}</td>
-                                <td>{{ $product->details?->subCategory?->name ?? 'N/A' }}</td>
+                                <td>
+                                    <span>{{ $product->details?->category?->name ?? 'N/A' }}</span>
+                                    <br>
+                                    <span class="text-muted">{{ $product->details?->subCategory?->name ?? 'N/A' }}</span>
+                                </td>
                                 <td>{{ $product->details?->brand?->name ?? 'N/A' }}</td>
                                 <td>${{ number_format($product->price, 2) }}</td>
                                 <td class="text-center">
                                     @if ($product->status == 1)
-                                        <span class="badge badge-success">Active</span>
+                                        <span class="badge badge-success py-2">Active</span>
                                     @else
-                                        <span class="badge badge-danger">Inactive</span>
+                                        <span class="badge badge-danger py-2">Inactive</span>
                                     @endif
                                 </td>
                                 <td class="text-right">
@@ -47,7 +49,11 @@
                                     <a href="{{ route('product.view', $product->id) }}" class="btn btn-md btn-info btn-icon"><i data-lucide="eye"></i></a>
                                 </td>
                             </tr>
-                        @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="7" class="text-center">No Product Found</td>
+                                </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
