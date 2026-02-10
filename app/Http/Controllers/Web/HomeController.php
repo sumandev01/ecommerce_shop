@@ -15,7 +15,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $products = Product::latest('id')->get();
+        $products = Product::where('status', 1)->latest('id')->get();
         $categories = Category::latest('id')->get();
         $recentlyAdd = $products->sortByDesc('created_at')->take(3);
         return view('web.index', compact('products', 'categories', 'recentlyAdd'));
@@ -63,35 +63,94 @@ class HomeController extends Controller
         return view('web.singleProduct', compact('product', 'slug', 'productGalleries', 'colors', 'sizes', 'tags'));
     }
 
-    public function getProdutVariantInventory(Request $request)
-    {
-        $productId = $request->productId;
-        $colorId = $request->colorId;
-        $sizeId = $request->sizeId;
-        
-        $stock = 0;
-        if ($colorId && $sizeId) {
-            $inventory = ProductInventory::where('product_id', $productId)->where('color_id', $colorId)->where('size_id', $sizeId)->first();
+    // public function getProdutVariantInventory(Request $request)
+    // {
+    //     $productId = $request->productId;
+    //     $colorId = $request->colorId;
+    //     $sizeId = $request->sizeId;
 
-            $stock = $inventory ? $inventory->quantity : 0;
-        }
+    //     $stock = 0;
+    //     if ($colorId && $sizeId) {
+    //         $inventory = ProductInventory::where('product_id', $productId)->where('color_id', $colorId)->where('size_id', $sizeId)->first();
 
-        $availableSizeIds = [];
-        if($colorId) {
-            $availableSizeIds = ProductInventory::where('product_id', $productId)->where('color_id', $colorId)->pluck('size_id')->toArray();
-        }
-        
-        $availableColorIds = [];
-        if($sizeId) {
-            $availableColorIds = ProductInventory::where('product_id', $productId)->where('size_id', $sizeId)->pluck('color_id')->toArray();
-        }
+    //         $stock = $inventory ? $inventory->quantity : 0;
+    //     }
 
-        return response()->json([
-            'stock' => $stock,
-            'availableSizeIds' => $availableSizeIds,
-            'availableColorIds' => $availableColorIds,
-        ]);
+    //     $availableSizeIds = [];
+    //     if($colorId) {
+    //         $availableSizeIds = ProductInventory::where('product_id', $productId)->where('color_id', $colorId)->pluck('size_id')->toArray();
+    //     }
+
+    //     $availableColorIds = [];
+    //     if($sizeId) {
+    //         $availableColorIds = ProductInventory::where('product_id', $productId)->where('size_id', $sizeId)->pluck('color_id')->toArray();
+    //     }
+
+    //     return response()->json([
+    //         'stock' => $stock,
+    //         'availableSizeIds' => $availableSizeIds,
+    //         'availableColorIds' => $availableColorIds,
+    //     ]);
+    // }
+
+public function getProdutVariantInventory(Request $request)
+{
+    $productId = $request->productId;
+    $colorId = $request->colorId;
+    $sizeId = $request->sizeId;
+
+    $inventoryQuery = ProductInventory::where('product_id', $productId);
+
+    // Filter by color: if provided use it, otherwise look for NULL
+    if ($colorId) {
+        $inventoryQuery->where('color_id', $colorId);
+    } else {
+        $inventoryQuery->whereNull('color_id');
     }
+
+    // Filter by size: if provided use it, otherwise look for NULL
+    // This was causing the issue when a size actually exists in DB
+    if ($sizeId) {
+        $inventoryQuery->where('size_id', $sizeId);
+    } else {
+        $inventoryQuery->whereNull('size_id');
+    }
+
+    $inventory = $inventoryQuery->first();
+    
+    // Check if inventory exists before accessing properties to avoid 500 error
+    $stock = $inventory ? $inventory->quantity : 0;
+    $invId = $inventory ? $inventory->id : null;
+
+    // Get available sizes for the selected color
+    $availableSizeIds = [];
+    if ($colorId) {
+        $availableSizeIds = ProductInventory::where('product_id', $productId)
+            ->where('color_id', $colorId)
+            ->whereNotNull('size_id')
+            ->pluck('size_id')
+            ->toArray();
+    }
+
+    // Get available colors for the selected size
+    $availableColorIds = [];
+    if ($sizeId) {
+        $availableColorIds = ProductInventory::where('product_id', $productId)
+            ->where('size_id', $sizeId)
+            ->whereNotNull('color_id')
+            ->pluck('color_id')
+            ->toArray();
+    }
+
+    return response()->json([
+        'stock' => $stock,
+        'inventory' => $invId,
+        'availableSizeIds' => $availableSizeIds,
+        'availableColorIds' => $availableColorIds,
+        'isSizeNull' => $inventory ? is_null($inventory->size_id) : false,
+        'isColorNull' => $inventory ? is_null($inventory->color_id) : false,
+    ]);
+}
 
     public function recentViews()
     {

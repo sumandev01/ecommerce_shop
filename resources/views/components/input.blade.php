@@ -32,7 +32,7 @@
     <div class="d-flex justify-content-between mt-1">
         <div>
             @error ($name)
-                <span class="text-danger small">{{ $errors->first($name) }}</span>
+                <span class="text-danger">{{ $errors->first($name) }}</span>
             @enderror
         </div>
         

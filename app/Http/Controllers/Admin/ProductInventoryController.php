@@ -22,12 +22,17 @@ class ProductInventoryController extends Controller
 
     public function store(Request $request, Product $product)
     {
+        $message = [
+            'size_id.required_without' => 'Size is required.',
+            'color_id.required_without' => 'Color is required.',
+            'quantity.required' => 'Quantity is required.',
+        ];
         // Validate the request data
         $request->validate([
-            'size_id' => 'required|exists:sizes,id',
-            'color_id' => 'required|exists:colors,id',
+            'size_id' => 'required_without:color_id|exists:sizes,id',
+            'color_id' => 'required_without:size_id|exists:colors,id',
             'quantity' => 'required|integer|min:0',
-        ]);
+        ], $message);
 
         $oldInventory = ProductInventory::where('product_id', $request->product_id)
             ->where('size_id', $request->size_id)

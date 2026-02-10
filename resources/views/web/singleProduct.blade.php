@@ -54,87 +54,93 @@
                         </div>
                     </div>
                     <div class="col-lg-7">
-                        <div class="product-single-content">
-                            <h2 class="text-start">{{ $product->name }}</h2>
-                            <div class="price">
-                                @if ($product->discount_price > 0)
-                                    <span class="present-price">৳{{ $product->discount_price }}</span>
-                                    <del class="old-price">৳{{ $product->price }}</del>
-                                @else
-                                    <span class="present-price">৳{{ $product->price }}</span>
+                        <form action="{{ route('addToCart') }}" method="post">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product?->id }}">
+                            <input type="hidden" name="inventoryId" id="inventory_id_input" value="">
+                            <div class="product-single-content">
+                                <h2 class="text-start">{{ $product?->name }}</h2>
+                                <div class="price">
+                                    @if ($product?->discount_price > 0)
+                                        <span class="present-price">৳{{ $product?->discount_price }}</span>
+                                        <del class="old-price">৳{{ $product?->price }}</del>
+                                    @else
+                                        <span class="present-price">৳{{ $product?->price }}</span>
+                                    @endif
+                                </div>
+                                <div class="rating-product">
+                                    <i class="fi flaticon-star"></i>
+                                    <i class="fi flaticon-star"></i>
+                                    <i class="fi flaticon-star"></i>
+                                    <i class="fi flaticon-star"></i>
+                                    <i class="fi flaticon-star"></i>
+                                    <span>120</span>
+                                </div>
+                                <p>{{ $product?->details?->short_description }}</p>
+                                @if ($colors->isNotEmpty())
+                                    <div class="product-filter-item color">
+                                        <div class="color-name">
+                                            <span>Color :</span>
+                                            <ul>
+                                                @foreach ($colors ?? [] as $color)
+                                                    <li class="{{ $color?->name }}">
+                                                        <input id="{{ $color?->name }}" type="radio" name="color"
+                                                            value="{{ $color?->id }}">
+                                                        <label for="{{ $color?->name }}"
+                                                            style="background-color: {{ $color?->hex_code }};"></label>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
                                 @endif
-                            </div>
-                            <div class="rating-product">
-                                <i class="fi flaticon-star"></i>
-                                <i class="fi flaticon-star"></i>
-                                <i class="fi flaticon-star"></i>
-                                <i class="fi flaticon-star"></i>
-                                <i class="fi flaticon-star"></i>
-                                <span>120</span>
-                            </div>
-                            <p>{{ $product->details->short_description }}</p>
-                            @if ($colors->isNotEmpty())
-                                <div class="product-filter-item color">
-                                    <div class="color-name">
-                                        <span>Color :</span>
-                                        <ul>
-                                            @foreach ($colors ?? [] as $color)
-                                                <li class="{{ $color->name }}"><input id="{{ $color->name }}"
-                                                        type="radio" name="color" value="{{ $color->id }}">
-                                                    <label for="{{ $color->name }}"
-                                                        style="background-color: {{ $color->hex_code }};"></label>
-                                                </li>
-                                            @endforeach
-                                        </ul>
+                                @if ($sizes->isNotEmpty())
+                                    <div class="product-filter-item color filter-size">
+                                        <div class="color-name">
+                                            <span>Sizes:</span>
+                                            <ul>
+                                                @foreach ($sizes ?? [] as $size)
+                                                    <li class="{{ $size?->name }}"><input id="{{ $size?->name }}"
+                                                            type="radio" name="size" value="{{ $size?->id }}">
+                                                        <label for="{{ $size?->name }}">{{ $size?->name }}</label>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
                                     </div>
+                                @endif
+                                <div class="product-inventory-status mt-3">
+                                    <p id="stock-display">
+                                        <strong>Availability:</strong>
+                                        <span id="stock-count"
+                                            class="badge {{ $product?->stock > 0 ? 'bg-success' : 'bg-danger' }}">
+                                            @if ($product?->stock > 0)
+                                                {{ $product?->stock }} Items in Stock
+                                            @else
+                                                Sold Out
+                                            @endif
+                                        </span>
+                                    </p>
                                 </div>
-                            @endif
-                            @if ($sizes->isNotEmpty())
-                                <div class="product-filter-item color filter-size">
-                                    <div class="color-name">
-                                        <span>Sizes:</span>
-                                        <ul>
-                                            @foreach ($sizes ?? [] as $size)
-                                                <li class="{{ $size->name }}"><input id="{{ $size->name }}"
-                                                        type="radio" name="size" value="{{ $size->id }}">
-                                                    <label for="{{ $size->name }}">{{ $size->name }}</label>
-                                                </li>
-                                            @endforeach
-                                        </ul>
+                                <div class="pro-single-btn">
+                                    <div class="quantity cart-plus-minus">
+                                        <input class="text-value" type="text" name="quantity" value="1">
                                     </div>
+                                    @php
+                                        // $isSelectionRequired = $colors->isNotEmpty() || $sizes->isNotEmpty();
+                                    @endphp
+                                    <button type="submit" class="theme-btn-s2 border-0">Add to cart</button>
+                                    <a href="#" class="wl-btn"><i class="fi flaticon-heart"></i></a>
                                 </div>
-                            @endif
-                            <div class="product-inventory-status mt-3">
-                                <p id="stock-display">
-                                    <strong>Availability:</strong>
-                                    <span id="stock-count"
-                                        class="badge {{ $product->stock > 0 ? 'bg-success' : 'bg-danger' }}">
-                                        @if ($product->stock > 0)
-                                            {{ $product->stock }} Items in Stock
-                                        @else
-                                            Sold Out
-                                        @endif
-                                    </span>
-                                </p>
+                                <ul class="important-text">
+                                    <li><span>SKU: </span>{{ $product?->sku_code ?? 'N/A' }}</li>
+                                    <li><span>Categories: </span>{{ $product?->details?->category?->name ?? 'N/A' }},
+                                        {{ $product?->details?->subCategory?->name ?? 'N/A' }}</li>
+                                    <li><span>Tags: </span>{{ $tags->pluck('name')->implode(', ') ?? 'N/A' }}</li>
+                                    <li><span>Brand: </span>{{ $product?->details?->brand?->name ?? 'N/A' }}</li>
+                                </ul>
                             </div>
-                            <div class="pro-single-btn">
-                                <div class="quantity cart-plus-minus">
-                                    <input class="text-value" type="text" value="1">
-                                </div>
-                                @php
-                                    $isSelectionRequired = $colors->isNotEmpty() || $sizes->isNotEmpty();
-                                @endphp
-                                <a href="#" class="theme-btn-s2">Add to cart</a>
-                                <a href="#" class="wl-btn"><i class="fi flaticon-heart"></i></a>
-                            </div>
-                            <ul class="important-text">
-                                <li><span>SKU: </span>{{ $product?->sku_code ?? 'N/A' }}</li>
-                                <li><span>Categories: </span>{{ $product?->details?->category?->name ?? 'N/A' }},
-                                    {{ $product?->details?->subCategory?->name ?? 'N/A' }}</li>
-                                <li><span>Tags: </span>{{ $tags->pluck('name')->implode(', ') ?? 'N/A' }}</li>
-                                <li><span>Brand: </span>{{ $product?->details?->brand?->name ?? 'N/A' }}</li>
-                            </ul>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -163,7 +169,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="Descriptions-item">
-                                        {!! $product->details->long_description !!}
+                                        {!! $product?->details?->long_description !!}
                                     </div>
                                 </div>
                             </div>
@@ -361,7 +367,7 @@
                     <div class="tab-pane fade" id="Information" role="tabpanel" aria-labelledby="Information-tab">
                         <div class="container">
                             <div class="Additional-wrap">
-                                {!! $product->details->additional_info !!}
+                                {!! $product?->details?->additional_info !!}
                             </div>
                         </div>
                     </div>
@@ -374,83 +380,102 @@
     <!-- product-single-section  end-->
 @endsection
 @push('script')
-<script>
-    $(document).ready(function() {
-        // Count how many options are available
-        let totalColors = {{ $colors->count() }};
-        let totalSizes = {{ $sizes->count() }};
+    <script>
+        $(document).ready(function() {
+            let totalColors = {{ $colors->count() }};
+            let totalSizes = {{ $sizes->count() }};
+            const defaultProductStock = {{ $product->stock > 0 ? $product->stock : 0 }};
 
-        // If color and size exist, disable the button initially
-        if (totalColors > 0 || totalSizes > 0) {
-            $('input[name="size"]').prop('disabled', true).parent('li').css('opacity', '0.3');
-            $('.theme-btn-s2').css({'pointer-events': 'none', 'opacity': '0.5'});
-        } else {
-            // If no variants, enable button for simple product
-            $('.theme-btn-s2').css({'pointer-events': 'auto', 'opacity': '1'});
-        }
+            if (defaultProductStock <= 0) {
+                disableAddToCart();
+                $('#stock-count').text('Sold Out').addClass('bg-danger');
+            } else if (totalColors > 0) {
+                disableAddToCart();
+                $('input[name="size"]').prop('disabled', true).parent('li').css('opacity', '0.3');
+            }
 
-        function updateInventory(triggerType) {
-            let colorId = $('input[name="color"]:checked').val();
-            let sizeId = $('input[name="size"]:checked').val();
-            let productId = "{{ $product->id }}";
+            function updateInventory(triggerType) {
+                let colorId = $('input[name="color"]:checked').val();
+                let sizeId = $('input[name="size"]:checked').val();
+                let productId = "{{ $product->id }}";
 
-            // If product has variants but nothing is selected, don't call AJAX unnecessarily
-            if (!colorId && !sizeId && (totalColors > 0 || totalSizes > 0)) return;
+                $.ajax({
+                    url: "{{ route('getProdutVariantInventory') }}",
+                    method: "GET",
+                    data: {
+                        colorId: colorId,
+                        sizeId: sizeId,
+                        productId: productId
+                    },
+                    success: function(response) {
+                        $('#inventory_id_input').val(response.inventory || '');
 
-            $.ajax({
-                url: "{{ route('getProdutVariantInventory') }}",
-                method: "GET",
-                data: {
-                    colorId: colorId,
-                    sizeId: sizeId,
-                    productId: productId
-                },
-                success: function(response) {
-                    // Logic for color selection
-                    if (triggerType === 'color' && totalSizes > 0) {
-                        $('input[name="size"]').prop('checked', false).prop('disabled', true).parent('li').css('opacity', '0.3');
-                        
-                        if (response.availableSizeIds.length > 0) {
-                            response.availableSizeIds.forEach(function(id) {
-                                let sizeInput = $('input[name="size"][value="' + id + '"]');
-                                sizeInput.prop('disabled', false).parent('li').css('opacity', '1');
-                            });
+                        if (triggerType === 'color' && totalSizes > 0) {
+                            $('input[name="size"]').prop('checked', false).prop('disabled', true)
+                                .parent('li').css('opacity', '0.3');
+
+                            if (response.availableSizeIds && response.availableSizeIds.length > 0) {
+                                response.availableSizeIds.forEach(function(id) {
+                                    let sizeInput = $('input[name="size"][value="' + id + '"]');
+                                    sizeInput.prop('disabled', false).parent('li').css(
+                                        'opacity', '1');
+                                });
+                            }
+
+                            $('#stock-count').text('Select Size').removeClass('bg-success').addClass(
+                                'bg-danger');
+                            disableAddToCart();
+                            return;
                         }
-                        $('#stock-count').text('Select a size');
-                        $('.theme-btn-s2').css({'pointer-events': 'none', 'opacity': '0.5'});
-                    }
 
-                    // Final stock check to enable Add to Cart
-                    // If no sizes are needed, only colorId is enough. If both exist, both needed.
-                    let canAddToCart = false;
-                    if (totalColors > 0 && totalSizes > 0) {
-                        if (colorId && sizeId && response.stock >= 1) canAddToCart = true;
-                    } else if (totalColors > 0 && !totalSizes) {
-                        if (colorId && response.stock >= 1) canAddToCart = true;
-                    } else if (!totalColors && totalSizes > 0) {
-                        if (sizeId && response.stock >= 1) canAddToCart = true;
-                    }
-
-                    if (canAddToCart) {
-                        $('#stock-count').text(response.stock + ' Items in Stock').removeClass('bg-danger').addClass('bg-success');
-                        $('.theme-btn-s2').css({'pointer-events': 'auto', 'opacity': '1'});
-                    } else if (totalColors > 0 || totalSizes > 0) {
-                        if (colorId && sizeId && response.stock < 1) {
-                            $('#stock-count').text('Sold Out').removeClass('bg-success').addClass('bg-danger');
+                        let canAddToCart = false;
+                        if (totalColors > 0 && totalSizes > 0) {
+                            if (colorId && sizeId && response.stock >= 1) canAddToCart = true;
+                        } else if (totalColors > 0 && totalSizes === 0) {
+                            if (colorId && response.stock >= 1) canAddToCart = true;
+                        } else if (totalColors === 0 && totalSizes > 0) {
+                            if (sizeId && response.stock >= 1) canAddToCart = true;
+                        } else {
+                            if (response.stock >= 1) canAddToCart = true;
                         }
-                        $('.theme-btn-s2').css({'pointer-events': 'none', 'opacity': '0.5'});
+
+                        if (canAddToCart) {
+                            $('#stock-count').text(response.stock + ' Items in Stock')
+                                .removeClass('bg-danger').addClass('bg-success');
+                            enableAddToCart();
+                        } else {
+                            disableAddToCart();
+                            if (response.stock < 1) {
+                                $('#stock-count').text('Sold Out').removeClass('bg-success').addClass(
+                                    'bg-danger');
+                            } else if (colorId && !sizeId && totalSizes > 0) {
+                                $('#stock-count').text('Select Size').addClass('bg-danger');
+                            }
+                        }
                     }
-                }
+                });
+            }
+
+            function disableAddToCart() {
+                $('.theme-btn-s2').css({
+                    'pointer-events': 'none',
+                    'opacity': '0.5'
+                });
+            }
+
+            function enableAddToCart() {
+                $('.theme-btn-s2').css({
+                    'pointer-events': 'auto',
+                    'opacity': '1'
+                });
+            }
+
+            $('input[name="color"]').on('change', function() {
+                updateInventory('color');
             });
-        }
-
-        $('input[name="color"]').on('change', function() {
-            updateInventory('color');
+            $('input[name="size"]').on('change', function() {
+                updateInventory('size');
+            });
         });
-
-        $('input[name="size"]').on('change', function() {
-            updateInventory('size');
-        });
-    });
-</script>
+    </script>
 @endpush

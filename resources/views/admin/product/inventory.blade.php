@@ -39,11 +39,13 @@
                                 <tr>
                                     <td class="text-start ps-2">{{ $key + 1 }}</td>
                                     <td class="text-center">
-                                        <div
-                                            style="width: 30px; height: 30px; background-color: {{ $inventory?->color?->hex_code }}; border-radius: 50%; margin: 0 auto; border: 1px solid #000">
-                                        </div>
+                                        @if ($inventory?->color_id)
+                                        <div style="width: 30px; height: 30px; background-color: {{ $inventory?->color?->hex_code }}; border-radius: 50%; margin: 0 auto; border: 1px solid #000"></div>
+                                        @else
+                                            N/A
+                                        @endif
                                     </td>
-                                    <td class="text-center"> {{ $inventory?->size?->name }} </td>
+                                    <td class="text-center"> {{ $inventory?->size?->name ?? 'N/A' }} </td>
                                     <td class="text-center">{{ $inventory?->quantity }}</td>
                                     <td class="text-end">
                                         <button type="button" class="btn btn-info btn-icon btn-md editBtn"

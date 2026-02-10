@@ -107,6 +107,7 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
 
     public function updateByRequest($request, Product $product)
     {
+        // dd($request->all(), $product->toArray());
         $media = $product->media_id;
         if ($request->hasFile('thumbnail')) {
             if($product->media){
@@ -132,15 +133,18 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
             'status' => $request->status,
         ]);
 
-        ProductDetails::where('product_id', $product->id)->update([
-            'product_id' => $product->id,
-            'category_id' => $request->category,
-            'sub_category_id' => $request->subCategory,
-            'brand_id' => $request->brand,
-            'short_description' => $request->shortDescription,
-            'long_description' => $request->description,
-            'additional_info' => $request->additional_info,
-        ]);
+        ProductDetails::updateOrCreate(
+            ['product_id' => $product->id],
+            [
+                'product_id' => $product->id,
+                'category_id' => $request->category,
+                'sub_category_id' => $request->subCategory,
+                'brand_id' => $request->brand,
+                'short_description' => $request->shortDescription,
+                'long_description' => $request->description,
+                'additional_info' => $request->additional_info,
+            ]
+        );
 
         if($request->has('tag')) {
             $tagIds = [];
