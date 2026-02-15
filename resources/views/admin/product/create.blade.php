@@ -72,16 +72,16 @@
                         </div>
                         <div class="card-body">
                             <x-input label="Buy Price" name="buy_price" type="number" placeholder="Enter buy price"
-                                :required="false" :max="5" />
+                                :required="false" :max="15" />
                             <x-input label="Selling Price" name="price" type="number" placeholder="Enter product price"
-                                :required="false" :max="5" />
+                                :required="false" :max="15" />
                             <x-input label="Discounted Price" name="discounted_price" type="number"
-                                placeholder="Enter discounted price" :max="5" />
+                                placeholder="Enter discounted price" :max="15" />
                             <x-input label="SKU" name="sku" id="product_sku" placeholder="Product SKU"
                                 :required="false" :counter="false"
                                 append='<button class="btn btn-secondary" type="button" onclick="codeGenerate()">Generate</button>' />
                             <x-input label="Stock Quantity" name="stock_quantity" type="number"
-                                placeholder="Enter stock quantity" :required="false" :max="5" />
+                                placeholder="Enter stock quantity" :required="false" :max="15" />
                         </div>
                     </div>
                     <div class="card mb-4">

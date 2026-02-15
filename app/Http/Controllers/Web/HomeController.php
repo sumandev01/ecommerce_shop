@@ -56,42 +56,13 @@ class HomeController extends Controller
     public function singleProduct($slug)
     {
         $product = Product::where('slug', $slug)->where('status', 1)->firstOrFail();
+        $user = auth('web')->user();
         $productGalleries = $product->galleries;
         $colors = $product->colors;
         $sizes = $product->sizes;
         $tags = $product->tags;
-        return view('web.singleProduct', compact('product', 'slug', 'productGalleries', 'colors', 'sizes', 'tags'));
+        return view('web.singleProduct', compact('product', 'user', 'slug', 'productGalleries', 'colors', 'sizes', 'tags'));
     }
-
-    // public function getProdutVariantInventory(Request $request)
-    // {
-    //     $productId = $request->productId;
-    //     $colorId = $request->colorId;
-    //     $sizeId = $request->sizeId;
-
-    //     $stock = 0;
-    //     if ($colorId && $sizeId) {
-    //         $inventory = ProductInventory::where('product_id', $productId)->where('color_id', $colorId)->where('size_id', $sizeId)->first();
-
-    //         $stock = $inventory ? $inventory->quantity : 0;
-    //     }
-
-    //     $availableSizeIds = [];
-    //     if($colorId) {
-    //         $availableSizeIds = ProductInventory::where('product_id', $productId)->where('color_id', $colorId)->pluck('size_id')->toArray();
-    //     }
-
-    //     $availableColorIds = [];
-    //     if($sizeId) {
-    //         $availableColorIds = ProductInventory::where('product_id', $productId)->where('size_id', $sizeId)->pluck('color_id')->toArray();
-    //     }
-
-    //     return response()->json([
-    //         'stock' => $stock,
-    //         'availableSizeIds' => $availableSizeIds,
-    //         'availableColorIds' => $availableColorIds,
-    //     ]);
-    // }
 
 public function getProdutVariantInventory(Request $request)
 {

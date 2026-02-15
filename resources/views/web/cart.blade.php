@@ -8,8 +8,8 @@
                 <div class="col col-xs-12">
                     <div class="wpo-breadcumb-wrap">
                         <ol class="wpo-breadcumb-wrap">
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="product.html">Product Page</a></li>
+                            <li><a href="{{ route('root') }}">Home</a></li>
+                            <li><a href="{{ route('shop') }}">Product Page</a></li>
                             <li>Cart</li>
                         </ol>
                     </div>
@@ -26,7 +26,7 @@
                 <div class="col-12">
                     <div class="single-page-title">
                         <h2>Your Cart</h2>
-                        <p>There are 4 products in this list</p>
+                        <p>There are {{ $cartItemsCount }} products in this list</p>
                     </div>
                 </div>
             </div>
@@ -46,94 +46,70 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="wishlist-item">
-                                            <td class="product-item-wish">
-                                                <div class="check-box"><input type="checkbox" class="myproject-checkbox">
-                                                </div>
-                                                <div class="images">
-                                                    <span>
-                                                        <img src="assets/images/cart/img-1.jpg" alt="">
-                                                    </span>
-                                                </div>
-                                                <div class="product">
+                                        @foreach ($cartItems ?? [] as $cartItem)
+                                            @php
+                                                $price =
+                                                    $cartItem?->product?->discount_price > 0
+                                                        ? $cartItem?->product?->discount_price
+                                                        : $cartItem?->product?->price;
+                                                $subTotal = $price * $cartItem?->quantity;
+                                            @endphp
+                                            <tr class="wishlist-item" data-cart-id="{{ $cartItem?->id }}">
+                                                <td class="product-item-wish">
+                                                    <div class="check-box"><input type="checkbox"
+                                                            class="myproject-checkbox">
+                                                    </div>
+                                                    <div class="images">
+                                                        <span>
+                                                            <img src="{{ $cartItem?->product?->thumbnail }}"
+                                                                style="object-fit: contain; aspect-ratio: 1/1"
+                                                                alt="{{ $cartItem?->product?->name }}">
+                                                        </span>
+                                                    </div>
+                                                    <div class="product">
+                                                        <ul>
+                                                            <li class="first-cart">
+                                                                {{ Str::limit($cartItem?->product?->name, '20', '..') }}
+                                                            </li>
+                                                            <li>
+                                                                <div class="rating-product">
+                                                                    <i class="fi flaticon-star"></i>
+                                                                    <i class="fi flaticon-star"></i>
+                                                                    <i class="fi flaticon-star"></i>
+                                                                    <i class="fi flaticon-star"></i>
+                                                                    <i class="fi flaticon-star"></i>
+                                                                    <span>130</span>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td class="ptice">৳{{ $cartItem?->product->formatBD($price) }}</td>
+                                                <td class="td-quantity">
+                                                    <div class="quantity cart-plus-minus"
+                                                        data-product-id="{{ $cartItem?->product?->id }}"
+                                                        data-product-price="{{ $price }}">
+                                                        <input class="text-value" type="text"
+                                                            value="{{ $cartItem?->quantity }}">
+                                                        <div class="dec qtybutton">-</div>
+                                                        <div class="inc qtybutton">+</div>
+                                                    </div>
+                                                </td>
+                                                <td class="ptice subtotal-cell">
+                                                    ৳{{ $cartItem?->product->formatBD($subTotal) }}</td>
+                                                <td class="action">
                                                     <ul>
-                                                        <li class="first-cart">Stylish Pink Coat</li>
-                                                        <li>
-                                                            <div class="rating-product">
-                                                                <i class="fi flaticon-star"></i>
-                                                                <i class="fi flaticon-star"></i>
-                                                                <i class="fi flaticon-star"></i>
-                                                                <i class="fi flaticon-star"></i>
-                                                                <i class="fi flaticon-star"></i>
-                                                                <span>130</span>
-                                                            </div>
+                                                        <li class="w-btn"><a data-bs-toggle="tooltip" data-bs-html="true"
+                                                                title=""
+                                                                href="{{ route('cart.destroy', $cartItem?->id) }}"
+                                                                data-bs-original-title="Remove from Cart"
+                                                                aria-label="Remove from Cart"><i
+                                                                    class="fi ti-trash"></i></a>
                                                         </li>
                                                     </ul>
-                                                </div>
-                                            </td>
-                                            <td class="ptice">$150</td>
-                                            <td class="td-quantity">
-                                                <div class="quantity cart-plus-minus">
-                                                    <input class="text-value" type="text" value="1">
-                                                    <div class="dec qtybutton">-</div>
-                                                    <div class="inc qtybutton">+</div>
-                                                </div>
-                                            </td>
-                                            <td class="ptice">$150</td>
-                                            <td class="action">
-                                                <ul>
-                                                    <li class="w-btn"><a data-bs-toggle="tooltip" data-bs-html="true"
-                                                            title="" href="#"
-                                                            data-bs-original-title="Remove from Cart"
-                                                            aria-label="Remove from Cart"><i class="fi ti-trash"></i></a>
-                                                    </li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                        <tr class="wishlist-item">
-                                            <td class="product-item-wish">
-                                                <div class="check-box"><input type="checkbox" class="myproject-checkbox">
-                                                </div>
-                                                <div class="images">
-                                                    <span>
-                                                        <img src="assets/images/cart/img-2.jpg" alt="">
-                                                    </span>
-                                                </div>
-                                                <div class="product">
-                                                    <ul>
-                                                        <li class="first-cart">Blue Bag</li>
-                                                        <li>
-                                                            <div class="rating-product">
-                                                                <i class="fi flaticon-star"></i>
-                                                                <i class="fi flaticon-star"></i>
-                                                                <i class="fi flaticon-star"></i>
-                                                                <i class="fi flaticon-star"></i>
-                                                                <i class="fi flaticon-star"></i>
-                                                                <span>15</span>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                            <td class="ptice">$150</td>
-                                            <td class="td-quantity">
-                                                <div class="quantity cart-plus-minus">
-                                                    <input class="text-value" type="text" value="1">
-                                                    <div class="dec qtybutton">-</div>
-                                                    <div class="inc qtybutton">+</div>
-                                                </div>
-                                            </td>
-                                            <td class="ptice">$150</td>
-                                            <td class="action">
-                                                <ul>
-                                                    <li class="w-btn"><a data-bs-toggle="tooltip" data-bs-html="true"
-                                                            title="" href="#"
-                                                            data-bs-original-title="Remove from Cart"
-                                                            aria-label="Remove from Cart"><i class="fi ti-trash"></i></a>
-                                                    </li>
-                                                </ul>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
 
                                 </table>
@@ -281,3 +257,47 @@
     </div>
     <!-- cart-area end -->
 @endsection
+@push('script')
+    <script>
+        $(document).ready(function() {
+            $(".qtybutton").on("click", function() {
+                const $button = $(this);
+                const $container = $button.closest('.cart-plus-minus');
+                const $row = $button.closest('tr');
+
+                const $input = $container.find(".text-value");
+
+                let quantity = parseInt($input.val()) || 1;
+                const productPrice = Number($container.data('product-price'));
+
+                if (quantity <= 1) {
+                    quantity = 1;
+                    $button.parent().find("input").val(1);
+                }
+
+                $input.val(quantity);
+
+                const subTotal = quantity * productPrice;
+
+                // BD format 
+                const formattedSubtotal = subTotal.toLocaleString('en-IN');
+
+                $row.find(".subtotal-cell").text("৳" + formattedSubtotal);
+
+                const cartId = $row.data('cart-id');
+                $.ajax({
+                    url: "{{ route('cart.update') }}",
+                    method: "POST",
+                    data: {
+                        id: cartId,
+                        quantity: quantity,
+                        _token: "{{ csrf_token() }}",
+                    },
+                })
+
+            });
+
+
+        });
+    </script>
+@endpush

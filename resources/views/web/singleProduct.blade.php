@@ -126,11 +126,16 @@
                                     <div class="quantity cart-plus-minus">
                                         <input class="text-value" type="text" name="quantity" value="1">
                                     </div>
-                                    @php
-                                        // $isSelectionRequired = $colors->isNotEmpty() || $sizes->isNotEmpty();
-                                    @endphp
                                     <button type="submit" class="theme-btn-s2 border-0">Add to cart</button>
-                                    <a href="#" class="wl-btn"><i class="fi flaticon-heart"></i></a>
+                                    @if ($user?->wishListItems()->where('product_id', $product->id)->exists())
+                                        <a href="{{ route('wishlist.destroy', $product?->id) }}" class="wl-btn">
+                                            <i class="fa fa-solid fa-heart" style="color: red !important;"></i>
+                                        </a>
+                                    @else
+                                    <a href="{{ route('wishlist.store', $product?->id) }}" class="wl-btn">
+                                        <i class="fi flaticon-heart"></i>
+                                    </a>
+                                    @endif
                                 </div>
                                 <ul class="important-text">
                                     <li><span>SKU: </span>{{ $product?->sku_code ?? 'N/A' }}</li>

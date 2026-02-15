@@ -40,7 +40,6 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
 
     public function storeByRequest($request)
     {
-        // dd($request->all());
         $thumbnailMedia = null;
         if ($request->hasFile('thumbnail')) {
             $thumbnailMedia = app(MediaRepositoryEloquent::class)->storeByRequest($request->file('thumbnail'), 'products', 'thumbnail');

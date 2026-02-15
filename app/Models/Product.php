@@ -34,11 +34,6 @@ class Product extends Model
         return $this->belongsTo(Media::class);
     }
 
-    // public function colors()
-    // {
-    //     return $this->hasManyThrough(Color::class, ProductInventory::class, 'product_id', 'id', 'id', 'color_id');
-    // }
-
     public function colors()
     {
         return $this->belongsToMany(Color::class, 'product_inventories', 'product_id', 'color_id')->distinct();
@@ -76,5 +71,31 @@ class Product extends Model
                 $product->slug = Str::slug($product->slug);
             }
         });
+    }
+
+    /**
+     * Format a given amount in Bangladeshi Taka (BDT) using commas as thousand separators.
+     * 
+     * @param int $amount The amount to be formatted.
+     * 
+     * @return string The formatted amount.
+     */
+    public function formatBD($amount)
+    {
+        if (!$amount || $amount == 0) return 0;
+        
+        $amount = round($amount);
+
+        $lastThree = substr($amount, -3);
+        $restUnits = substr($amount, 0, -3);
+
+        if ($restUnits != '') {
+            $restUnits = preg_replace("/\B(?=(\d{2})+(?!\d))/", ',', $restUnits);
+            $formatted = $restUnits . ',' . $lastThree;
+        } else {
+            $formatted = $lastThree;
+        }
+
+        return $formatted;
     }
 }
