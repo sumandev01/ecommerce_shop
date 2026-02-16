@@ -13,7 +13,11 @@ class CartController extends Controller
         $userId = auth('web')->user()->id;
         $cartItems = Cart::where('user_id', $userId)->get();
         $cartItemsCount = Cart::where('user_id', $userId)->count();
-        return view('web.cart', compact('cartItems', 'cartItemsCount'));
+        $totalPrice = $cartItems->map(function ($cartItem) {
+            $price = $cartItem->product->discount_price > 0 ? $cartItem->product->discount_price : $cartItem->product->price;
+            return $price * $cartItem->quantity;
+        })->sum();
+        return view('web.cart', compact('cartItems', 'cartItemsCount', 'totalPrice'));
     }
 
     public function addToCart(Request $request)

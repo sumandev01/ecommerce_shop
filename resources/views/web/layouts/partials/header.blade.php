@@ -94,7 +94,7 @@
                                     <button class="wishlist-toggle-btn">
                                         @php
                                             $wishListItems = $user?->wishListItems()->latest('id')->get();
-                                            $wishListItemsCount = $wishListItems->count() ?? 0;
+                                            $wishListItemsCount = $wishListItems?->count() ?? 0;
                                         @endphp
                                         <i class="fi flaticon-heart"></i>
                                         <span class="cart-count">{{ $wishListItemsCount }}</span>
@@ -114,7 +114,7 @@
                                                 </div>
                                                 <div class="mini-cart-item-des">
                                                     <a href="{{ route('singleProduct', $wishListItem?->product?->slug) }}" title="{{ $wishListItem?->product?->name }}">{{ Str::limit($wishListItem?->product->name, '30', '...') }}</a>
-                                                    <span class="mini-cart-item-price">৳{{ $wishListItem?->product?->formatBD($price) }}</span>
+                                                    <span class="mini-cart-item-price">৳{{ formatBD($price) }}</span>
                                                     <span class="mini-cart-item-quantity"><a href="{{ route('wishlist.destroy', $wishListItem?->product?->id) }}"><i
                                                                 class="ti-close"></i></a></span>
                                                 </div>
@@ -134,7 +134,7 @@
                             <li>
                                 @php
                                     $cartItems = $user?->cartItems()->latest('id')->get();
-                                    $cartItemsCount = $cartItems->count() ?? 0;
+                                    $cartItemsCount = $cartItems?->count() ?? 0;
                                     $subTotal = 0;
                                 @endphp
                                 <div class="mini-cart">
@@ -156,7 +156,7 @@
                                                 </div>
                                                 <div class="mini-cart-item-des">
                                                     <a href="{{ $cartItem?->product?->slug }}" title="{{ $cartItem?->product?->name }}">{{ Str::limit($cartItem?->product?->name, '30', '...') }}</a>
-                                                    <span class="mini-cart-item-price">৳{{ $cartItem?->product?->formatBD($price) }} x {{ $cartItem?->quantity }}</span>
+                                                    <span class="mini-cart-item-price">৳{{ formatBD($price) }} x {{ $cartItem?->quantity }}</span>
                                                     <span class="mini-cart-item-quantity"><a href="{{ route('cart.destroy', $cartItem?->id) }}"><i
                                                                 class="ti-close"></i></a></span>
                                                 </div>

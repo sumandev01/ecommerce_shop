@@ -47,57 +47,70 @@
                                     </thead>
 
                                     <tbody>
-                                        @foreach ($wishlists ?? [] as $wishlist)
-                                        @php
-                                            $price = $wishlist?->product?->discount_price > 0 ? $wishlist?->product?->discount_price : $wishlist?->product?->price;
-                                        @endphp
-                                        <tr class="wishlist-item">
-                                            <td class="product-item-wish">
-                                                <div class="check-box"><input type="checkbox" class="myproject-checkbox">
-                                                </div>
-                                                <div class="images">
-                                                    <span>
-                                                        <img src="{{ $wishlist?->product?->thumbnail }}" alt="{{ $wishlist?->product?->name }}">
-                                                    </span>
-                                                </div>
-                                                <div class="product">
+                                        @forelse ($wishlists ?? [] as $wishlist)
+                                            @php
+                                                $price =
+                                                    $wishlist?->product?->discount_price > 0
+                                                        ? $wishlist?->product?->discount_price
+                                                        : $wishlist?->product?->price;
+                                            @endphp
+                                            <tr class="wishlist-item">
+                                                <td class="product-item-wish">
+                                                    <div class="check-box"><input type="checkbox"
+                                                            class="myproject-checkbox">
+                                                    </div>
+                                                    <div class="images">
+                                                        <span>
+                                                            <img src="{{ $wishlist?->product?->thumbnail }}"
+                                                                alt="{{ $wishlist?->product?->name }}">
+                                                        </span>
+                                                    </div>
+                                                    <div class="product">
+                                                        <ul>
+                                                            <li class="first-cart">
+                                                                {{ Str::limit($wishlist?->product?->name, '30', '...') }}
+                                                            </li>
+                                                            <li>
+                                                                <div class="rating-product">
+                                                                    <i class="fi flaticon-star"></i>
+                                                                    <i class="fi flaticon-star"></i>
+                                                                    <i class="fi flaticon-star"></i>
+                                                                    <i class="fi flaticon-star"></i>
+                                                                    <i class="fi flaticon-star"></i>
+                                                                    <span>130</span>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td class="ptice">৳{{ formatBD($price) }}</td>
+                                                <td class="stock">
+                                                    @if ($wishlist?->product?->stock > 0)
+                                                        <span class="in-stock">In Stock</span>
+                                                    @else
+                                                        <span class="in-stock out-stock">Out Stock</span>
+                                                    @endif
+                                                </td>
+                                                <td class="add-wish">
+                                                    <a class="theme-btn-s2"
+                                                        href="{{ route('singleProduct', $wishlist?->product?->slug) }}">Shop
+                                                        Now</a>
+                                                </td>
+                                                <td class="action">
                                                     <ul>
-                                                        <li class="first-cart">{{ Str::limit($wishlist?->product?->name, '30', '...') }}</li>
-                                                        <li>
-                                                            <div class="rating-product">
-                                                                <i class="fi flaticon-star"></i>
-                                                                <i class="fi flaticon-star"></i>
-                                                                <i class="fi flaticon-star"></i>
-                                                                <i class="fi flaticon-star"></i>
-                                                                <i class="fi flaticon-star"></i>
-                                                                <span>130</span>
-                                                            </div>
-                                                        </li>
+                                                        <li class="w-btn"><a data-bs-toggle="tooltip" data-bs-html="true"
+                                                                title=""
+                                                                href="{{ route('wishlist.destroy', $wishlist?->product?->id) }}"
+                                                                data-bs-original-title="Remove" aria-label="Remove"><i
+                                                                    class="fi flaticon-remove"></i></a></li>
                                                     </ul>
-                                                </div>
-                                            </td>
-                                            <td class="ptice">৳{{ $wishlist?->product?->formatBD($price) }}</td>
-                                            <td class="stock">
-                                                @if ($wishlist?->product?->stock > 0)
-                                                <span class="in-stock">In Stock</span>
-                                                    
-                                                @else
-                                                <span class="in-stock out-stock">Out Stock</span>
-                                                    
-                                                @endif
-                                            </td>
-                                            <td class="add-wish">
-                                                <a class="theme-btn-s2" href="{{ route('singleProduct', $wishlist?->product?->slug) }}">Shop Now</a>
-                                            </td>
-                                            <td class="action">
-                                                <ul>
-                                                    <li class="w-btn"><a data-bs-toggle="tooltip" data-bs-html="true"
-                                                            title="" href="{{ route('wishlist.destroy', $wishlist?->product?->id) }}" data-bs-original-title="Remove"
-                                                            aria-label="Remove"><i class="fi flaticon-remove"></i></a></li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                        @endforeach
+                                                </td>
+                                            </tr>
+                                            @empty
+                                                <tr class="wishlist-item">
+                                                    <td colspan="7" class="text-center py-1 fs-4 ">No Product Found In Wishlist</td>
+                                                </tr>
+                                            @endforelse
                                     </tbody>
                                 </table>
                             </form>

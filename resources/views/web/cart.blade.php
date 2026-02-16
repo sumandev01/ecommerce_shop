@@ -46,7 +46,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($cartItems ?? [] as $cartItem)
+                                        @forelse ($cartItems ?? [] as $cartItem)
                                             @php
                                                 $price =
                                                     $cartItem?->product?->discount_price > 0
@@ -84,7 +84,7 @@
                                                         </ul>
                                                     </div>
                                                 </td>
-                                                <td class="ptice">৳{{ $cartItem?->product->formatBD($price) }}</td>
+                                                <td class="ptice">৳{{ $cartItem?->product->$price }}</td>
                                                 <td class="td-quantity">
                                                     <div class="quantity cart-plus-minus"
                                                         data-product-id="{{ $cartItem?->product?->id }}"
@@ -96,7 +96,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="ptice subtotal-cell">
-                                                    ৳{{ $cartItem?->product->formatBD($subTotal) }}</td>
+                                                    ৳{{ $cartItem?->product->$subTotal }}</td>
                                                 <td class="action">
                                                     <ul>
                                                         <li class="w-btn"><a data-bs-toggle="tooltip" data-bs-html="true"
@@ -109,9 +109,13 @@
                                                     </ul>
                                                 </td>
                                             </tr>
-                                        @endforeach
+                                        @empty
+                                            <tr class="wishlist-item">
+                                                <td colspan="7" class="text-center py-1 fs-4 ">No Product Found In Cart
+                                                </td>
+                                            </tr>
+                                        @endforelse
                                     </tbody>
-
                                 </table>
                             </div>
                             <div class="cart-action">
@@ -129,7 +133,7 @@
                             <h3>Cart Totals</h3>
                             <div class="sub-total">
                                 <h4>Subtotal</h4>
-                                <span>$300.00</span>
+                                <span>৳{{ formatBD($totalPrice) }}</span>
                             </div>
                             <div class="sub-total my-3">
                                 <h4>Discount</h4>

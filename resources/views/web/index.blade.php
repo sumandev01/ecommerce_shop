@@ -733,10 +733,10 @@
                                     </div>
                                     <div class="price">
                                         @if ($product->discount_price > 0)
-                                            <span class="present-price">৳{{ $product?->formatBd($product?->discount_price) }}</span>
-                                            <del class="old-price">৳{{ $product?->formatBd($product?->price) }}</del>
+                                            <span class="present-price">৳{{ formatBd($product?->discount_price) }}</span>
+                                            <del class="old-price">৳{{ formatBd($product?->price) }}</del>
                                         @else
-                                        <span class="present-price">৳{{ $product?->formatBd($product?->price) }}</span>
+                                        <span class="present-price">৳{{ formatBd($product?->price) }}</span>
                                         @endif
                                     </div>
                                 </div>

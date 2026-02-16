@@ -240,10 +240,10 @@
                                             </div>
                                             <div class="price">
                                                 @if ($product->discount_price > 0)
-                                                    <span class="present-price">৳{{ $product?->formatBD($product?->discount_price) }}</span>
-                                                    <del class="old-price">৳{{ $product?->formatBD($product->price) }}</del>
+                                                    <span class="present-price">৳{{ formatBD($product?->discount_price) }}</span>
+                                                    <del class="old-price">৳{{ formatBD($product->price) }}</del>
                                                 @else
-                                                    <span class="present-price">৳{{ $product?->formatBD($product->price) }}</span>
+                                                    <span class="present-price">৳{{ formatBD($product->price) }}</span>
                                                 @endif
                                             </div>
                                             <div class="shop-btn">
