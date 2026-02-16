@@ -44,6 +44,11 @@ class Product extends Model
         return $this->belongsToMany(Size::class, 'product_inventories', 'product_id', 'size_id')->distinct();
     }
 
+    public function inInventories()
+    {
+        return $this->hasMany(ProductInventory::class);
+    }
+
     public function thumbnail(): Attribute{
         $url = asset('default.webp');
         if($this->media && Storage::exists($this->media->src)){

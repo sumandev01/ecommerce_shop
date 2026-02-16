@@ -85,7 +85,7 @@
                                 :required="false" :counter="false" :value="$product?->sku_code"
                                 append='<button class="btn btn-secondary" type="button" onclick="codeGenerate()">Generate</button>' />
                             <x-input label="Stock Quantity" name="stock_quantity" type="number"
-                                placeholder="Enter stock quantity" :required="false" :max="15" :value="$product?->stock" />
+                                placeholder="Enter stock quantity" :required="false" :max="15" :value="$product?->stock" :readonly="$product ? $product->inInventories()->exists() : false" />
                         </div>
                     </div>
                     <div class="card mb-4">

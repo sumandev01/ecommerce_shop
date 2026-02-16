@@ -84,7 +84,7 @@
                                                         </ul>
                                                     </div>
                                                 </td>
-                                                <td class="ptice">৳{{ $cartItem?->product->$price }}</td>
+                                                <td class="ptice">৳{{ formatBD($price) }}</td>
                                                 <td class="td-quantity">
                                                     <div class="quantity cart-plus-minus"
                                                         data-product-id="{{ $cartItem?->product?->id }}"
@@ -96,7 +96,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="ptice subtotal-cell">
-                                                    ৳{{ $cartItem?->product->$subTotal }}</td>
+                                                    ৳{{ formatBD($subTotal) }}</td>
                                                 <td class="action">
                                                     <ul>
                                                         <li class="w-btn"><a data-bs-toggle="tooltip" data-bs-html="true"
@@ -133,7 +133,7 @@
                             <h3>Cart Totals</h3>
                             <div class="sub-total">
                                 <h4>Subtotal</h4>
-                                <span>৳{{ formatBD($totalPrice) }}</span>
+                                <span id="total_price">৳{{ formatBD($totalPrice) }}</span>
                             </div>
                             <div class="sub-total my-3">
                                 <h4>Discount</h4>
@@ -262,46 +262,52 @@
     <!-- cart-area end -->
 @endsection
 @push('script')
-    <script>
-        $(document).ready(function() {
-            $(".qtybutton").on("click", function() {
-                const $button = $(this);
-                const $container = $button.closest('.cart-plus-minus');
-                const $row = $button.closest('tr');
-
-                const $input = $container.find(".text-value");
-
-                let quantity = parseInt($input.val()) || 1;
-                const productPrice = Number($container.data('product-price'));
-
-                if (quantity <= 1) {
-                    quantity = 1;
-                    $button.parent().find("input").val(1);
-                }
-
-                $input.val(quantity);
-
-                const subTotal = quantity * productPrice;
-
-                // BD format 
-                const formattedSubtotal = subTotal.toLocaleString('en-IN');
-
-                $row.find(".subtotal-cell").text("৳" + formattedSubtotal);
-
-                const cartId = $row.data('cart-id');
-                $.ajax({
-                    url: "{{ route('cart.update') }}",
-                    method: "POST",
-                    data: {
-                        id: cartId,
-                        quantity: quantity,
-                        _token: "{{ csrf_token() }}",
-                    },
-                })
-
+<script>
+    $(document).ready(function() {
+        function updateGrandTotal() {
+            let total = 0;
+            
+            $(".subtotal-cell").each(function() {
+                let subtotalText = $(this).text().replace(/[^0-9.]/g, '');
+                total += parseFloat(subtotalText) || 0;
             });
+            $("#total_price").text("৳" + total.toLocaleString('en-IN'));            
+        }
 
+        $(".qtybutton").on("click", function() {
+            const $button = $(this);
+            const $container = $button.closest('.cart-plus-minus');
+            const $row = $button.closest('tr');
+            const $input = $container.find(".text-value");
 
+            let quantity = parseInt($input.val()) || 1;
+            const productPrice = Number($container.data('product-price'));
+
+            if (quantity <= 1) {
+                quantity = 1;
+                $input.val(1);
+            } else {
+                $input.val(quantity);
+            }
+
+            const subTotal = quantity * productPrice;
+            const formattedSubtotal = subTotal.toLocaleString('en-IN');
+
+            $row.find(".subtotal-cell").text("৳" + formattedSubtotal);
+
+            updateGrandTotal();
+
+            const cartId = $row.data('cart-id');
+            $.ajax({
+                url: "{{ route('cart.update') }}",
+                method: "POST",
+                data: {
+                    id: cartId,
+                    quantity: quantity,
+                    _token: "{{ csrf_token() }}",
+                },
+            });
         });
-    </script>
+    });
+</script>
 @endpush
