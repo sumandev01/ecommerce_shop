@@ -1,7 +1,7 @@
-<div class="form-group mb-3">
+<div class="form-group mb-1">
     {{-- Display Label --}}
     @if ($label)
-        <label for="{{ $id }}" class="form-label fw-bold text-muted small">
+        <label for="{{ $id }}" class="form-label fw-bold text-muted small mb-0">
             {{ $label }} @if ($required) <span class="text-danger">*</span> @endif 
         </label>
     @endif

@@ -92,9 +92,6 @@
         @method('DELETE')
     </form>
 
-    {{-- Bootstrap --}}
-    <script src="{{ asset('admin/assets/js/bootstrap.min.js') }}"></script>
-
     <!-- core:js -->
     <script src="{{ asset('admin/assets/vendors/core/core.js') }}"></script>
     <!-- inject:js -->
@@ -173,7 +170,5 @@
             showToast('error', "{{ session('error') }}");
         </script>
     @endif
-
 </body>
-
 </html>

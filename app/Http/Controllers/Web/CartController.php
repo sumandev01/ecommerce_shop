@@ -59,4 +59,12 @@ class CartController extends Controller
         $cart->delete();
         return back()->with('success', 'Product removed from cart successfully');
     }
+
+    public function applyCoupon(Request $request)
+    {
+        dd($request->all());
+        // $request->validate([
+        //     'coupon' => 'required|string',
+        // ]);
+    }
 }

@@ -120,10 +120,10 @@
                             </div>
                             <div class="cart-action">
                                 <div class="apply-area">
-                                    <input type="text" class="form-control" placeholder="Enter your coupon">
-                                    <button class="theme-btn-s2" type="submit">Apply</button>
+                                    <input type="text" class="form-control" id="couponInput" placeholder="Enter your coupon">
+                                    <button type="button" class="theme-btn-s2" id="couponBtn">Apply</button>
                                 </div>
-                                <a class="theme-btn-s2" href="#"><i class="fi flaticon-refresh"></i> Update
+                                <a class="theme-btn-s2" href="{{ route('cart') }}"><i class="fi flaticon-refresh"></i> Update
                                     Cart</a>
                             </div>
                         </form>
@@ -264,6 +264,7 @@
 @push('script')
 <script>
     $(document).ready(function() {
+        // grand total
         function updateGrandTotal() {
             let total = 0;
             
@@ -274,6 +275,7 @@
             $("#total_price").text("৳" + total.toLocaleString('en-IN'));            
         }
 
+        // quantity update
         $(".qtybutton").on("click", function() {
             const $button = $(this);
             const $container = $button.closest('.cart-plus-minus');
@@ -308,6 +310,24 @@
                 },
             });
         });
+
+        // coupon code apply
+        $("#couponBtn").on("click", function() {
+            const couponCode = $("#couponInput").val();
+            if (couponCode == '' || couponCode == null || couponCode == undefined || couponCode.length < 5) return;
+
+            $.ajax({
+                url: "{{ route('coupon.apply') }}",
+                method: "POST",
+                data: {
+                    code: couponCode,
+                    _token: "{{ csrf_token() }}",
+                },
+                success: function(response) {
+                    console.log(response);
+                }
+            });
+        })
     });
 </script>
 @endpush

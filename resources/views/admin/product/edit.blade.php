@@ -8,7 +8,7 @@
                     <div class="card-header py-4 bg-light">
                         <div class="d-flex align-items-center justify-content-between">
                             <h4 class="mb-0">Edit Product</h4>
-                            <a href="{{ route('product.index') }}" class="btn btn-secondary">
+                            <a href="{{ route('product.index') }}" class="btn btn-primary">
                                 <i data-lucide="arrow-left" class="me-1" style="width: 18px;"></i> Back to Products
                             </a>
                         </div>
@@ -83,7 +83,7 @@
                                 placeholder="Enter discounted price" :max="15" :value="$product?->discount_price" />
                             <x-input label="SKU" name="sku" id="product_sku" placeholder="Product SKU"
                                 :required="false" :counter="false" :value="$product?->sku_code"
-                                append='<button class="btn btn-secondary" type="button" onclick="codeGenerate()">Generate</button>' />
+                                append='<button class="btn btn-primary" type="button" onclick="codeGenerate()">Generate</button>' />
                             <x-input label="Stock Quantity" name="stock_quantity" type="number"
                                 placeholder="Enter stock quantity" :required="false" :max="15" :value="$product?->stock" :readonly="$product ? $product->inInventories()->exists() : false" />
                         </div>

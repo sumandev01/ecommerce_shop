@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
 @section('content')
     <div class="card">
-        <div class="card-header display-flex justify-content-between align-items-center">
-            <div class="card-title d-flex justify-content-between align-items-center pt-4">
-                <h4 class="">All Products</h4>
+        <div class="card-header display-flex justify-content-between align-items-center bg-light">
+            <div class="card-title d-flex justify-content-between align-items-center py-4 mb-0">
+                <h5 class="">All Products</h5>
                 <a href="{{ route('product.create') }}" class="btn btn-primary btn-sm">
                     <i data-lucide="plus" class="mr-2" style="width: 20px; height: 20px;"></i>
                     Add Product
@@ -28,14 +28,17 @@
                         @forelse ($products ?? [] as $key => $product)
                             <tr>
                                 <td class="text-left">{{ $key + 1 }}</td>
-                                <td>{{ $product?->name }}</td>
+                                <td class="d-flex align-items-center">
+                                    <img src="{{ $product->thumbnail }}" alt="{{ $product->name }}" class="rounded-0 me-2" style="aspect-ratio: 1/1" width="100">
+                                    <span>{{ $product->name }}</span>
+                                </td>
                                 <td>
                                     <span>{{ $product->details?->category?->name ?? 'N/A' }}</span>
                                     <br>
                                     <span class="text-muted">{{ $product->details?->subCategory?->name ?? 'N/A' }}</span>
                                 </td>
                                 <td>{{ $product->details?->brand?->name ?? 'N/A' }}</td>
-                                <td>${{ number_format($product->price, 2) }}</td>
+                                <td>৳{{ formatBD($product->price, 2) }}</td>
                                 <td class="text-center">
                                     @if ($product->status == 1)
                                         <span class="badge badge-success py-2">Active</span>

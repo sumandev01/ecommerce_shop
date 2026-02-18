@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-lg-7">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header bg-light py-4">
                     <h5>All Categories</h5>
                 </div>
                 <div class="card-footer">
@@ -41,8 +41,8 @@
         </div>
         <div class="col-lg-5">
             <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Add New Category</h4>
+                <div class="card-header bg-light py-4">
+                    <h4 class="card-title mb-0">Add New Category</h4>
                 </div>
                 <div class="card-footer">
                     <form action="{{ route('category.store') }}" method="post" enctype="multipart/form-data">

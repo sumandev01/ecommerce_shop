@@ -1,6 +1,6 @@
 <div class="form-group mb-3">
     @if (isset($label))
-        <label for="{{ $name }}" class="form-label">{{ $label }} @if (!empty($required)) <span class="text-danger">*</span> @endif </label>
+        <label for="{{ $name }}" class="form-label mb-0">{{ $label }} @if (!empty($required)) <span class="text-danger">*</span> @endif </label>
     @endif
 
     <input type="file" 

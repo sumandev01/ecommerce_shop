@@ -6,8 +6,8 @@
                 <div class="card mb-4">
                     <div class="card-header py-4 bg-light">
                         <div class="d-flex align-items-center justify-content-between">
-                            <h4 class="mb-0">View Product</h4>
-                            <a href="{{ route('product.index') }}" class="btn btn-secondary">
+                            <h5 class="mb-0">View Product</h5>
+                            <a href="{{ route('product.index') }}" class="btn btn-primary">
                                 <i data-lucide="arrow-left" class="me-1" style="width: 18px;"></i> Back to Products
                             </a>
                         </div>
@@ -86,8 +86,8 @@
                 <div class="card mb-4">
                     <div class="card-header py-4 bg-light">
                         <div class="d-flex align-items-center justify-content-between">
-                            <h4 class="mb-0">Product Inventory</h4>
-                            <a href="{{ route('product.inventory', $product->id) }}" class="btn btn-secondary">
+                            <h5 class="mb-0">Product Inventory</h5>
+                            <a href="{{ route('product.inventory', $product->id) }}" class="btn btn-primary">
                                 <i data-lucide="settings" class="me-1" style="width: 18px;"></i> Manage
                             </a>
                         </div>
@@ -108,11 +108,17 @@
                                         <td class="text-start ps-2">{{ $key + 1 }}</td>
                                         <td class="text-center">
                                             <div
-                                                style="width: 30px; height: 30px; background-color: {{ $inventory?->color?->hex_code }}; border-radius: 50%; margin: 0 auto; border: 1px solid #000">
+                                                style="width: 30px; height: 30px; background-color: {{ $inventory?->color?->hex_code ?? 'N/A' }}; border-radius: 50%; margin: 0 auto; border: 1px solid #000">
                                             </div>
                                         </td>
-                                        <td class="text-center"> {{ $inventory?->size?->name }} </td>
-                                        <td class="text-center">{{ $inventory?->quantity }}</td>
+                                        <td class="text-center"> {{ $inventory?->size?->name ?? 'N/A' }} </td>
+                                        <td class="text-center">
+                                            @if ($inventory?->quantity)
+                                                <span class="text-success">{{ $inventory?->quantity }} in stock</span>
+                                            @else
+                                                <span class="text-danger">Out of Stock</span>
+                                            @endif
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
@@ -132,16 +138,21 @@
                     <div class="card-body">
 
                         <div class="mb-3">
-                            <h5 class="mb-1">Buy Price: <span class="text-muted">&#2547;{{ $product?->buy_price ?? 'N/A' }}</span></h5>
+                            <h5 class="mb-1">Buy Price: <span class="text-muted">&#2547;{{ formatBD($product?->buy_price) }}</span></h5>
                         </div>
 
                         <div class="mb-3">
-                            <h5 class="mb-1">Selling Price: <span class="text-muted">&#2547;{{ $product?->price ?? 'N/A' }}</span></h5>
+                            <h5 class="mb-1">Selling Price: <span class="text-muted">&#2547;{{ formatBD($product?->price) }}</span></h5>
                         </div>
 
                         <div class="mb-3">
                             <h5 class="mb-1">Discounted Price:
-                                <span class="text-muted">&#2547;{{ $product?->discount_price ?? 'N/A' }}</span></h5>
+                                @if ($product->discount_price > 0)
+                                    <span class="text-success">&#2547;{{ $product->discount_price }}</span>
+                                @else
+                                    <span class="text-danger">No Discount</span>
+                                @endif
+                            </h5>
                         </div>
 
                         <div class="mb-3">
@@ -149,7 +160,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <h5 class="mb-1">Quantity:
+                            <h5 class="mb-1">Total Stock:
                                 @if ($product->stock > 0)
                                     <span class="text-success">{{ $product->stock ?? 'N/A' }} Items</span>
                                 @else

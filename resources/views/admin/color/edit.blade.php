@@ -3,36 +3,36 @@
         <div class="row">
             <div class="col-lg-4 mx-auto">
                 <div class="card">
-                    <div class="card-header">
-                        <div class="card-title d-flex justify-content-between align-items-center pt-4">
-                            <h4 class="">Edit Color</h4>
+                    <div class="card-header bg-light py-4">
+                        <div class="card-title d-flex justify-content-between align-items-center mb-0">
+                            <h5 class="">Edit Color</h5>
                             <a href="{{ route('color.index') }}" class="btn btn-primary btn-sm">
                                 <i data-lucide="arrow-left" class="mr-2" style="width: 20px; height: 20px;"></i>
                                 Back
                             </a>
                         </div>
-                        <div class="card-body">
-                            <form action="{{ route('color.update', $color?->id) }}" method="post" enctype="multipart/form-data">
-                                @csrf
-                                @method('PUT')
-                                <div class="mb-4">
-                                    <label for="colorName" class="form-label">Color Name</label>
-                                    <input type="text" id="colorName" name="name" class="form-control mb-3" value="{{ old('name', $color?->name) }}" placeholder="Color Name">
-                                    @error('name')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror                                    
-                                </div>
-                                <div class="mb">
-                                    <label for="colorCodeInput" class="form-label">Select Color</label>
-                                    <input type="hidden" id="colorCodeInput" name="hex_code" class="form-control mb-3" placeholder="Color Code" value="{{ $color?->hex_code }}">
-                                    <input type="color" id="colorPicker" class="form-control mb-3" style="width: 50px; height: 50px; padding: 2px;" placeholder="Color Picker" value="{{ $color?->hex_code }}">
-                                    @error('hex_code')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <button type="submit" class="btn btn-primary">Update Color</button>
-                            </form>
-                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('color.update', $color?->id) }}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <div class="mb-4">
+                                <label for="colorName" class="form-label">Color Name</label>
+                                <input type="text" id="colorName" name="name" class="form-control mb-3" value="{{ old('name', $color?->name) }}" placeholder="Color Name">
+                                @error('name')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror                                    
+                            </div>
+                            <div class="mb">
+                                <label for="colorCodeInput" class="form-label">Select Color</label>
+                                <input type="hidden" id="colorCodeInput" name="hex_code" class="form-control mb-3" placeholder="Color Code" value="{{ $color?->hex_code }}">
+                                <input type="color" id="colorPicker" class="form-control mb-3" style="width: 50px; height: 50px; padding: 2px;" placeholder="Color Picker" value="{{ $color?->hex_code }}">
+                                @error('hex_code')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update Color</button>
+                        </form>
                     </div>
                 </div>
             </div>

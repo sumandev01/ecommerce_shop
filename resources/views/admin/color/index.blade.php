@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-lg-7">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header bg-light py-4">
                     <h5>All Colors</h5>
                 </div>
                 <div class="card-footer">
@@ -43,8 +43,8 @@
         </div>
         <div class="col-lg-5">
             <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Add New Color</h4>
+                <div class="card-header bg-light py-4">
+                    <h4 class="card-title mb-0">Add New Color</h4>
                 </div>
                 <div class="card-footer">
                     <form action="{{ route('color.store') }}" method="post" enctype="multipart/form-data">

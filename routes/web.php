@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/cart', 'addToCart')->name('addToCart');
         Route::post('/cart/update', 'updateCart')->name('cart.update');
         Route::get('/cart/{cart}', 'destroy')->name('cart.destroy');
+        Route::post('coupon/apply', 'applyCoupon')->name('coupon.apply');
     });
 
     Route::controller(WishlistController::class)->group(function () {

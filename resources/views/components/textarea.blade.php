@@ -5,7 +5,7 @@
 
 <div class="form-group textarea-container mb-3" id="container-{{ $uniqueId }}" data-max="{{ $max }}">
     @if ($label)
-        <label for="{{ $id }}" class="form-label fw-bold text-muted small">
+        <label for="{{ $id }}" class="form-label fw-bold text-muted small mb-0">
             {{ $label }} @if ($required)
                 <span class="text-danger">*</span>
             @endif

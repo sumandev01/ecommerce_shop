@@ -157,3 +157,7 @@ span#generate_sku {
     line-height: 1.3 !important;
     vertical-align: middle;
 }
+
+.form-select:focus {
+    box-shadow: none !important;
+}

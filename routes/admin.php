@@ -3,6 +3,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ColorController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\TagController;
@@ -81,6 +82,14 @@ Route::prefix('admin')->group(function () {
         Route::post('/products/{product}/inventory/store', 'store')->name('inventory.store');
         Route::post('/products/{inventory}/update', 'update')->name('inventory.update');
         Route::delete('/inventories/{inventory}/delete', 'destroy')->name('inventory.destroy');
+    });
+
+    Route::controller(CouponController::class)->group(function () {
+        Route::get('/coupons', 'index')->name('coupon.index');
+        Route::post('/coupons/store', 'store')->name('coupon.store');
+        Route::get('/coupons/{coupon}/edit', 'edit')->name('coupon.edit');
+        Route::post('/coupons/{coupon}/update', 'update')->name('coupon.update');
+        Route::delete('/coupons/{coupon}/delete', 'destroy')->name('coupon.destroy');
     });
 
 });

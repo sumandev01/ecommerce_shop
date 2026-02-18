@@ -5,8 +5,8 @@
             <div class="card mb-4">
                 <div class="card-header py-4 bg-light">
                     <div class="d-flex align-items-center justify-content-between">
-                        <h4 class="mb-0">Product Inventory</h4>
-                        <a href="{{ route('product.index') }}" class="btn btn-secondary">
+                        <h5 class="mb-0">Product Inventory</h5>
+                        <a href="{{ route('product.index') }}" class="btn btn-primary">
                             <i data-lucide="arrow-left" class="me-1" style="width: 18px;"></i> Back to Products
                         </a>
                     </div>
@@ -20,7 +20,7 @@
         </div>
         <div class="col-lg-7">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header py-4 bg-light">
                     <h5>All Inventories</h5>
                 </div>
                 <div class="card-footer">
@@ -46,7 +46,13 @@
                                         @endif
                                     </td>
                                     <td class="text-center"> {{ $inventory?->size?->name ?? 'N/A' }} </td>
-                                    <td class="text-center">{{ $inventory?->quantity }}</td>
+                                    <td class="text-center">
+                                        @if ($inventory?->quantity)
+                                            <span class="text-success">{{ $inventory?->quantity }} in stock</span>
+                                        @else
+                                            <span class="text-danger">Out of Stock</span>
+                                        @endif
+                                    </td>
                                     <td class="text-end">
                                         <button type="button" class="btn btn-info btn-icon btn-md editBtn"
                                             data_inventory="{{ json_encode($inventory->toArray()) }}"><i
@@ -68,8 +74,8 @@
         </div>
         <div class="col-lg-5">
             <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Add New Inventory</h4>
+                <div class="card-header py-4 bg-light">
+                    <h4 class="card-title mb-0">Add New Inventory</h4>
                 </div>
                 <div class="card-footer">
                     <form action="{{ route('inventory.store', $product?->id) }}" method="post"
