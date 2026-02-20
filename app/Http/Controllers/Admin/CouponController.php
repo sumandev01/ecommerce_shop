@@ -41,7 +41,7 @@ class CouponController extends Controller
     }
 
     public function update(Request $request, Coupon $coupon)
-    {        
+    {
         $request->validate([
             'update_coupon_id' => 'required|exists:coupons,id',
             'update_coupon_type' => 'required|string',

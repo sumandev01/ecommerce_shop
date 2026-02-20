@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Models\Coupon;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -36,7 +37,7 @@ class CartController extends Controller
             $cart = Cart::create([
                 'user_id' => $userId,
                 'product_id' => $request->product_id,
-                'product_inventory_id' => $request->inventoryId ?? null, 
+                'product_inventory_id' => $request->inventoryId ?? null,
                 'color_id' => $request->color ?? null,
                 'size_id' => $request->size ?? null,
                 'quantity' => $request->quantity,
@@ -62,9 +63,64 @@ class CartController extends Controller
 
     public function applyCoupon(Request $request)
     {
-        dd($request->all());
-        // $request->validate([
-        //     'coupon' => 'required|string',
-        // ]);
+        $request->validate([
+            'coupon_code' => 'required|string',
+            'amount' => 'required|numeric',
+        ]);
+
+        $discountPrice = 0;
+
+        $couponCode = $request->coupon_code;
+
+        $coupon = Coupon::where('coupon_code', $couponCode)->where('status', 1)->first();
+        if (!$coupon) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Coupon not found',
+            ], 404);
+        }
+
+        $isValid = now()->between(
+            $coupon->start_date->startOfDay(),
+            $coupon->end_date->endOfDay()
+        );
+        if (!$isValid) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Coupon is not valid',
+            ], 400);
+        }
+
+        $hasLimit = ($coupon->limit - $coupon->total_apply) > 0;
+        if (!$hasLimit) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Coupon limit exceeded',
+            ], 400);
+        }
+
+        $minAmount = $coupon->min_amount;
+        if ($request->amount < $minAmount) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Minimum amount not met',
+            ], 400);
+        }
+
+        $couponDiscount = 0;
+        if ($coupon->coupon_type == 'fixed') {
+            $couponDiscount = $coupon->discount;
+        } else {
+            $couponDiscount = ($request->amount * $coupon->discount) / 100;
+        }
+
+        $discountPrice = $request->amount - $couponDiscount;
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Coupon applied successfully',
+            'couponId' => $coupon->id,
+            'discountPrice' => $discountPrice,
+        ]);
     }
 }

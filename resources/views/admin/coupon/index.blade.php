@@ -12,9 +12,8 @@
                             <tr>
                                 <th style="text-align: left;">Sl</th>
                                 <th>Name</th>
-                                <th>Limit</th>
-                                <th>Start Date / Expiry Date</th>
-                                <th>Applied</th>
+                                <th><p>Usage /</p> Limit</th>
+                                <th><p>Start Date /</p> Expiry Date</th>
                                 <th>Status</th>
                                 <th style="text-align: right;">Action</th>
                             </tr>
@@ -23,14 +22,21 @@
                             @forelse ( $coupons ?? [] as $key => $coupon )
                                 <tr>
                                     <td style="text-align: left;">{{ $key + 1 }}</td>
-                                    <td> {{ $coupon?->coupon_code ?? 'N/A' }} </td>
-                                    <td> {{ $coupon?->limit ?? 'N/A' }} </td>
                                     <td>
-                                        <p class="mb-2">{{ $coupon?->start_date->format('Y-m-d; h:i A') ?? 'N/A' }}</p>
-                                        <p class="mb-0">{{ $coupon?->end_date->format('Y-m-d; h:i A') ?? 'N/A' }}</p>
+                                        <p class="mb-2 fs-6">{{ $coupon?->coupon_code ?? 'N/A' }}</p>
+                                        <p class="mb-0 text-capitalize text-muted small">Type: 
+                                            <span class="badge {{ $coupon?->coupon_type === 'percentage' ? 'bg-primary' : 'bg-warning text-dark' }} text-capitalize">{{ $coupon?->coupon_type }}</span>
+                                        </p>
                                     </td>
-                                    <td> {{ $coupon?->total_apply ?? 'N/A' }} </td>
                                     <td>
+                                        <span class="mb-0 text-muted">{{ $coupon?->total_apply ?? 'N/A' }}</span> / 
+                                        <span class="mb-2">{{ $coupon?->limit ?? 'N/A' }}</span>
+                                    </td>
+                                    <td>
+                                        <p class="mb-2">{{ $coupon?->start_date->format('d-M-Y; h:i A') ?? 'N/A' }}</p>
+                                        <p class="mb-0">{{ $coupon?->end_date->format('d-M-Y; h:i A') ?? 'N/A' }}</p>
+                                    </td>
+                                    <td class="text-center">
                                         @if ($coupon->status == 1)
                                             <span class="badge badge-success py-2">Active</span>
                                         @else
@@ -45,7 +51,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center">No Coupons Found</td>
+                                    <td colspan="6" class="text-center">No Coupons Found</td>
                                 </tr>
                             @endforelse
                         </tbody>

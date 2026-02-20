@@ -89,7 +89,7 @@
                                                     <div class="quantity cart-plus-minus"
                                                         data-product-id="{{ $cartItem?->product?->id }}"
                                                         data-product-price="{{ $price }}">
-                                                        <input class="text-value" type="text"
+                                                        <input class="text-value quantity-input" type="text"
                                                             value="{{ $cartItem?->quantity }}">
                                                         <div class="dec qtybutton">-</div>
                                                         <div class="inc qtybutton">+</div>
@@ -99,12 +99,10 @@
                                                     ৳{{ formatBD($subTotal) }}</td>
                                                 <td class="action">
                                                     <ul>
-                                                        <li class="w-btn"><a data-bs-toggle="tooltip" data-bs-html="true"
-                                                                title=""
-                                                                href="{{ route('cart.destroy', $cartItem?->id) }}"
-                                                                data-bs-original-title="Remove from Cart"
-                                                                aria-label="Remove from Cart"><i
-                                                                    class="fi ti-trash"></i></a>
+                                                        <li class="w-btn">
+                                                            <a class="remove-btn" data-bs-toggle="tooltip" data-bs-html="true" title="" href="{{ route('cart.destroy', $cartItem?->id) }}" data-bs-original-title="Remove from Cart" aria-label="Remove from Cart">
+                                                                <i class="fi ti-trash"></i>
+                                                            </a>
                                                         </li>
                                                     </ul>
                                                 </td>
@@ -137,13 +135,17 @@
                             </div>
                             <div class="sub-total my-3">
                                 <h4>Discount</h4>
-                                <span>00.00</span>
+                                <span id="total_discount">00.00</span>
                             </div>
                             <div class="total mb-3">
                                 <h4>Total</h4>
-                                <span>$300.00</span>
+                                <span id="grand_total">৳{{ formatBD($totalPrice) }}</span>
                             </div>
-                            <a class="theme-btn-s2" href="checkout.html">Proceed To CheckOut</a>
+                            <form action="{{ route('checkout.index') }}" method="post">
+                                @csrf
+                                <input type="hidden" id="CouponId" name="coupon_id">
+                                <button type="submit" class="theme-btn-s2 border-0" href="checkout.html">Proceed To CheckOut</butt>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -272,7 +274,8 @@
                 let subtotalText = $(this).text().replace(/[^0-9.]/g, '');
                 total += parseFloat(subtotalText) || 0;
             });
-            $("#total_price").text("৳" + total.toLocaleString('en-IN'));            
+            $("#total_price").text("৳" + total.toLocaleString('en-IN'));
+            $("#grand_total").text("৳" + total.toLocaleString('en-IN'));
         }
 
         // quantity update
@@ -314,17 +317,34 @@
         // coupon code apply
         $("#couponBtn").on("click", function() {
             const couponCode = $("#couponInput").val();
+            const cartSubTotal = $("#total_price").text().replace(/[^0-9.]/g, '');
+            console.log(cartSubTotal);
             if (couponCode == '' || couponCode == null || couponCode == undefined || couponCode.length < 5) return;
 
             $.ajax({
                 url: "{{ route('coupon.apply') }}",
                 method: "POST",
                 data: {
-                    code: couponCode,
+                    coupon_code: couponCode,
+                    amount: cartSubTotal,
                     _token: "{{ csrf_token() }}",
                 },
                 success: function(response) {
-                    console.log(response);
+                    if (response.status == 'success') {
+                        showToast('success', response.message);
+                        $('#grand_total').text("৳" + response.discountPrice.toLocaleString('en-IN'));
+                        $('#total_discount').text("৳" + (cartSubTotal - response.discountPrice).toLocaleString('en-IN'));
+                        $('.cart-plus-minus .qtybutton').addClass('cursor-not-allowed').css('pointer-events', 'none');
+                        $('.remove-btn').addClass('cursor-not-allowed').css('pointer-events', 'none');
+                        $('.quantity-input').attr('readonly', true);
+                        $('#couponInput').val('');
+                        $('#CouponId').val(response.couponId);
+                    } else {
+                        showToast('error', response.message);
+                    }
+                },
+                error: function(response) {
+                    showToast('error', response.responseJSON.message);
                 }
             });
         })
