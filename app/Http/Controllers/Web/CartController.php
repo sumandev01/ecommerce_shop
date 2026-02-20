@@ -80,10 +80,8 @@ class CartController extends Controller
             ], 404);
         }
 
-        $isValid = now()->between(
-            $coupon->start_date->startOfDay(),
-            $coupon->end_date->endOfDay()
-        );
+        $isValid = now()->between($coupon->start_date, $coupon->end_date);
+
         if (!$isValid) {
             return response()->json([
                 'status' => 'error',

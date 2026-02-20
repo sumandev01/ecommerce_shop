@@ -318,7 +318,6 @@
         $("#couponBtn").on("click", function() {
             const couponCode = $("#couponInput").val();
             const cartSubTotal = $("#total_price").text().replace(/[^0-9.]/g, '');
-            console.log(cartSubTotal);
             if (couponCode == '' || couponCode == null || couponCode == undefined || couponCode.length < 5) return;
 
             $.ajax({
