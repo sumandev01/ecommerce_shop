@@ -37,10 +37,14 @@
                                         <p class="mb-0">{{ $coupon?->end_date->format('d-M-Y; h:i A') ?? 'N/A' }}</p>
                                     </td>
                                     <td class="text-center">
-                                        @if ($coupon->status == 1)
-                                            <span class="badge badge-success py-2">Active</span>
+                                        @if ($coupon->end_date > now())
+                                            @if ($coupon->status == 1)
+                                                <span class="badge badge-success py-2">Active</span>
+                                            @else
+                                                <span class="badge badge-warning py-2">Inactive</span>
+                                            @endif
                                         @else
-                                            <span class="badge badge-danger py-2">Inactive</span>
+                                            <span class="badge badge-danger py-2">Expired</span>
                                         @endif
                                     </td>
                                     <td style="text-align: right;">
