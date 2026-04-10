@@ -73,6 +73,7 @@ class CartController extends Controller
         $couponCode = $request->coupon_code;
 
         $coupon = Coupon::where('coupon_code', $couponCode)->where('status', 1)->first();
+        
         if (!$coupon) {
             return response()->json([
                 'status' => 'error',

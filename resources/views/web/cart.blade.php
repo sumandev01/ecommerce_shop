@@ -81,6 +81,25 @@
                                                                     <span>130</span>
                                                                 </div>
                                                             </li>
+                                                            <li class="d-flex gap-2">
+                                                                <div class="d-flex flex-wrap gap-2 align-items-center">
+                                                                    @if ($cartItem?->size)
+                                                                        <span>Size:
+                                                                            <strong>{{ $cartItem?->size?->name }}</strong></span>
+                                                                    @endif
+                                                                    @if ($cartItem?->size && $cartItem?->color)
+                                                                        <span class="text-muted">|</span>
+                                                                    @endif
+                                                                    @if ($cartItem?->color)
+                                                                        <div class="d-flex gap-1 align-items-center">
+                                                                            <span>Color:</span>
+                                                                            <span
+                                                                                style="background-color: {{ $cartItem?->color?->hex_code }}; width: 15px; height: 15px; display: inline-block; border-radius: 50%; border: 1px solid #eee;">
+                                                                            </span>
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
+                                                            </li>
                                                         </ul>
                                                     </div>
                                                 </td>
@@ -100,7 +119,11 @@
                                                 <td class="action">
                                                     <ul>
                                                         <li class="w-btn">
-                                                            <a class="remove-btn" data-bs-toggle="tooltip" data-bs-html="true" title="" href="{{ route('cart.destroy', $cartItem?->id) }}" data-bs-original-title="Remove from Cart" aria-label="Remove from Cart">
+                                                            <a class="remove-btn" data-bs-toggle="tooltip"
+                                                                data-bs-html="true" title=""
+                                                                href="{{ route('cart.destroy', $cartItem?->id) }}"
+                                                                data-bs-original-title="Remove from Cart"
+                                                                aria-label="Remove from Cart">
                                                                 <i class="fi ti-trash"></i>
                                                             </a>
                                                         </li>
@@ -109,7 +132,7 @@
                                             </tr>
                                         @empty
                                             <tr class="wishlist-item">
-                                                <td colspan="7" class="text-center py-1 fs-4 ">No Product Found In Cart
+                                                <td colspan="7" class="text-center py-1 fs-4">No Product Found In Cart
                                                 </td>
                                             </tr>
                                         @endforelse
@@ -118,10 +141,12 @@
                             </div>
                             <div class="cart-action">
                                 <div class="apply-area">
-                                    <input type="text" class="form-control" id="couponInput" placeholder="Enter your coupon">
+                                    <input type="text" class="form-control" id="couponInput"
+                                        placeholder="Enter your coupon">
                                     <button type="button" class="theme-btn-s2" id="couponBtn">Apply</button>
                                 </div>
-                                <a class="theme-btn-s2" href="{{ route('cart') }}"><i class="fi flaticon-refresh"></i> Update
+                                <a class="theme-btn-s2" href="{{ route('cart') }}"><i class="fi flaticon-refresh"></i>
+                                    Update
                                     Cart</a>
                             </div>
                         </form>
@@ -144,7 +169,8 @@
                             <form action="{{ route('checkout.index') }}" method="post">
                                 @csrf
                                 <input type="hidden" id="CouponId" name="coupon_id">
-                                <button type="submit" class="theme-btn-s2 border-0" href="checkout.html">Proceed To CheckOut</butt>
+                                <button type="submit" class="theme-btn-s2 border-0" href="checkout.html">Proceed To
+                                    CheckOut</butt>
                             </form>
                         </div>
                     </div>
@@ -264,89 +290,94 @@
     <!-- cart-area end -->
 @endsection
 @push('script')
-<script>
-    $(document).ready(function() {
-        // grand total
-        function updateGrandTotal() {
-            let total = 0;
-            
-            $(".subtotal-cell").each(function() {
-                let subtotalText = $(this).text().replace(/[^0-9.]/g, '');
-                total += parseFloat(subtotalText) || 0;
-            });
-            $("#total_price").text("৳" + total.toLocaleString('en-IN'));
-            $("#grand_total").text("৳" + total.toLocaleString('en-IN'));
-        }
+    <script>
+        $(document).ready(function() {
+            // grand total
+            function updateGrandTotal() {
+                let total = 0;
 
-        // quantity update
-        $(".qtybutton").on("click", function() {
-            const $button = $(this);
-            const $container = $button.closest('.cart-plus-minus');
-            const $row = $button.closest('tr');
-            const $input = $container.find(".text-value");
-
-            let quantity = parseInt($input.val()) || 1;
-            const productPrice = Number($container.data('product-price'));
-
-            if (quantity <= 1) {
-                quantity = 1;
-                $input.val(1);
-            } else {
-                $input.val(quantity);
+                $(".subtotal-cell").each(function() {
+                    let subtotalText = $(this).text().replace(/[^0-9.]/g, '');
+                    total += parseFloat(subtotalText) || 0;
+                });
+                $("#total_price").text("৳" + total.toLocaleString('en-IN'));
+                $("#grand_total").text("৳" + total.toLocaleString('en-IN'));
             }
 
-            const subTotal = quantity * productPrice;
-            const formattedSubtotal = subTotal.toLocaleString('en-IN');
+            // quantity update
+            $(".qtybutton").on("click", function() {
+                const $button = $(this);
+                const $container = $button.closest('.cart-plus-minus');
+                const $row = $button.closest('tr');
+                const $input = $container.find(".text-value");
 
-            $row.find(".subtotal-cell").text("৳" + formattedSubtotal);
+                let quantity = parseInt($input.val()) || 1;
+                const productPrice = Number($container.data('product-price'));
 
-            updateGrandTotal();
-
-            const cartId = $row.data('cart-id');
-            $.ajax({
-                url: "{{ route('cart.update') }}",
-                method: "POST",
-                data: {
-                    id: cartId,
-                    quantity: quantity,
-                    _token: "{{ csrf_token() }}",
-                },
-            });
-        });
-
-        // coupon code apply
-        $("#couponBtn").on("click", function() {
-            const couponCode = $("#couponInput").val();
-            const cartSubTotal = $("#total_price").text().replace(/[^0-9.]/g, '');
-            if (couponCode == '' || couponCode == null || couponCode == undefined || couponCode.length < 5) return;
-
-            $.ajax({
-                url: "{{ route('coupon.apply') }}",
-                method: "POST",
-                data: {
-                    coupon_code: couponCode,
-                    amount: cartSubTotal,
-                    _token: "{{ csrf_token() }}",
-                },
-                success: function(response) {
-                    if (response.status == 'success') {
-                        showToast('success', response.message);
-                        $('#grand_total').text("৳" + response.discountPrice.toLocaleString('en-IN'));
-                        $('#total_discount').text("৳" + (cartSubTotal - response.discountPrice).toLocaleString('en-IN'));
-                        $('.cart-plus-minus .qtybutton').addClass('cursor-not-allowed').css('pointer-events', 'none');
-                        $('.remove-btn').addClass('cursor-not-allowed').css('pointer-events', 'none');
-                        $('.quantity-input').attr('readonly', true);
-                        $('#couponInput').val('');
-                        $('#CouponId').val(response.couponId);
-                    } else {
-                        showToast('error', response.message);
-                    }
-                },
-                error: function(response) {
-                    showToast('error', response.responseJSON.message);
+                if (quantity <= 1) {
+                    quantity = 1;
+                    $input.val(1);
+                } else {
+                    $input.val(quantity);
                 }
+
+                const subTotal = quantity * productPrice;
+                const formattedSubtotal = subTotal.toLocaleString('en-IN');
+
+                $row.find(".subtotal-cell").text("৳" + formattedSubtotal);
+
+                updateGrandTotal();
+
+                const cartId = $row.data('cart-id');
+                $.ajax({
+                    url: "{{ route('cart.update') }}",
+                    method: "POST",
+                    data: {
+                        id: cartId,
+                        quantity: quantity,
+                        _token: "{{ csrf_token() }}",
+                    },
+                });
             });
-        })
-    });
-</script>
+
+            // coupon code apply
+            $("#couponBtn").on("click", function() {
+                const couponCode = $("#couponInput").val();
+                const cartSubTotal = $("#total_price").text().replace(/[^0-9.]/g, '');
+                if (couponCode == '' || couponCode == null || couponCode == undefined || couponCode.length <
+                    5) return;
+
+                $.ajax({
+                    url: "{{ route('coupon.apply') }}",
+                    method: "POST",
+                    data: {
+                        coupon_code: couponCode,
+                        amount: cartSubTotal,
+                        _token: "{{ csrf_token() }}",
+                    },
+                    success: function(response) {
+                        if (response.status == 'success') {
+                            showToast('success', response.message);
+                            $('#grand_total').text("৳" + response.discountPrice.toLocaleString(
+                                'en-IN'));
+                            $('#total_discount').text("৳" + (cartSubTotal - response
+                                .discountPrice).toLocaleString('en-IN'));
+                            $('.cart-plus-minus .qtybutton').addClass('cursor-not-allowed').css(
+                                'pointer-events', 'none');
+                            $('.remove-btn').addClass('cursor-not-allowed').css(
+                                'pointer-events', 'none');
+                            $('.quantity-input').attr('readonly', true);
+                            $('#couponInput').val('');
+                            $('#CouponId').val(response.couponId);
+                        } else {
+                            showToast('error', response.message);
+                        }
+                    },
+                    error: function(response) {
+                        showToast('error', response.responseJSON.message);
+                    }
+                });
+            })
+        });
+    </script>
 @endpush

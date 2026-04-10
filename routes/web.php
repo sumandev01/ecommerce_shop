@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\CheckoutController;
 use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\OrderController;
 use App\Http\Controllers\Web\WishlistController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +49,12 @@ Route::middleware('auth')->group(function () {
     // Checkout Route
     Route::controller(CheckoutController::class)->group(function () {
         Route::post('/checkout', 'index')->name('checkout.index');
+        Route::get('/checkout', 'index')->name('checkout.index');
+    });
+
+    // Order Route
+    Route::controller(OrderController::class)->group(function () {
+        Route::get('/orders/store', 'store')->name('orders.store');
     });
 });
 
