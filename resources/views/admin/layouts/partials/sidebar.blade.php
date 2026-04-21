@@ -12,9 +12,9 @@
     <div class="sidebar-body">
         <ul class="nav">
             <li class="nav-item nav-category">Main</li>
-            <li class="nav-item">
-                <a href="dashboard-one.html" class="nav-link">
-                    <i class="link-icon" data-feather="box"></i>
+            <li class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                <a href="{{ route('admin.dashboard') }}" class="nav-link">
+                    <x-lucide-home class="link-icon" />
                     <span class="link-title">Dashboard</span>
                 </a>
             </li>
@@ -22,9 +22,9 @@
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#emails" role="button" aria-expanded="false"
                     aria-controls="emails">
-                    <i class="link-icon" data-feather="mail"></i>
+                    <x-lucide-mail class="link-icon" />
                     <span class="link-title">Email</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
+                    <x-lucide-chevron-down class="link-arrow" />
                 </a>
                 <div class="collapse" id="emails">
                     <ul class="nav sub-menu">
@@ -42,36 +42,36 @@
             </li>
             <li class="nav-item">
                 <a href="pages/apps/chat.html" class="nav-link">
-                    <i class="link-icon" data-feather="message-square"></i>
+                    <x-lucide-message-square class="link-icon" />
                     <span class="link-title">Chat</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="pages/apps/calendar.html" class="nav-link">
-                    <i class="link-icon" data-feather="calendar"></i>
+                    <x-lucide-calendar class="link-icon" />
                     <span class="link-title">Calendar</span>
                 </a>
             </li>
             <li class="nav-item nav-category">Components</li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#category" role="button" aria-expanded="false"
-                    aria-controls="category">
-                    <i class="link-icon" data-feather="feather"></i>
-                    <span class="link-title">Category</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
+                <a class="nav-link" data-toggle="collapse" href="#product_Attributes" role="button" aria-expanded="false"
+                    aria-controls="product_Attributes">
+                    <x-lucide-settings class="link-icon" />
+                    <span class="link-title">Product Attributes</span>
+                    <x-lucide-chevron-down class="link-arrow" />
                 </a>
-                <div class="collapse" id="category">
+                <div class="collapse" id="product_Attributes">
                     <ul class="nav sub-menu">
                         {{-- category menu --}}
                         <li class="nav-item">
                             <a href="{{ route('category.index') }}"
-                                class="nav-link {{ request()->routeIs('category.*') ? 'active' : '' }}">Categoris</a>
+                                class="nav-link {{ request()->routeIs('category.*') ? 'active' : '' }}">Categories</a>
                         </li>
                         {{-- subcategory menu --}}
                         <li class="nav-item">
                             <a href="{{ route('subcategory.index') }}"
                                 class="nav-link {{ request()->routeIs('subcategory.*') ? 'active' : '' }}">Sub
-                                Categoris</a>
+                                Categories</a>
                         </li>
                         {{-- brand menu --}}
                         <li class="nav-item">
@@ -99,9 +99,9 @@
             <li class="nav-item {{ request()->routeIs('product.*') ? 'active' : '' }}">
                 <a class="nav-link" data-toggle="collapse" href="#products" role="button" aria-expanded="false"
                     aria-controls="products">
-                    <i class="link-icon" data-feather="anchor"></i>
+                    <x-lucide-package class="link-icon" />
                     <span class="link-title">Products</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
+                    <x-lucide-chevron-down class="link-arrow" />
                 </a>
                 <div class="collapse" id="products">
                     <ul class="nav sub-menu">
@@ -120,16 +120,16 @@
             </li>
             <li class="nav-item {{ request()->routeIs('coupon.*') ? 'active' : '' }}">
                 <a href="{{ route('coupon.index') }}" class="nav-link">
-                    <i class="link-icon" data-lucide="ticket"></i>
+                    <x-lucide-ticket class="link-icon" />
                     <span class="link-title">Coupons</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#forms" role="button" aria-expanded="false"
                     aria-controls="forms">
-                    <i class="link-icon" data-feather="inbox"></i>
+                    <x-lucide-inbox class="link-icon" />
                     <span class="link-title">Forms</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
+                    <x-lucide-chevron-down class="link-arrow" />
                 </a>
                 <div class="collapse" id="forms">
                     <ul class="nav sub-menu">
@@ -151,9 +151,9 @@
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#charts" role="button" aria-expanded="false"
                     aria-controls="charts">
-                    <i class="link-icon" data-feather="pie-chart"></i>
+                    <x-lucide-pie-chart class="link-icon" />
                     <span class="link-title">Charts</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
+                    <x-lucide-chevron-down class="link-arrow" />
                 </a>
                 <div class="collapse" id="charts">
                     <ul class="nav sub-menu">
@@ -181,9 +181,9 @@
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#tables" role="button" aria-expanded="false"
                     aria-controls="tables">
-                    <i class="link-icon" data-feather="layout"></i>
+                    <x-lucide-layout class="link-icon" />
                     <span class="link-title">Table</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
+                    <x-lucide-chevron-down class="link-arrow" />
                 </a>
                 <div class="collapse" id="tables">
                     <ul class="nav sub-menu">
@@ -196,54 +196,21 @@
                     </ul>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#icons" role="button" aria-expanded="false"
-                    aria-controls="icons">
-                    <i class="link-icon" data-feather="smile"></i>
-                    <span class="link-title">Icons</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
-                </a>
-                <div class="collapse" id="icons">
-                    <ul class="nav sub-menu">
-                        <li class="nav-item">
-                            <a href="pages/icons/feather-icons.html" class="nav-link">Feather Icons</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/icons/flag-icons.html" class="nav-link">Flag Icons</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/icons/mdi-icons.html" class="nav-link">Mdi Icons</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
             <li class="nav-item nav-category">User Management</li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#general-pages" role="button"
-                    aria-expanded="false" aria-controls="general-pages">
-                    <i class="link-icon" data-feather="book"></i>
-                    <span class="link-title">Special pages</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
+            <li class="nav-item {{ request()->routeIs('user.*') ? 'active' : '' }}">
+                <a class="nav-link" data-toggle="collapse" href="#users" role="button"
+                    aria-expanded="false" aria-controls="users">
+                    <x-lucide-users class="link-icon" />
+                    <span class="link-title">Users</span>
+                    <x-lucide-chevron-down class="link-arrow" />
                 </a>
-                <div class="collapse" id="general-pages">
+                <div class="collapse" id="users">
                     <ul class="nav sub-menu">
                         <li class="nav-item">
-                            <a href="pages/general/blank-page.html" class="nav-link">Blank page</a>
+                            <a href="{{ route('user.index') }}" class="nav-link {{ request()->routeIs('user.index') ? 'active' : '' }}">All Users</a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/general/faq.html" class="nav-link">Faq</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/general/invoice.html" class="nav-link">Invoice</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/general/profile.html" class="nav-link">Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/general/pricing.html" class="nav-link">Pricing</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/general/timeline.html" class="nav-link">Timeline</a>
+                            <a href="{{ route('user.create') }}" class="nav-link {{ request()->routeIs('user.create') ? 'active' : '' }}">Add User</a>
                         </li>
                     </ul>
                 </div>
@@ -252,9 +219,9 @@
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#general-pages" role="button"
                     aria-expanded="false" aria-controls="general-pages">
-                    <i class="link-icon" data-feather="book"></i>
+                    <x-lucide-book class="link-icon" />
                     <span class="link-title">Special pages</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
+                    <x-lucide-chevron-down class="link-arrow" />
                 </a>
                 <div class="collapse" id="general-pages">
                     <ul class="nav sub-menu">
@@ -282,9 +249,9 @@
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#authPages" role="button" aria-expanded="false"
                     aria-controls="authPages">
-                    <i class="link-icon" data-feather="unlock"></i>
+                    <x-lucide-unlock class="link-icon" />
                     <span class="link-title">Authentication</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
+                    <x-lucide-chevron-down class="link-arrow" />
                 </a>
                 <div class="collapse" id="authPages">
                     <ul class="nav sub-menu">
@@ -300,9 +267,9 @@
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#errorPages" role="button" aria-expanded="false"
                     aria-controls="errorPages">
-                    <i class="link-icon" data-feather="cloud-off"></i>
+                    <x-lucide-cloud-off class="link-icon" />
                     <span class="link-title">Error</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
+                    <x-lucide-chevron-down class="link-arrow" />
                 </a>
                 <div class="collapse" id="errorPages">
                     <ul class="nav sub-menu">

@@ -47,7 +47,7 @@
     </div>
     <!-- end topbar -->
     <!--  start header-middle -->
-    <div class="header-middle">
+    <div class="header-middle" style="overflow: visible !important;">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-2">
@@ -56,7 +56,7 @@
                                 src="{{ asset('web/assets/images/logo.svg') }}" alt="logo"></a>
                     </div>
                 </div>
-                <div class="col-lg-6 col-12">
+                <div class="col-xl-6 col-lg-5 col-12">
                     <form action="#" class="middle-box">
                         <div class="category">
                             <select name="service" class="form-control">
@@ -75,19 +75,52 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-lg-4 col-12">
-                    <div class="middle-right">
+                <div class="col-xl-4 col-lg-5 col-12">
+                    <div class="middle-right" style="overflow: visible !important;">
                         <ul>
-                            <li><a href="compare.html"><i class="fi flaticon-right-and-left"></i><span>Compare</span></a></li>
+                            <li><a href="compare.html"><i
+                                        class="fi flaticon-right-and-left"></i><span>Compare</span></a></li>
                             @if ($user)
-                                <li class="d-flex justify-content-center align-items-center">
-                                    <a href="#">
-                                        <img src="{{ $user->thumbnail }}" style="width: 40px; height: 40px" class="rounded-circle border p-1 me-2" alt="">
-                                        <span>{{ Str::limit($user->name, 10, '..') }}</span>
-                                    </a>
+                                <li class="">
+                                    <div class="position-relative ms-4">
+                                        <a class="d-flex align-items-center ps-0" id="userDropdown"
+                                            style="cursor: pointer;">
+                                            <img src="{{ $user->thumbnail }}" style="width: 40px; height: 40px"
+                                                class="rounded-circle border p-1 me-2" alt="">
+                                            <span>{{ Str::limit($user->name, 5, '..') }}</span>
+                                            <i class="ti-angle-down ms-2" id="dropdownMenuIcon"></i>
+                                        </a>
+                                        <ul class="dropdown-menu" id="userDropdownMenu">
+                                            <li>
+                                                <a class="dropdown-item" href="{{ route('user.dashboard') }}">
+                                                    <i class="ti-dashboard me-2"></i>
+                                                    Dashboard
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="{{ route('user.orders') }}">
+                                                    <i class="ti-shopping-cart me-2"></i>
+                                                    Orders
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="{{ route('user.profile') }}">
+                                                    <i class="ti-user me-2"></i>
+                                                    Profile
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item text-danger" href="{{ route('logout') }}">
+                                                    <i class="ti-power-off me-2"></i>
+                                                    Logout
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </li>
                             @else
-                                <li><a href="{{ route('login') }}"><i class="fi flaticon-user-profile"></i><span>Login</span></a></li>
+                                <li><a href="{{ route('login') }}"><i
+                                            class="fi flaticon-user-profile"></i><span>Login</span></a></li>
                             @endif
                             <li>
                                 <div class="header-wishlist-form-wrapper">
@@ -104,21 +137,29 @@
                                         <div class="mini-cart-items">
                                             @foreach ($wishListItems ?? [] as $wishListItem)
                                                 @php
-                                                    $price = $wishListItem?->product?->discount_price > 0 ? $wishListItem?->product?->discount_price : $wishListItem?->product?->price;
+                                                    $price =
+                                                        $wishListItem?->product?->discount_price > 0
+                                                            ? $wishListItem?->product?->discount_price
+                                                            : $wishListItem?->product?->price;
                                                 @endphp
-                                            <div class="mini-cart-item clearfix">
-                                                <div class="mini-cart-item-image">
-                                                    <a href="{{ route('singleProduct', $wishListItem?->product?->slug) }}"><img
-                                                            src="{{ $wishListItem?->product?->thumbnail }}"
-                                                            alt="{{ $wishListItem?->product?->name }}"></a>
+                                                <div class="mini-cart-item clearfix">
+                                                    <div class="mini-cart-item-image">
+                                                        <a
+                                                            href="{{ route('singleProduct', $wishListItem?->product?->slug) }}">
+                                                            <img src="{{ $wishListItem?->product?->thumbnail }}"
+                                                                alt="{{ $wishListItem?->product?->name }}">
+                                                        </a>
+                                                    </div>
+                                                    <div class="mini-cart-item-des">
+                                                        <a href="{{ route('singleProduct', $wishListItem?->product?->slug) }}"
+                                                            title="{{ $wishListItem?->product?->name }}">{{ Str::limit($wishListItem?->product->name, '30', '...') }}</a>
+                                                        <span
+                                                            class="mini-cart-item-price">৳{{ formatBD($price) }}</span>
+                                                        <span class="mini-cart-item-quantity"><a
+                                                                href="{{ route('wishlist.destroy', $wishListItem?->product?->id) }}"><i
+                                                                    class="ti-close"></i></a></span>
+                                                    </div>
                                                 </div>
-                                                <div class="mini-cart-item-des">
-                                                    <a href="{{ route('singleProduct', $wishListItem?->product?->slug) }}" title="{{ $wishListItem?->product?->name }}">{{ Str::limit($wishListItem?->product->name, '30', '...') }}</a>
-                                                    <span class="mini-cart-item-price">৳{{ formatBD($price) }}</span>
-                                                    <span class="mini-cart-item-quantity"><a href="{{ route('wishlist.destroy', $wishListItem?->product?->id) }}"><i
-                                                                class="ti-close"></i></a></span>
-                                                </div>
-                                            </div>
                                             @endforeach
 
                                         </div>
@@ -145,24 +186,34 @@
                                         <div class="mini-cart-items">
                                             @foreach ($cartItems ?? [] as $cartItem)
                                                 @php
-                                                    $price = $cartItem->product->discount_price > 0 ? $cartItem->product->discount_price : $cartItem->product->price;
-                                                    $subTotal += $cartItem->quantity * ($cartItem->product->discount_price > 0 ? $cartItem->product->discount_price : $cartItem->product->price);
+                                                    $price =
+                                                        $cartItem->product->discount_price > 0
+                                                            ? $cartItem->product->discount_price
+                                                            : $cartItem->product->price;
+                                                    $subTotal +=
+                                                        $cartItem->quantity *
+                                                        ($cartItem->product->discount_price > 0
+                                                            ? $cartItem->product->discount_price
+                                                            : $cartItem->product->price);
                                                 @endphp
-                                            <div class="mini-cart-item clearfix">
-                                                <div class="mini-cart-item-image">
-                                                    <a href="{{ $cartItem?->product?->slug }}"><img
-                                                            src="{{ $cartItem?->product?->thumbnail }}"
-                                                            alt="{{ $cartItem?->product?->name }}"></a>
+                                                <div class="mini-cart-item clearfix">
+                                                    <div class="mini-cart-item-image">
+                                                        <a href="{{ $cartItem?->product?->slug }}"><img
+                                                                src="{{ $cartItem?->product?->thumbnail }}"
+                                                                alt="{{ $cartItem?->product?->name }}"></a>
+                                                    </div>
+                                                    <div class="mini-cart-item-des">
+                                                        <a href="{{ $cartItem?->product?->slug }}"
+                                                            title="{{ $cartItem?->product?->name }}">{{ Str::limit($cartItem?->product?->name, '30', '...') }}</a>
+                                                        <span class="mini-cart-item-price">৳{{ formatBD($price) }} x
+                                                            {{ $cartItem?->quantity }}</span>
+                                                        <span class="mini-cart-item-quantity"><a
+                                                                href="{{ route('cart.destroy', $cartItem?->id) }}"><i
+                                                                    class="ti-close"></i></a></span>
+                                                    </div>
                                                 </div>
-                                                <div class="mini-cart-item-des">
-                                                    <a href="{{ $cartItem?->product?->slug }}" title="{{ $cartItem?->product?->name }}">{{ Str::limit($cartItem?->product?->name, '30', '...') }}</a>
-                                                    <span class="mini-cart-item-price">৳{{ formatBD($price) }} x {{ $cartItem?->quantity }}</span>
-                                                    <span class="mini-cart-item-quantity"><a href="{{ route('cart.destroy', $cartItem?->id) }}"><i
-                                                                class="ti-close"></i></a></span>
-                                                </div>
-                                            </div>                                                
                                             @endforeach
-                                            
+
                                         </div>
                                         <div class="mini-cart-action clearfix">
                                             @php
@@ -170,7 +221,11 @@
                                                 $lastThree = substr($stAmount, -3);
                                                 $restUnits = substr($stAmount, 0, -3);
                                                 if ($restUnits != '') {
-                                                    $restUnits = preg_replace('/\B(?=(\d{2})+(?!\d))/', ',', $restUnits);
+                                                    $restUnits = preg_replace(
+                                                        '/\B(?=(\d{2})+(?!\d))/',
+                                                        ',',
+                                                        $restUnits,
+                                                    );
                                                     $finalSubTotal = $restUnits . ',' . $lastThree;
                                                 } else {
                                                     $finalSubTotal = $stAmount;
@@ -229,7 +284,7 @@
                                                     </ul>
                                                 @endif
                                             @else
-                                            <a href="#">{{ $category?->name }}</a>
+                                                <a href="#">{{ $category?->name }}</a>
                                             @endif
                                         </li>
                                     @endforeach
@@ -267,4 +322,64 @@
             </div><!-- end of container -->
         </nav>
     </div>
+    <style>
+        .header-middle .middle-right .dropdown-menu {
+            display: none !important;
+            flex-direction: column !important;
+            min-width: 180px;
+            border: none;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 8px 0;
+            z-index: 99999;
+            position: absolute !important;
+            top: 100% !important;
+            right: auto !important;
+            left: 0 !important;
+        }
+
+        .header-middle .middle-right .dropdown-menu.show {
+            display: block !important;
+        }
+
+        .header-middle .middle-right .dropdown-menu li {
+            display: block !important;
+            position: static !important;
+            padding: 0 !important;
+            width: 100% !important;
+        }
+
+        .header-middle .middle-right .dropdown-menu li a {
+            display: block !important;
+            padding: 8px 20px !important;
+            font-size: 14px !important;
+            color: #525252 !important;
+            white-space: nowrap !important;
+            width: 100% !important;
+        }
+
+        .header-middle .middle-right .dropdown-menu li a:hover {
+            background-color: #fff8f0 !important;
+            color: #f5a623 !important;
+        }
+    </style>
 </header>
+@push('script')
+    <script>
+        document.addEventListener("click", function(e) {
+            const userDropdown = document.getElementById("userDropdown");
+            const userDropdownMenu = document.getElementById("userDropdownMenu");
+            const dropdownMenuIcon = document.getElementById("dropdownMenuIcon");
+
+            if (userDropdown.contains(e.target)) {
+                userDropdownMenu.classList.toggle("show");
+                dropdownMenuIcon.classList.toggle("ti-angle-up");
+                dropdownMenuIcon.classList.toggle("ti-angle-down");
+            } else {
+                userDropdownMenu.classList.remove("show");
+                dropdownMenuIcon.classList.remove("ti-angle-up");
+                dropdownMenuIcon.classList.add("ti-angle-down");
+            }
+        });
+    </script>
+@endpush

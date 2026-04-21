@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('has_coupon')->default(false);
             $table->foreignIdFor(Coupon::class)->nullable()->constrained()->nullOnDelete();
             $table->float('coupon_discount')->default(0);
-            $table->integer('status')->nullable();
+            $table->string('status')->nullable();
             $table->string('payment_method')->nullable();
             $table->boolean('has_payment')->default(false);
             $table->text('message')->nullable();

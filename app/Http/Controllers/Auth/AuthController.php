@@ -15,6 +15,9 @@ class AuthController extends Controller
 {
     public function login()
     {
+        if (Auth::check()) {
+            return redirect()->route('root')->with('success', 'You are already logged in');
+        }
         return view('auth.login');
     }
 

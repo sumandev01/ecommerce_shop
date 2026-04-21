@@ -32,6 +32,7 @@
             </div>
             <form action="{{ route('orders.store') }}" method="GET">
                 @csrf
+                <input type="hidden" name="couponId" value="{{ $coupon?->id }}">
                 <div class="checkout-wrap">
                     <div class="row">
                         <div class="col-lg-8 col-12">
@@ -45,11 +46,13 @@
                                             <div class="row">
                                                 <div class="col-lg-6 col-md-12 col-12">
                                                     <input type="text" placeholder="Name*" id="name" name="name"
-                                                        value="{{ old('name') ?? $user?->name }}">
-                                                    <span class="text-danger">@error('name') {{ $message }} @enderror</span>
+                                                        value="{{ old('name') ?? $user?->name }}" required>
+                                                    @error('name')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                                 <div class="col-lg-6 col-md-12 col-12">
-                                                    <select name="country" id="Country" class="form-control">
+                                                    <select name="country" id="Country" class="form-control" required>
                                                         <option disabled="" selected="">Country*</option>
                                                         <option value="united_state">United State</option>
                                                         <option value="bangladesh">Bangladesh</option>
@@ -58,42 +61,58 @@
                                                         <option value="pakisthan">Pakisthan</option>
                                                         <option value="afgansthan">Afgansthan</option>
                                                     </select>
-                                                    <span class="text-danger">@error('country') {{ $message }} @enderror</span>
+                                                    @error('country')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                                 <div class="col-lg-6 col-md-12 col-12">
                                                     <input type="text" placeholder="City / Town*" id="City"
-                                                        name="city" value="{{ old('city') ?? $user?->city }}">
-                                                    <span class="text-danger">@error('city') {{ $message }} @enderror</span>
+                                                        name="city" value="{{ old('city') ?? $user?->city }}" required>
+                                                    @error('city')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                                 <div class="col-lg-6 col-md-12 col-12">
                                                     <input type="text" placeholder="Postcode / ZIP*" id="Post2"
-                                                        name="postcode" value="{{ old('postcode') ?? $user?->postcode }}">
-                                                    <span class="text-danger">@error('postcode') {{ $message }} @enderror</span>
+                                                        name="postcode" value="{{ old('postcode') ?? $user?->postcode }}" required>
+                                                    @error('postcode')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                                 <div class="col-lg-6 col-md-12 col-12">
                                                     <input type="text" placeholder="Company Name*" id="Company"
                                                         name="company" value="{{ old('company') ?? $user?->company }}">
-                                                    <span class="text-danger">@error('company') {{ $message }} @enderror</span>
+                                                    @error('company')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                                 <div class="col-lg-6 col-md-12 col-12">
-                                                    <input type="text" placeholder="Email Address*" id="email"
-                                                        name="email" value="{{ old('email') ?? $user?->email }}">
-                                                    <span class="text-danger">@error('email') {{ $message }} @enderror</span>
+                                                    <input type="email" placeholder="Email Address*" id="email"
+                                                        name="email" value="{{ old('email') ?? $user?->email }}" required>
+                                                    @error('email')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                                 <div class="col-lg-6 col-md-12 col-12">
                                                     <input type="text" placeholder="Phone*" id="phone" name="phone"
-                                                        value="{{ old('phone') ?? $user?->phone }}">
-                                                    <span class="text-danger">@error('phone') {{ $message }} @enderror</span>
+                                                        value="{{ old('phone') ?? $user?->phone }}" required>
+                                                    @error('phone')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                                 <div class="col-lg-12 col-md-12 col-12">
                                                     <input type="text" placeholder="Address*" id="address"
-                                                        name="address" value="{{ old('address') ?? $user?->address }}">
-                                                    <span class="text-danger">@error('address') {{ $message }} @enderror</span>
+                                                        name="address" value="{{ old('address') ?? $user?->address }}" required>
+                                                    @error('address')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                                 <div class="col-lg-12 col-md-12 col-12">
-                                                    <div class="note-area">
+                                                    <div class="note-area mt-3">
                                                         <textarea name="message" placeholder="Additional Information">{{ old('message') ?? $user?->message }}</textarea>
-                                                        <span class="text-danger">@error('message') {{ $message }} @enderror</span>
+                                                        @error('message')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -107,16 +126,14 @@
                                             <div class="contact-form form-style">
                                                 <div class="row">
                                                     <div class="col-lg-6 col-md-12 col-12">
-                                                        <input type="text" placeholder="First Name*" id="shippingName"
+                                                        <input type="text" placeholder="Name*" id="shippingName"
                                                             name="shippingName" value="{{ old('shippingName') }}">
-                                                        <span class="text-danger">@error('shippingName') {{ $message }} @enderror</span>
+                                                        @error('shippingName')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
-                                                    {{-- <div class="col-lg-6 col-md-12 col-12">
-                                                        <input type="text" placeholder="Last Name*" id="fname7"
-                                                            name="fname">
-                                                    </div> --}}
                                                     <div class="col-lg-6 col-md-12 col-12">
-                                                        <select name="shippingCountry" id="Country2"
+                                                        <select name="shippingCountry" id="shippingCountry"
                                                             class="form-control">
                                                             <option disabled="" selected="">Country*</option>
                                                             <option value="united_state">United State</option>
@@ -126,38 +143,52 @@
                                                             <option value="pakisthan">Pakisthan</option>
                                                             <option value="afgansthan">Afgansthan</option>
                                                         </select>
-                                                        <span class="text-danger">@error('shippingCountry') {{ $message }} @enderror</span>
+                                                        @error('shippingCountry')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                     <div class="col-lg-6 col-md-12 col-12">
-                                                        <input type="text" placeholder="City / Town*" id="City1"
+                                                        <input type="text" placeholder="City / Town*" id="shippingCity"
                                                             name="shippingCity" value="{{ old('shippingCity') }}">
-                                                        <span class="text-danger">@error('shippingCity') {{ $message }} @enderror</span>
+                                                        @error('shippingCity')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                     <div class="col-lg-6 col-md-12 col-12">
                                                         <input type="text" placeholder="Postcode / ZIP*"
-                                                            id="Post1" name="shippingPost"
+                                                            id="shippingPost" name="shippingPost"
                                                             value="{{ old('shippingPost') }}">
-                                                        <span class="text-danger">@error('shippingPost') {{ $message }} @enderror</span>
+                                                        @error('shippingPost')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                     <div class="col-lg-6 col-md-12 col-12">
-                                                        <input type="text" placeholder="Company Name*" id="Company1"
+                                                        <input type="text" placeholder="Company Name*" id="shippingCompany"
                                                             name="shippingCompany" value="{{ old('shippingCompany') }}">
-                                                        <span class="text-danger">@error('shippingCompany') {{ $message }} @enderror</span>
+                                                        @error('shippingCompany')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                     <div class="col-lg-6 col-md-12 col-12">
-                                                        <input type="text" placeholder="Email Address*" id="email5"
+                                                        <input type="text" placeholder="Email Address*" id="shippingEmail"
                                                             name="shippingEmail" value="{{ old('shippingEmail') }}">
-                                                        <span class="text-danger">@error('shippingEmail') {{ $message }} @enderror</span>
+                                                        @error('shippingEmail')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                     <div class="col-lg-6 col-md-12 col-12">
-                                                        <input type="text" placeholder="Phone*" id="phone1"
+                                                        <input type="text" placeholder="Phone*" id="shippingPhone"
                                                             name="shippingPhone" value="{{ old('shippingPhone') }}">
-                                                        <span class="text-danger">@error('shippingPhone') {{ $message }} @enderror</span>
+                                                        @error('shippingPhone')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                     <div class="col-lg-12 col-md-12 col-12">
-                                                        <input type="text" placeholder="Address*" id="Adress1"
+                                                        <input type="text" placeholder="Address*" id="shippingAddress"
                                                             name="shippingAddress" value="{{ old('shippingAddress') }}">
-                                                        <span class="text-danger">@error('shippingAddress') {{ $message }} @enderror</span>
+                                                        @error('shippingAddress')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -175,11 +206,11 @@
                                     </div>
                                     @foreach ($cartItems ?? [] as $item)
                                         @php
-                                            $price =
+                                            $productPrice =
                                                 $item?->product?->discount_price > 0
                                                     ? $item?->product?->discount_price
                                                     : $item?->product?->price;
-                                            $subTotal = $item?->quantity * $price;
+                                            $productSubTotal = $item?->quantity * $productPrice;
                                         @endphp
                                         <div class="oreder-product">
                                             <div class="d-flex align-items-start">
@@ -207,20 +238,26 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <span>৳{{ formatBD($subTotal) }}</span>
+                                            <span>৳{{ formatBD($productSubTotal) }}</span>
                                         </div>
                                     @endforeach
-                                    <!-- Discount -->
-                                    @if ($coupon)
-                                        <div class="oreder-product">
-                                            <div class="product">
-                                                <ul>
-                                                    <li class="first-cart">Discount:</li>
-                                                </ul>
-                                            </div>
-                                            <span>৳{{ formatBD($couponDiscount) }}</span>
+                                    <div class="oreder-product">
+                                        <div class="product">
+                                            <ul>
+                                                <li class="first-cart">Sub Total:</li>
+                                            </ul>
                                         </div>
-                                    @endif
+                                        <span>৳{{ formatBD($subTotal) }}</span>
+                                    </div>
+                                    <!-- Discount -->
+                                    <div class="oreder-product">
+                                        <div class="product">
+                                            <ul>
+                                                <li class="first-cart">Discount:</li>
+                                            </ul>
+                                        </div>
+                                        <span>৳{{ formatBD($couponDiscount) ?? 0 }}</span>
+                                    </div>
                                     <!-- Shipping -->
                                     <div class="mt-3 mb-3">
                                         <div class="title border-0">
@@ -255,17 +292,17 @@
                                                 <div class="payment-select">
                                                     <ul>
                                                         <li class="">
-                                                            <input id="remove" type="radio" name="payment"
+                                                            <input id="remove" type="radio" name="payment_method"
                                                                 value="cashOnDelivery">
                                                             <label for="remove">Cash on Delivery</label>
                                                         </li>
                                                         <li class="">
-                                                            <input id="add" type="radio" name="payment"
+                                                            <input id="add" type="radio" name="payment_method"
                                                                 checked="checked" value="ssl">
                                                             <label for="add">Pay With SSLCOMMERZ</label>
                                                         </li>
                                                         <li class="">
-                                                            <input id="getway" type="radio" name="payment"
+                                                            <input id="getway" type="radio" name="payment_method"
                                                                 value="stripe">
                                                             <label for="getway">Pay With STRIPE</label>
                                                         </li>
@@ -308,6 +345,21 @@
                 selectedValue = event.target.value;
                 grandTotal = parseFloat(total) + parseFloat(selectedValue);
                 document.getElementById('grand_total').textContent = grandTotal.toLocaleString('en-IN');
+            });
+        });
+
+        document.getElementById('toggle4').addEventListener('change', function() {
+            const inputIds = ['shippingName', 'shippingCountry', 'shippingCity', 'shippingPost', 'shippingEmail', 'shippingPhone', 'shippingAddress'];
+            const isChecked = this.checked;
+            inputIds.forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    if (isChecked) {
+                        input.setAttribute('required', 'required');
+                    } else {
+                        input.removeAttribute('required');
+                    }
+                }
             });
         });
     </script>

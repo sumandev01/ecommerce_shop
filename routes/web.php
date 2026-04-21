@@ -1,5 +1,7 @@
 <?php
+
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\CheckoutController;
@@ -30,6 +32,17 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    // Dashboard Route
+    Route::controller(DashboardController::class)->group(function () {
+        Route::get('/user/dashboard', 'index')->name('user.dashboard');
+        Route::get('/user/orders', 'orders')->name('user.orders');
+        Route::get('/order/{order}/details', 'orderDetails')->name('order-details');
+        Route::get('/user/profile', 'profile')->name('user.profile');
+        Route::post('/user/profile', 'updateProfile')->name('user.updateProfile');
+        Route::get('/user/change-password', 'changePassword')->name('user.changePassword');
+        Route::post('/user/change-password', 'updatePassword')->name('user.updatePassword');
+    });
+
     // Cart Route
     Route::controller(CartController::class)->group(function () {
         Route::get('/cart', 'cart')->name('cart');
@@ -55,8 +68,10 @@ Route::middleware('auth')->group(function () {
     // Order Route
     Route::controller(OrderController::class)->group(function () {
         Route::get('/orders/store', 'store')->name('orders.store');
+        Route::get('/order/success', 'success')->name('order.success');
     });
 });
 
 
-@include('admin.php');
+// @include('admin.php');
+require __DIR__ . '/admin.php';

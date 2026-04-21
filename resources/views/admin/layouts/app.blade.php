@@ -95,7 +95,7 @@
     <!-- core:js -->
     <script src="{{ asset('admin/assets/vendors/core/core.js') }}"></script>
     <!-- inject:js -->
-    <script src="{{ asset('admin/assets/vendors/feather-icons/feather.min.js') }}"></script>
+    {{-- <script src="{{ asset('admin/assets/vendors/feather-icons/feather.min.js') }}"></script> --}}
     <script src="{{ asset('admin/assets/js/template.js') }}"></script>
     <!-- endinject -->
     <!-- sweetalert2 -->
@@ -108,7 +108,7 @@
     <!-- Select2 JS -->
     <script src="{{ asset('admin/assets/js/select2.min.js') }}"></script>
     <!-- lucide icons -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    {{-- <script src="{{ asset('admin/assets/js/lucide.js') }}"></script> --}}
     <!-- end custom js for this page -->
 
     @stack('script')
@@ -133,9 +133,6 @@
                 })
             });
         });
-    </script>
-    <script>
-        lucide.createIcons();
     </script>
 
     <script>

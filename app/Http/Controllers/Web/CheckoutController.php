@@ -15,15 +15,14 @@ class CheckoutController extends Controller
         $coupon = null;
         if ($couponId) {
             $coupon = Coupon::find($couponId);
-            if ($coupon) {
-                session()->put('coupon_id', $coupon->id);
-            }
         }
         $cartItems = $user->cartItems;
 
         $subTotal = $cartItems->map(function ($cartItem) {
-            return $price = $cartItem->product->discount_price > 0 ? $cartItem->product->discount_price : $cartItem->product->price * $cartItem->quantity;
+            $price = $cartItem->product->discount_price > 0 ? $cartItem->product->discount_price : $cartItem->product->price;
+            return $price * $cartItem->quantity;
         })->sum();
+        
 
         $couponDiscount = 0;
         if ($coupon) {
@@ -38,6 +37,6 @@ class CheckoutController extends Controller
         }
         $grandTotal = $subTotal - $couponDiscount;
 
-        return view('web.checkout', compact('user', 'coupon', 'cartItems', 'couponDiscount', 'grandTotal'));
+        return view('web.checkout', compact('user', 'coupon', 'cartItems', 'couponDiscount', 'subTotal', 'grandTotal'));
     }
 }

@@ -2,69 +2,54 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Enums\Enums\OrderStatusEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
+use App\Models\BillingAddress;
 use App\Models\Coupon;
+use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
 use App\Models\ProductInventory;
+use App\Repositories\BillingAddressRepositoryEloquent;
+use App\Repositories\OrderRepositoryEloquent;
+use App\Repositories\ProductRepositoryEloquent;
+use App\Repositories\ShippingAddressRepositoryEloquent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+    protected $orderRepo;
+    protected $productRepo;
+    protected $billingAddressRepo;
+    protected $shippingAddressRepo;
+
+    public function __construct(OrderRepositoryEloquent $orderRepo, ProductRepositoryEloquent $productRepo, BillingAddressRepositoryEloquent $billingAddressRepo, ShippingAddressRepositoryEloquent $shippingAddressRepo)
+    {
+        $this->orderRepo = $orderRepo;
+        $this->productRepo = $productRepo;
+        $this->billingAddressRepo = $billingAddressRepo;
+        $this->shippingAddressRepo = $shippingAddressRepo;
+    }
+
     public function store(OrderRequest $request)
     {
-        dd($request->all());
-        $user = auth('web')->user();
-
-        $cartItems = $user->cartItems;
-
-        // price is computed per item when inserting
-        $couponId = session()->get('coupon_id');
-        $coupon = null;
-        if ($couponId) {
-            $coupon = Coupon::find($couponId);
-
-            if ($coupon) {
-                $isStatusActive = $coupon->status == 1;
-                $isNotExpired = now()->between($coupon->start_date, $coupon->end_date);
-                $hasLimit = ($coupon->limit - $coupon->total_apply) > 0;
-
-                if (!$isStatusActive) {
-                    session()->forget('coupon_id');
-                    return back()->with('error', 'Coupon is not active');
-                }
-
-                if (!$isNotExpired) {
-                    session()->forget('coupon_id');
-                    return back()->with('error', 'Coupon is expired');
-                }
-
-                if (!$hasLimit) {
-                    session()->forget('coupon_id');
-                    return back()->with('error', 'Coupon usage limit reached');
-                }
-
-                $coupon->increment('total_apply');
-            }
+        try {
+            $user = auth('web')->user();
+            $order = $this->orderRepo->storeByRequest($request, $user);
+            return redirect()->route('order.success')->with('order_success', $order);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
-        $orderId = 1;
-        foreach ($cartItems as $cartItem) {
-            $price = $cartItem->product->discount_price > 0
-                ? $cartItem->product->discount_price
-                : $cartItem->product->price;
+    }
 
-            OrderProduct::create([
-                'order_id'   => $orderId,
-                'product_id' => $cartItem->product_id,
-                'size_id'    => $cartItem->size_id,
-                'color_id'   => $cartItem->color_id,
-                'quantity'   => $cartItem->quantity,
-                'price'      => $price,
-            ]);
-        };
-
-        return redirect()->route('cart')->with('success', 'Order placed successfully');
+    public function success()
+    {
+        if (!session()->has('order_success')) {
+            return redirect()->route('root');
+        }
+        $order = session()->get('order_success');
+        return view('web.order-success', compact('order'));
     }
 }

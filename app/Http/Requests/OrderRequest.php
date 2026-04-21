@@ -31,16 +31,19 @@ class OrderRequest extends FormRequest
             'postcode' => 'required|string|max:20',
             'company' => 'nullable|string|max:255',
             'message' => 'nullable|string|max:1000',
+            'charge' => 'required|numeric|min:0',
+            'payment_method' => 'required|string',
         ];
 
-        if ($this->input('differentAddress')) {
-            $rules['shipping_name'] = 'required|string|max:255';
-            $rules['shipping_email'] = 'required|email|max:255';
-            $rules['shipping_phone'] = 'required|string|max:20';
-            $rules['shipping_address'] = 'required|string|max:500';
-            $rules['shipping_country'] = 'required|string|max:100';
-            $rules['shipping_city'] = 'required|string|max:100';
-            $rules['shipping_postcode'] = 'required|string|max:20';
+        if ($this->input('differentAddress') == 'on') {
+            $rules['shippingName'] = 'required|string|max:255';
+            $rules['shippingEmail'] = 'required|email|max:255';
+            $rules['shippingPhone'] = 'required|string|max:20';
+            $rules['shippingAddress'] = 'required|string|max:500';
+            $rules['shippingCountry'] = 'required|string|max:100';
+            $rules['shippingCity'] = 'required|string|max:100';
+            $rules['shippingPost'] = 'required|string|max:20';
+            $rules['shippingCompany'] = 'nullable|string|max:255';
         }
 
         return $rules;

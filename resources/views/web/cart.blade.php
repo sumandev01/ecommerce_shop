@@ -160,7 +160,7 @@
                             </div>
                             <div class="sub-total my-3">
                                 <h4>Discount</h4>
-                                <span id="total_discount">00.00</span>
+                                <span id="total_discount">৳0</span>
                             </div>
                             <div class="total mb-3">
                                 <h4>Total</h4>
@@ -169,8 +169,8 @@
                             <form action="{{ route('checkout.index') }}" method="post">
                                 @csrf
                                 <input type="hidden" id="CouponId" name="coupon_id">
-                                <button type="submit" class="theme-btn-s2 border-0" href="checkout.html">Proceed To
-                                    CheckOut</butt>
+                                <button type="submit" class="theme-btn-s2 border-0">Proceed To
+                                    CheckOut</button>
                             </form>
                         </div>
                     </div>

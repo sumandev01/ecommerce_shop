@@ -1,4 +1,6 @@
 <?php
+
+use App\Enums\AuthEnums;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\BrandController;
@@ -9,12 +11,31 @@ use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductInventoryController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Auth\AdminAuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('admin')->group(function () {
 
+Route::controller(AdminAuthController::class)->prefix('admin')->group(function () {
+    Route::get('/login', 'login')->name('admin.login');
+    Route::post('/login', 'postLogin')->name('admin.postLogin');
+    Route::get('/logout', 'logout')->name('admin.logout');
+});
+
+Route::middleware(['auth', 'role:' . AuthEnums::Admin->value])->prefix('admin')->group(function () {
+    
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/dashboard', 'index')->name('admin.dashboard');
+    });
+
+    Route::controller(UserController::class)->group(function () {
+        Route::get('/users', 'index')->name('user.index');
+        Route::get('/users/create', 'create')->name('user.create');
+        Route::post('/users/store', 'store')->name('user.store');
+        Route::get('/users/{user}/view', 'view')->name('user.view');
+        Route::get('/users/{user}/edit', 'edit')->name('user.edit');
+        Route::put('/users/{user}/update', 'update')->name('user.update');
+        Route::delete('/users/{user}/delete', 'destroy')->name('user.destroy');
     });
 
     Route::controller(CategoryController::class)->group(function () {
