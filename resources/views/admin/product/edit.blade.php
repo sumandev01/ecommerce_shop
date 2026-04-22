@@ -9,13 +9,14 @@
                         <div class="d-flex align-items-center justify-content-between">
                             <h4 class="mb-0">Edit Product</h4>
                             <a href="{{ route('product.index') }}" class="btn btn-primary">
-                                <i data-lucide="arrow-left" class="me-1" style="width: 18px;"></i> Back to Products
+                                <x-lucide-arrow-left class="me-1" style="width: 18px;" /> 
+                                Back to Products
                             </a>
                         </div>
                     </div>
                     <div class="card-body">
                         <p class="text-muted mb-0">
-                           <strong>Note:</strong> Please fill in the basic product details and **Update** the product. You will be able to add sizes, colors, or other **Variants** once the product is successfully created or updated.
+                        <strong>Note:</strong> Please fill in the basic product details and <span class="fw-bold text-primary">Update</span> the product. You will be able to add sizes, colors, or other <span class="fw-bold text-primary">Variants</span> once the product is successfully created or updated.
                         </p>
                     </div>
                 </div>
@@ -33,18 +34,18 @@
                         </div>
                         <div class="card-body">
                             <x-input label="Product Name" name="name" placeholder="Enter product name"
-                                :required="true" :value="$product?->name" />
+                                :required="true" :value="old('name', $product?->name)" />
 
                             <x-input label="Slug" name="slug" placeholder="Enter product slug" :required="true"
                                 :value="$product?->slug" />
                             
                             <x-textarea label="Short Description" name="shortDescription"
                                 placeholder="Enter product short description......" :required="true" :max="500"
-                                :rows="10" :editor="false" :value="$product?->details?->short_description" />
+                                :rows="10" :editor="false" :value="old('shortDescription', $product?->details?->short_description)" />
 
                             <x-select class="selectTag w-100" multiple="multiple" label="Tags" name="tag[]">
                                 @foreach ($tags ?? [] as $tag)
-                                    <option value="{{ $tag?->id }}" {{ in_array($tag?->id, $product?->tags?->pluck('id')->toArray()) ? 'selected' : '' }}>{{ $tag?->name }}</option>
+                                    <option value="{{ $tag?->id }}" {{ in_array($tag?->id, old('tag', $product?->tags?->pluck('id')->toArray())) ? 'selected' : '' }}>{{ $tag?->name }}</option>
                                 @endforeach
                             </x-select>
                         </div>
@@ -55,9 +56,9 @@
                         </div>
                         <div class="card-body">
                             <x-textarea name="description" label="Full Description" :editor="true" :rows="10"
-                                :max="1500" :value="$product?->details?->long_description" />
+                                :max="1500" :value="old('description', $product?->details?->long_description)" />
                             <x-textarea name="additional_info" label="Additional Information" :editor="true"
-                                :rows="10" :max="1500" :value="$product?->details?->additional_info" />
+                                :rows="10" :max="1500" :value="old('additional_info', $product?->details?->additional_info)" />
                         </div>
                     </div>
                     <div class="card mb-4">
@@ -76,16 +77,16 @@
                         </div>
                         <div class="card-body">
                             <x-input label="Buy Price" name="buy_price" type="number" placeholder="Enter buy price"
-                                :required="false" :max="15" :value="$product?->buy_price" />
+                                :required="false" :max="15" :value="old('buy_price', $product?->buy_price)" />
                             <x-input label="Selling Price" name="price" type="number" placeholder="Enter product price"
-                                :required="false" :max="15" :value="$product?->price" />
+                                :required="false" :max="15" :value="old('price', $product?->price)" />
                             <x-input label="Discounted Price" name="discounted_price" type="number"
-                                placeholder="Enter discounted price" :max="15" :value="$product?->discount_price" />
+                                placeholder="Enter discounted price" :max="15" :value="old('discounted_price', $product?->discount_price)" />
                             <x-input label="SKU" name="sku" id="product_sku" placeholder="Product SKU"
-                                :required="false" :counter="false" :value="$product?->sku_code"
+                                :required="false" :counter="false" :value="old('sku', $product?->sku_code)"
                                 append='<button class="btn btn-primary" type="button" onclick="codeGenerate()">Generate</button>' />
                             <x-input label="Stock Quantity" name="stock_quantity" type="number"
-                                placeholder="Enter stock quantity" :required="false" :max="15" :value="$product?->stock" :readonly="$product ? $product->inInventories()->exists() : false" />
+                                placeholder="Enter stock quantity" :required="false" :max="15" :value="old('stock_quantity', $product?->stock)" :readonly="$product ? $product->inInventories()->exists() : false" />
                         </div>
                     </div>
                     <div class="card mb-4">
@@ -128,8 +129,7 @@
                     <div class="card mb-3">
                         <div class="card-body text-center">
                             <button type="submit" id="submit" class="btn btn-primary px-5">
-                                Submit Product
-                                <i data-lucide="arrow-right" class="ms-1" style="width: 18px;"></i>
+                                <x-lucide-edit class="icon-lg" /> Update Product
                             </button>
                         </div>
                     </div>

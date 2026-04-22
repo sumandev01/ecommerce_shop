@@ -7,7 +7,7 @@
                         <div class="card-title d-flex justify-content-between align-items-center mb-0">
                             <h5 class="">Edit Sub Category</h5>
                             <a href="{{ route('subcategory.index') }}" class="btn btn-primary btn-sm">
-                                <i data-lucide="arrow-left" class="mr-2" style="width: 20px; height: 20px;"></i>
+                                <x-lucide-arrow-left class="me-1" style="width: 18px;" />
                                 Back
                             </a>
                         </div>
@@ -51,7 +51,10 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <button type="submit" class="btn btn-primary">Update Now</button>
+                            <button type="submit" class="btn btn-primary">
+                                <x-lucide-edit style="width: 20px; height: 20px;" class="mr-2" />
+                                Update Sub Category
+                            </button>
                         </form>
                     </div>
                 </div>

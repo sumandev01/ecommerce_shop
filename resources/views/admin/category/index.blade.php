@@ -25,8 +25,12 @@
                                     <td> {{ $Category->slug }} </td>
                                     <td style="text-align: center;"><img src="{{ $Category->thumbnail }}" alt="{{ $Category->alt }}"></td>
                                     <td style="text-align: right;">
-                                        <a href="{{ route('category.edit', $Category?->id) }}" class="btn btn-info btn-icon btn-md"><i data-lucide="edit"></i></a>
-                                        <a href="{{ route('category.destroy', $Category?->id) }}" class="btn btn-danger btn-icon btn-md deleteConfirm"><i data-lucide="trash"></i></a>
+                                        <a href="{{ route('category.edit', $Category?->id) }}" class="btn btn-info btn-icon btn-md">
+                                            <x-lucide-edit style="width: 20px; height: 20px;" />
+                                        </a>
+                                        <a href="{{ route('category.destroy', $Category?->id) }}" class="btn btn-danger btn-icon btn-md deleteConfirm">
+                                            <x-lucide-trash style="width: 20px; height: 20px;" />
+                                        </a>
                                     </td>
                                 </tr>
                             @empty
@@ -70,7 +74,10 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <button type="submit" class="btn btn-primary" id="submit">Add Category</button>
+                        <button type="submit" class="btn btn-primary" id="submit">
+                            <x-lucide-plus style="width: 20px; height: 20px;" class="mr-2" />
+                            Add Category
+                        </button>
                     </form>
                 </div>
             </div>

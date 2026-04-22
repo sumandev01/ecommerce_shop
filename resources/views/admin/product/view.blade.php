@@ -8,7 +8,8 @@
                         <div class="d-flex align-items-center justify-content-between">
                             <h5 class="mb-0">View Product</h5>
                             <a href="{{ route('product.index') }}" class="btn btn-primary">
-                                <i data-lucide="arrow-left" class="me-1" style="width: 18px;"></i> Back to Products
+                                <x-lucide-arrow-left class="me-1" style="width: 18px;" />
+                                Back to Products
                             </a>
                         </div>
                     </div>
@@ -88,7 +89,8 @@
                         <div class="d-flex align-items-center justify-content-between">
                             <h5 class="mb-0">Product Inventory</h5>
                             <a href="{{ route('product.inventory', $product->id) }}" class="btn btn-primary">
-                                <i data-lucide="settings" class="me-1" style="width: 18px;"></i> Manage
+                                <x-lucide-settings class="me-1" style="width: 18px;" />
+                                Manage
                             </a>
                         </div>
                     </div>
@@ -215,7 +217,7 @@
 
                         <button type="button" onclick="window.location.href='{{ route('product.edit', $product->id) }}'"
                             class="btn btn-primary px-5">
-                            <i data-lucide="edit" class="ms-1" style="width: 18px;"></i>
+                            <x-lucide-edit class="icon-lg" />
                             <span>Edit Product</span>
                         </button>
                     </div>

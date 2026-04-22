@@ -5,7 +5,7 @@
             <div class="card-title d-flex justify-content-between align-items-center py-4 mb-0">
                 <h5 class="">All Products</h5>
                 <a href="{{ route('product.create') }}" class="btn btn-primary btn-sm">
-                    <i data-lucide="plus" class="mr-2" style="width: 20px; height: 20px;"></i>
+                    <x-lucide-plus class="me-1" style="width: 18px;" />
                     Add Product
                 </a>
             </div>
@@ -47,9 +47,9 @@
                                     @endif
                                 </td>
                                 <td class="text-right">
-                                    <a href="{{ route('product.inventory', $product->id) }}" class="btn btn-md btn-success btn-icon"><i data-lucide="package"></i></a>
-                                    <a href="{{ route('product.edit', $product->id) }}" class="btn btn-md btn-warning btn-icon"><i data-lucide="edit"></i></a>
-                                    <a href="{{ route('product.view', $product->id) }}" class="btn btn-md btn-info btn-icon"><i data-lucide="eye"></i></a>
+                                    <a href="{{ route('product.inventory', $product->id) }}" class="btn btn-md btn-success btn-icon"><x-lucide-package /></a>
+                                    <a href="{{ route('product.edit', $product->id) }}" class="btn btn-md btn-warning btn-icon"><x-lucide-edit /></a>
+                                    <a href="{{ route('product.view', $product->id) }}" class="btn btn-md btn-info btn-icon"><x-lucide-eye /></a>
                                 </td>
                             </tr>
                             @empty

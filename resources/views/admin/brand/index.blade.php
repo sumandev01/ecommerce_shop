@@ -25,8 +25,12 @@
                                     <td> {{ $brand->slug }} </td>
                                     <td style="text-align: center;"><img src="{{ $brand->thumbnail }}" alt="{{ $brand->alt }}"></td>
                                     <td style="text-align: right;">
-                                        <a href="{{ route('brand.edit', $brand?->id) }}" class="btn btn-info btn-icon btn-md"><i data-lucide="edit"></i></a>
-                                        <a href="{{ route('brand.destroy', $brand?->id) }}" class="btn btn-danger btn-icon btn-md deleteConfirm"><i data-lucide="trash"></i></a>
+                                        <a href="{{ route('brand.edit', $brand?->id) }}" class="btn btn-info btn-icon btn-md">
+                                            <x-lucide-edit />
+                                        </a>
+                                        <a href="{{ route('brand.destroy', $brand?->id) }}" class="btn btn-danger btn-icon btn-md deleteConfirm">
+                                            <x-lucide-trash />
+                                        </a>
                                     </td>
                                 </tr>
                             @empty
@@ -70,7 +74,10 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <button type="submit" class="btn btn-primary" id="submit">Add Brand</button>
+                        <button type="submit" class="btn btn-primary" id="submit">
+                            <x-lucide-plus style="width: 20px; height: 20px;" class="mr-2" />
+                            Add Brand
+                        </button>
                     </form>
                 </div>
             </div>

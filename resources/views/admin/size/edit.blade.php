@@ -7,7 +7,7 @@
                         <div class="card-title d-flex justify-content-between align-items-center mb-0">
                             <h5 class="">Edit Size</h5>
                             <a href="{{ route('size.index') }}" class="btn btn-primary btn-sm">
-                                <i data-lucide="arrow-left" class="mr-2" style="width: 20px; height: 20px;"></i>
+                                <x-lucide-arrow-left class="me-1" style="width: 18px;" />
                                 Back
                             </a>
                         </div>
@@ -19,7 +19,10 @@
                             <div class="mb-4">
                                 <x-input type="text" label="Size" name="size" id="sizeName" :value="old('size', $size?->name)" :max="2" placeholder="Size" :required="true"/>
                             </div>
-                            <button type="submit" class="btn btn-primary">Update Size</button>
+                            <button type="submit" class="btn btn-primary">
+                                <x-lucide-edit class="me-1" style="width: 18px;" />
+                                Update Size
+                            </button>
                         </form>
                     </div>
                 </div>

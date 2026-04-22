@@ -21,8 +21,12 @@
                                     <td style="text-align: left;">{{ $key + 1 }}</td>
                                     <td> {{ $size?->name }} </td>
                                     <td style="text-align: right;">
-                                        <a href="{{ route('size.edit', $size?->id) }}" class="btn btn-info btn-icon btn-md"><i data-lucide="edit"></i></a>
-                                        <a href="{{ route('size.destroy', $size?->id) }}" class="btn btn-danger btn-icon btn-md deleteConfirm"><i data-lucide="trash"></i></a>
+                                        <a href="{{ route('size.edit', $size?->id) }}" class="btn btn-info btn-icon btn-md">
+                                            <x-lucide-edit class="icon-lg" />
+                                        </a>
+                                        <a href="{{ route('size.destroy', $size?->id) }}" class="btn btn-danger btn-icon btn-md deleteConfirm">
+                                            <x-lucide-trash class="icon-lg" />
+                                        </a>
                                     </td>
                                 </tr>
                             @empty
@@ -46,7 +50,10 @@
                         <div class="mb-4">
                             <x-input type="text" label="Size" name="size" id="sizeName" :value="old('size')" :max="2" placeholder="Size" :required="true"/>
                         </div>
-                        <button type="submit" class="btn btn-primary" id="submit">Add Size</button>
+                        <button type="submit" class="btn btn-primary" id="submit">
+                            <x-lucide-plus class="me-1" style="width: 18px;" />
+                            Add Size
+                        </button>
                     </form>
                 </div>
             </div>

@@ -27,8 +27,12 @@
                                     <td> {{ $subCategory->slug }} </td>
                                     <td style="text-align: center;"><img src="{{ $subCategory->thumbnail }}" alt="{{ $subCategory->alt }}"></td>
                                     <td style="text-align: right;">
-                                        <a href="{{ route('subcategory.edit', $subCategory?->id) }}" class="btn btn-info btn-icon btn-md"><i data-lucide="edit"></i></a>
-                                        <a href="{{ route('subcategory.destroy', $subCategory?->id) }}" class="btn btn-danger btn-icon btn-md deleteConfirm"><i data-lucide="trash"></i></a>
+                                        <a href="{{ route('subcategory.edit', $subCategory?->id) }}" class="btn btn-info btn-icon btn-md">
+                                            <x-lucide-edit class="icon-lg" />
+                                        </a>
+                                        <a href="{{ route('subcategory.destroy', $subCategory?->id) }}" class="btn btn-danger btn-icon btn-md deleteConfirm">
+                                            <x-lucide-trash class="icon-lg" />
+                                        </a>
                                     </td>
                                 </tr>
                             @empty
@@ -84,7 +88,10 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <button type="submit" class="btn btn-primary" id="submit">Add Category</button>
+                        <button type="submit" class="btn btn-primary" id="submit">
+                            <x-lucide-plus style="width: 20px; height: 20px;" class="mr-2" />
+                            Add Sub Category
+                        </button>
                     </form>
                 </div>
             </div>

@@ -2,7 +2,7 @@
 @section('content')
     <div class="container-fluid py-4">
         <div class="row justify-content-center">
-            <div class="col-lg-8">
+            <div class="col-lg-6">
                 <div class="card mb-4">
                     <div class="card-header py-4 bg-light">
                         <div class="d-flex align-items-center justify-content-between">
@@ -60,8 +60,8 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <button type="submit" id="submit" class="btn btn-success btn-md">
-                                <x-lucide-user-edit style="width: 20px; height: 20px;" class="mr-2" />
+                            <button type="submit" id="submit" class="btn btn-primary btn-md">
+                                <x-lucide-save style="width: 20px; height: 20px;" class="mr-2" />
                                 Update User
                             </button>
                         </form>

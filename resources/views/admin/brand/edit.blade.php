@@ -7,7 +7,7 @@
                         <div class="card-title d-flex justify-content-between align-items-center mb-0">
                             <h5 class="">Edit Brand</h5>
                             <a href="{{ route('brand.index') }}" class="btn btn-primary btn-sm">
-                                <i data-lucide="arrow-left" class="mr-2" style="width: 20px; height: 20px;"></i>
+                                <x-lucide-arrow-left style="width: 20px; height: 20px;" class="mr-2" />
                                 Back
                             </a>
                         </div>
@@ -39,7 +39,10 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <button type="submit" class="btn btn-primary">Update Brand</button>
+                            <button type="submit" class="btn btn-primary">
+                                <x-lucide-save style="width: 20px; height: 20px;" class="mr-2" />
+                                Update Brand
+                            </button>
                         </form>
                     </div>
                 </div>

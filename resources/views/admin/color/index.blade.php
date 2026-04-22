@@ -27,8 +27,12 @@
                                         <div style="width: 30px; height: 30px; background-color: {{ $color->hex_code }}; border-radius: 50%; margin: 0 auto; border: 1px solid #000"></div>
                                     </td>
                                     <td class="text-end">
-                                        <a href="{{ route('color.edit', $color?->id) }}" class="btn btn-info btn-icon btn-md"><i data-lucide="edit"></i></a>
-                                        <a href="{{ route('color.destroy', $color?->id) }}" class="btn btn-danger btn-icon btn-md deleteConfirm"><i data-lucide="trash"></i></a>
+                                        <a href="{{ route('color.edit', $color?->id) }}" class="btn btn-info btn-icon btn-md">
+                                            <x-lucide-edit class="icon" />
+                                        </a>
+                                        <a href="{{ route('color.destroy', $color?->id) }}" class="btn btn-danger btn-icon btn-md deleteConfirm">
+                                            <x-lucide-trash class="icon" />
+                                        </a>
                                     </td>
                                 </tr>
                             @empty
@@ -56,7 +60,10 @@
                             <x-input type="text" label="Color Code" name="hex_code" id="colorCodeInput" placeholder="Color Code" :required="true" value="#000000"/>
                             <input type="color" id="colorPicker" class="form-control mb-3" style="width: 50px; height: 50px; padding: 2px;" placeholder="Color Picker" value="#000000">
                         </div>
-                        <button type="submit" class="btn btn-primary" id="submit">Add Color</button>
+                        <button type="submit" class="btn btn-primary" id="submit">
+                            <x-lucide-plus style="width: 20px; height: 20px;" class="mr-2" />
+                            Add Color
+                        </button>
                     </form>
                 </div>
             </div>

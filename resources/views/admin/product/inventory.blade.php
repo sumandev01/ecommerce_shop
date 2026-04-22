@@ -7,13 +7,14 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <h5 class="mb-0">Product Inventory</h5>
                         <a href="{{ route('product.index') }}" class="btn btn-primary">
-                            <i data-lucide="arrow-left" class="me-1" style="width: 18px;"></i> Back to Products
+                            <x-lucide-arrow-left class="me-1" style="width: 18px;" />
+                            Back to Products
                         </a>
                     </div>
                 </div>
                 <div class="card-body">
                     <p class="text-muted mb-0">
-                        <strong>Product Name:</strong> {{ $product->name }}
+                        <strong>Product Name:</strong> {{ $product?->name }}
                     </p>
                 </div>
             </div>
@@ -55,11 +56,13 @@
                                     </td>
                                     <td class="text-end">
                                         <button type="button" class="btn btn-info btn-icon btn-md editBtn"
-                                            data_inventory="{{ json_encode($inventory->toArray()) }}"><i
-                                                data-lucide="edit"></i></button>
+                                            data_inventory="{{ json_encode($inventory->toArray()) }}">
+                                            <x-lucide-edit />
+                                        </button>
                                         <a href="{{ route('inventory.destroy', $inventory?->id) }}"
-                                            class="btn btn-danger btn-icon btn-md deleteConfirm"><i
-                                                data-lucide="trash"></i></a>
+                                            class="btn btn-danger btn-icon btn-md deleteConfirm">
+                                            <x-lucide-trash />
+                                        </a>
                                     </td>
                                 </tr>
                             @empty
@@ -109,7 +112,10 @@
                             <x-input label="Quantity" type="number" name="quantity" :required="false"
                                 placeholder="Quantity" :value="old('quantity')" />
                         </div>
-                        <button type="submit" class="btn btn-primary" id="submit">Add Inventory</button>
+                        <button type="submit" class="btn btn-primary" id="submit">
+                            <x-lucide-plus class="me-1" style="width: 18px;" />
+                            Add Inventory
+                        </button>
                     </form>
                 </div>
             </div>
@@ -161,8 +167,14 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" id="submit">Update Now</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">
+                            <x-lucide-x class="me-1" style="width: 18px;" />
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="submit">
+                            <x-lucide-check class="me-1" style="width: 18px;" />
+                            Update Inventory
+                        </button>
                     </div>
                 </form>
             </div>

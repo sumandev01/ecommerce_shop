@@ -48,9 +48,15 @@
                                         @endif
                                     </td>
                                     <td style="text-align: right;">
-                                        <a href="javascript:void(0)" data-coupon="{{ json_encode($coupon->toArray()) }}" class="btn btn-info btn-icon btn-md viewCoupon"><i data-lucide="eye"></i></a>
-                                        <a href="javascript:void(0)" data-coupon="{{ json_encode($coupon->toArray()) }}" class="btn btn-warning btn-icon btn-md editCoupon"><i data-lucide="edit"></i></a>
-                                        <a href="{{ route('coupon.destroy', $coupon?->id) }}" class="btn btn-danger btn-icon btn-md deleteConfirm"><i data-lucide="trash"></i></a>
+                                        <a href="javascript:void(0)" data-coupon="{{ json_encode($coupon->toArray()) }}" class="btn btn-info btn-icon btn-md viewCoupon">
+                                            <x-lucide-eye class="icon-lg" />
+                                        </a>
+                                        <a href="javascript:void(0)" data-coupon="{{ json_encode($coupon->toArray()) }}" class="btn btn-warning btn-icon btn-md editCoupon">
+                                            <x-lucide-edit class="icon-lg" />
+                                        </a>
+                                        <a href="{{ route('coupon.destroy', $coupon?->id) }}" class="btn btn-danger btn-icon btn-md deleteConfirm">
+                                            <x-lucide-trash class="icon-lg" />
+                                        </a>
                                     </td>
                                 </tr>
                             @empty
@@ -90,7 +96,9 @@
 
                         <x-input label="Expiry Date" name="end_date" type="datetime-local" placeholder="Enter expiry date" :required="true" />
 
-                        <button type="submit" class="btn btn-primary" id="submit">Add Coupon</button>
+                        <button type="submit" class="btn btn-primary" id="submit">
+                            <x-lucide-plus class="icon-lg" /> Add Coupon
+                        </button>
                     </form>
                 </div>
             </div>
@@ -146,8 +154,12 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" id="submit">Update Now</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">
+                            <x-lucide-x class="icon-lg" /> Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="submit">
+                            <x-lucide-save class="icon-lg" /> Update Now
+                        </button>
                     </div>
                 </form>
             </div>
@@ -204,7 +216,9 @@
                     </h5>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">
+                        <x-lucide-x class="icon-lg" /> Close
+                    </button>
                 </div>
             </div>
         </div>
