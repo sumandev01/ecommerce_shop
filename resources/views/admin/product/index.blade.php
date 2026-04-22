@@ -16,8 +16,8 @@
                     <thead>
                         <tr>
                             <th class="text-left" scope="col">SL</th>
-                            <th style="max-width: 150px;" scope="col">Name</th>
-                            <th scope="col">Category / sub category</th>
+                            <th style="max-width: 200px; white-space: normal" scope="col">Name</th>
+                            <th scope="col" style="line-height: 1.5">Category / <br> sub category</th>
                             <th scope="col">Brand</th>
                             <th style="min-width: 120px" scope="col">Price</th>
                             <th class="text-center" scope="col">Status</th>
@@ -28,11 +28,11 @@
                         @forelse ($products ?? [] as $key => $product)
                             <tr>
                                 <td class="text-left">{{ $key + 1 }}</td>
-                                <td class="d-flex align-items-center">
+                                <td style="white-space: normal; line-height: 1.5;">
                                     <img src="{{ $product->thumbnail }}" alt="{{ $product->name }}" class="rounded-0 me-2" style="aspect-ratio: 1/1" width="100">
                                     <span>{{ $product->name }}</span>
                                 </td>
-                                <td>
+                                <td style="line-height: 1.5">
                                     <span>{{ $product->details?->category?->name ?? 'N/A' }}</span>
                                     <br>
                                     <span class="text-muted">{{ $product->details?->subCategory?->name ?? 'N/A' }}</span>

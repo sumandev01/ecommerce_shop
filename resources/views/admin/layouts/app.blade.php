@@ -14,8 +14,7 @@
     <!-- sweetalert2 -->
     <link rel="stylesheet" href="{{ asset('admin/assets/vendors/sweetalert2/sweetalert2.min.css') }}">
     <!-- DataTables CSS -->
-    {{-- <link rel="stylesheet" href="{{ asset('admin/assets/css/dataTables.css') }}" /> --}}
-    <!-- inject:css -->
+    <link rel="stylesheet" href="{{ asset('admin/assets/css/dataTables.css') }}" />
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{{ asset('admin/assets/images/favicon.png') }}" />
     <!-- Select2 css -->
@@ -92,19 +91,16 @@
 
     <!-- core:js -->
     <script src="{{ asset('admin/assets/vendors/core/core.js') }}"></script>
-    <!-- inject:js -->
-    {{-- <script src="{{ asset('admin/assets/js/template.js') }}"></script> --}}
-    <!-- endinject -->
+    <script src="{{ asset('admin/assets/js/template.js') }}"></script>
     <!-- sweetalert2 -->
     <script src="{{ asset('admin/assets/vendors/sweetalert2/sweetalert2.min.js') }}"></script>
     <!-- DataTables JS -->
-    {{-- <script src="{{ asset('admin/assets/js/dataTables.js') }}"></script> --}}
+    <script src="{{ asset('admin/assets/js/dataTables.js') }}"></script>
     <!-- custom js for this page -->
     <script src="{{ asset('admin/assets/js/dashboard.js') }}"></script>
     {{-- <script src="{{ asset('admin/assets/js/datepicker.js') }}"></script> --}}
     <!-- Select2 JS -->
     <script src="{{ asset('admin/assets/js/select2.min.js') }}"></script>
-    <!-- lucide icons -->
     <!-- end custom js for this page -->
 
     @stack('script')

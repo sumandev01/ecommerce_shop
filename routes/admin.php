@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductInventoryController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AdminAuthController;
 use Illuminate\Support\Facades\Route;
@@ -103,6 +104,14 @@ Route::middleware(['auth', 'role:' . AuthEnums::Admin->value])->prefix('admin')-
         Route::post('/products/{product}/inventory/store', 'store')->name('inventory.store');
         Route::post('/products/{inventory}/update', 'update')->name('inventory.update');
         Route::delete('/inventories/{inventory}/delete', 'destroy')->name('inventory.destroy');
+    });
+
+    Route::controller(OrderController::class)->group(function () {
+        Route::get('/orders', 'index')->name('admin.order.index');
+        Route::get('/orders/{order}/view', 'view')->name('admin.order.view');
+        Route::get('/orders/{order}/edit', 'edit')->name('admin.order.edit');
+        Route::put('/orders/{order}/update', 'update')->name('admin.order.update');
+        Route::delete('/orders/{order}/delete', 'destroy')->name('admin.order.destroy');
     });
 
     Route::controller(CouponController::class)->group(function () {

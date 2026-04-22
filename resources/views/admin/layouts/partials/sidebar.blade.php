@@ -124,6 +124,24 @@
                     <span class="link-title">Coupons</span>
                 </a>
             </li>
+            <li class="nav-item {{ request()->routeIs('admin.order.*') ? 'active' : '' }}">
+                <a class="nav-link" data-toggle="collapse" href="#orders" role="button" aria-expanded="false"
+                    aria-controls="orders">
+                    <x-lucide-inbox class="link-icon" />
+                    <span class="link-title">Orders</span>
+                    <x-lucide-chevron-down class="link-arrow" />
+                </a>
+                <div class="collapse" id="orders">
+                    <ul class="nav sub-menu">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.order.index') }}" class="nav-link {{ request()->routeIs('admin.order.index') ? 'active' : '' }}">All Orders</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="pages/forms/wizard.html" class="nav-link">Wizard</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#forms" role="button" aria-expanded="false"
                     aria-controls="forms">
